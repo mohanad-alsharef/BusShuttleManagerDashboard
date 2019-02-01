@@ -6,13 +6,17 @@ require 'connect.php';
 
 $logs = [];
 
-$currentDate = date("Y/m/d");
+// $loop = ($_GET['loop'] !== null) ? mysqli_real_escape_string($con, $_GET['loop']) : false ;
 
-$sql = sprintf("SELECT * from Entries WHERE Date='$currentDate' ORDER BY id DESC");
+$currentDate = date("Y/m/d");
+// $sql = "SELECT * FROM Entries WHERE loop = `Green Loop`";
+$sql = sprintf("SELECT * from Entries ORDER BY id DESC");
 
 echo "The time is " . date("h:i:sa" .".");
-echo nl2br(" \n Showing results from TODAY only.");
+echo nl2br(" \n Showing ALL results.");
 
+
+// $sql = "SELECT * FROM `Entries` WHERE `Entries`.`loop`='Green Loop'";
 
 if($result = mysqli_query($con,$sql))
 {
@@ -58,7 +62,6 @@ tr:nth-child(even) {
 </style>
  </head>
  <body>
-
    <input type="button" class="btn btn-success center-block" value="Export to CSV" id="btnHome"
  onClick="document.location.href='export.php'" />
  <table>
