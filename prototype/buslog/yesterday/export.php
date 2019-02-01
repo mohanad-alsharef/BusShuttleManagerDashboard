@@ -5,10 +5,11 @@ require 'connect.php';
 
 $db_record = 'Entries';
 // optional where query
-$currentDate = date("Y/m/d");
-$yesterdayDate = date('Y-m-d', strtotime('-1 day', strtotime($currentDate)));
 
-$where = 'WHERE Date = '.$yesterdayDate. ' ORDER BY id DESC';
+$yesterday = "'".date('Y/m/d', strtotime('-1 day'))."'";
+
+// $yesterdayDate = "'".date('Y-m-d', strtotime('-1 day', strtotime($currentDate)))."'";
+$where = 'WHERE Date = '.$yesterday. ' ORDER BY id DESC';
 // filename for export
 $csv_filename = 'db_export_'.$db_record.'_'.date('Y-m-d').'.csv';
 // database variables
