@@ -4,42 +4,26 @@
  */
 require 'connect.php';
 
-$logs = [];
-
-// $loop = ($_GET['loop'] !== null) ? mysqli_real_escape_string($con, $_GET['loop']) : false ;
+$logs = array();
 
 $currentDate = date("Y/m/d");
 
-// $sql = "SELECT * FROM Entries WHERE loop = `Green Loop`";
 $sql = sprintf("SELECT * from Entries WHERE Date='$currentDate' ORDER BY id DESC");
-
-echo "The time is " . date("h:i:sa" .".");
-echo nl2br(" \n Showing results from TODAY only.");
-
-
-// $sql = "SELECT * FROM `Entries` WHERE `Entries`.`loop`='Green Loop'";
-
+echo (" \n Showing TODAY'S results.");
 if($result = mysqli_query($con,$sql))
 {
-  $cr = 0;
+  
   while($row = mysqli_fetch_assoc($result))
   {
-    $logs[$cr]['boarded'] = $row['boarded'];
-    $logs[$cr]['stop'] = $row['stop'];
-    $logs[$cr]['timestamp'] = $row['timestamp'];
-    $logs[$cr]['date'] = $row['date'];
-    $logs[$cr]['loop'] = $row['loop'];
-    $logs[$cr]['driver'] = $row['driver'];
-    $logs[$cr]['id'] = $row['id'];
-    $cr++;
+    array_push($logs, $row);
   }
 
-//   echo json_encode(['data'=>$logs]);
 }
 else
 {
   http_response_code(404);
 }
+
 ?>
 <html>
  <head>
@@ -77,17 +61,17 @@ tr:nth-child(even) {
     <th>ID</th>
   </tr>
   <ul id="ListOfLogs">
-   <? foreach ($logs as $logs): ?>
+   <?php foreach ($logs as $log): ?>
     <tr>
-        <td><?= $logs["boarded"] ?></td>
-        <td><?= $logs["stop"] ?></td>
-        <td><?= $logs["timestamp"] ?></td>
-        <td><?= $logs["date"] ?></td>
-        <td><?= $logs["loop"] ?></td>
-        <td><?= $logs["driver"] ?></td>
-        <td><?= $logs["id"] ?></td>
+        <td><?php echo $log["boarded"]; ?></td>
+        <td><?php echo $log["stop"]; ?></td>
+        <td><?php echo $log["timestamp"]; ?></td>
+        <td><?php echo $log["date"]; ?></td>
+        <td><?php echo $log["loop"]; ?></td>
+        <td><?php echo $log["driver"]; ?></td>
+        <td><?php echo $log["id"]; ?></td>
     </tr>
-   <? endforeach ?>
+   <?php endforeach; ?>
   </ul>
   </table>
  </body>
