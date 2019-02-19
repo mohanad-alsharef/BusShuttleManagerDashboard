@@ -21,6 +21,28 @@
     <button type="button" onclick="window.location='/phpTest/Loops.php'" class="btn btn-secondary">Loops</button>
 </div>
 
+<?php
+##This is to connect to my local connection and will need changed
+const DBHOST = 'localhost';
+const DBNAME = "test284829";
+const DBUSER = "root";
+const DBPWD = "";
+
+
+$connect = new mysqli(DBHOST, DBUSER, DBPWD, DBNAME);
+
+
+if (mysqli_connect_errno($connect)) {
+    die("Failed to connect:" . mysqli_connect_error());
+}
+
+mysqli_set_charset($connect, "utf8");
+  
+
+echo "Connected successfully";
+?>
+<br>
+
 <textarea>You are in Users</textarea>
 
 

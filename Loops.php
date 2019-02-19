@@ -22,6 +22,7 @@
 </div>
 
 <?php
+##This is to connect to my local connection and will need changed
 const DBHOST = 'localhost';
 const DBNAME = "test284829";
 const DBUSER = "root";
@@ -40,7 +41,19 @@ mysqli_set_charset($connect, "utf8");
 
 echo "Connected successfully";
 
+$sql = "SELECT * FROM LOOPS";
+$result = $connect->query($sql);
+
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        echo $row["id"]. " " .$row["loops"];
+    }
+}
+
 ?>
+
+<br>
+
 <?php
 $message = "is this working?"
 ?>
