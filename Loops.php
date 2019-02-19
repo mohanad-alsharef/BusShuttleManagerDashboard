@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 ?>
 <!DOCTYPE HTML>
 <HTML LANG="EN">
@@ -15,16 +14,40 @@
 </HEAD>
 
 <body>
-<div class="btn-group d-flex" role="group" aria-label="Home Buttons">
-    <button type="button" class="btn btn-secondary">Stops</button>
-    <button type="button" class="btn btn-secondary">Users</button>
-    <button type="button" class="btn btn-secondary">Entries</button>
-    <button type="button" onclick="window.location='/phpTest/Loops.php'" class="btn btn-secondary">Loops</button>
-</div>
 
+<?php
+const DBHOST = 'localhost';
+const DBNAME = "test284829";
+const DBUSER = "root";
+const DBPWD = "";
+
+
+$connect = new mysqli(DBHOST, DBUSER, DBPWD, DBNAME);
+
+
+if (mysqli_connect_errno($connect)) {
+    die("Failed to connect:" . mysqli_connect_error());
+}
+
+mysqli_set_charset($connect, "utf8");
+  
+
+echo "Connected successfully";
+
+?>
+<?php
+$message = "is this working?"
+?>
+
+
+
+<textarea>Hello? <?php echo $message; ?></textarea>
 
 
 </body>
+
+
+
 
 
 
