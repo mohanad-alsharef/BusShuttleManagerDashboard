@@ -15,37 +15,11 @@
 
 <body>
 
-<?php
-$servername = "test284829";
-$username = "root";
-$password = "";
 
+<textarea>You are in Stops</textarea>
 
-$conn = new mysqli($servername, $username, $password);
-
-
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
-echo "Connected successfully";
-
-?>
-<?php
-$message = "is this working?"
-?>
-
-
-
-<textarea>Hello? <?php echo $message; ?></textarea>
 
 
 </body>
-
-
-
-
-
-
 
 </HTML>
