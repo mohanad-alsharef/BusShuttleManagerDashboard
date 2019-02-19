@@ -14,6 +14,12 @@
 </HEAD>
 
 <body>
+<div class="btn-group d-flex" role="group" aria-label="Home Buttons">
+    <button type="button" onclick="window.location='/phpTest/Stops.php'"class="btn btn-secondary">Stops</button>
+    <button type="button" onclick="window.location='/phpTest/Users.php'"class="btn btn-secondary">Users</button>
+    <button type="button" onclick="window.location='/phpTest/Entries.php'" class="btn btn-secondary">Entries</button>
+    <button type="button" onclick="window.location='/phpTest/Loops.php'" class="btn btn-secondary">Loops</button>
+</div>
 
 <?php
 const DBHOST = 'localhost';
