@@ -11,6 +11,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
+
+    <script type="text/javascript">
+        function addTextArea(){
+            var div = document.getElementById('new_loop');
+            div.innerHTML += "<p>Enter new Loop name here:</p><textArea name='new_quote[]' />";
+            div.innerHTML += "\n<br />"
+        }
+    </script>
+
+
+
 </HEAD>
 
 <body>
@@ -21,6 +32,10 @@
     <button type="button" onclick="window.location='/phpTest/Loops.php'" class="btn btn-secondary">Loops</button>
 </div>
 
+
+
+
+<div align="center">
 <?php
    
     ##This is to connect to my local connection and will need changed
@@ -64,7 +79,15 @@ makeList();
 
 ?>
 
-<br>
+
+<div id="new_loop"></div>
+
+
+
+
+<button type='button' onClick="addTextArea();" class='btn btn-secondary'>Add</button>
+
+</div>
 
 
 
