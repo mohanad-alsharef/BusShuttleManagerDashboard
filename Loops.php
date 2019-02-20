@@ -12,11 +12,34 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
 
+
+
+<?php
+    function postLoop(){
+        $text = $_POST['loopName'];
+        $text = trim($text);
+        $text = htmlspecialchars($text);
+
+        $sql = 'INSERT INTO loops(')
+    }
+
+
+?>
+
+
+
+
+
+
     <script type="text/javascript">
+
+        
+        
         function addTextArea(){
             var div = document.getElementById('new_loop');
             div.innerHTML += "<p>Enter new Loop name here:</p><textArea name='new_quote[]' />";
             div.innerHTML += "\n<br />"
+            div.innerHTML += "<button type='button' class='btn btn-secondary'>Submit</button>"
         }
     </script>
 
@@ -33,13 +56,13 @@
 </div>
 
 
-
-
 <div align="center">
+
+
 <?php
    
     ##This is to connect to my local connection and will need changed
-     const DBHOST = 'localhost';
+    const DBHOST = 'localhost';
     const DBNAME = "test284829";
     const DBUSER = "root";
     const DBPWD = "";
@@ -67,6 +90,7 @@ function makeList() {
         echo "0 results";
 
     }
+
     foreach($loopNames as $name) {
         echo $name. " ";
         echo "<button type='button' class='btn btn-secondary'>edit</button>" ;
@@ -75,17 +99,25 @@ function makeList() {
 
 }
 
-makeList();
 
+
+
+
+
+makeList();
 ?>
 
 
-<div id="new_loop"></div>
+
+<button type='button' id="addButton" class='btn btn-secondary'>Add</button>
+
+<div class="newLoop">
+<p>Enter new Loop name here:</p>
+<textArea id="loopName"></textArea>
+<button type='button' id="submit" class='btn btn-secondary'>Submit</button>
+</div>
 
 
-
-
-<button type='button' onClick="addTextArea();" class='btn btn-secondary'>Add</button>
 
 </div>
 
