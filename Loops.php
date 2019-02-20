@@ -7,9 +7,12 @@ $input = "";
 if(isset($_POST['SubmitButton'])){
   $input = $_POST['inputText'];
   
+  if($input != '') {
+    
+    postLoop($con, $input); 
+  }
 
-
-  postLoop($con, $input); 
+   
   header('Location: Loops.php');
 
 
