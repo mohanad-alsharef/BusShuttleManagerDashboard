@@ -1,10 +1,23 @@
 <?php
-require 'connect.php';
+ require 'connect.php';
 
 $loopNames = array();
+$input = "";
 
-function makeList(&$loopNames) {
-    require 'connect.php';
+if(isset($_POST['SubmitButton'])){
+  $input = $_POST['inputText'];
+  
+
+
+  postLoop($con, $input); 
+  header('Location: Loops.php');
+
+
+  
+}
+
+function makeList(&$loopNames, $con) {
+ 
 
 
     $sql = sprintf("SELECT * FROM loops");
@@ -25,6 +38,31 @@ function makeList(&$loopNames) {
 }
 
 
+    function postLoop($con, $input){
+      var_dump($input);
+
+    $sql = sprintf("INSERT INTO `loops`(`loops`) VALUES ( '$input' )");
+
+    if($result = mysqli_query($con,$sql))
+    {
+        // $text = 'Purple Loop';
+
+        // $text = strip_tags($text);
+        // $text = trim($text);
+        // $text = htmlspecialchars($text);
+
+        
+        
+    } else {
+      echo "anything";
+      http_response_code(404);
+    }
+        
+
+  }
+
+
+
 
 
 ?>
@@ -36,13 +74,6 @@ function makeList(&$loopNames) {
   require './themepart/navbar.php';
   ?>
 
-    <script type="text/javascript">
-        function addTextArea(){
-            var div = document.getElementById('new_loop');
-            div.innerHTML += "<p>Enter new Loop name here:</p><textArea name='new_quote[]' />";
-            div.innerHTML += "\n<br />"
-        }
-    </script>
 
 
 </head>
@@ -54,7 +85,7 @@ function makeList(&$loopNames) {
 <div align="center">
 
 <?php
-makeList($loopNames);
+makeList($loopNames, $con);
 ?>
 
 <table>
@@ -76,46 +107,20 @@ makeList($loopNames);
 
 
 
-<button type='button' id="addButton" class='btn btn-secondary'>Add</button>
 
 <div class="newLoop">
 <p>Enter new Loop name here:</p>
-<textArea id="loopName"></textArea>
-<button type='button' id="submit" onClick="<?php echo postLoop() ?>"class='btn btn-secondary'>Submit</button>
+
+<form action="" method="post">
+<?php echo $input; ?>
+  <input name="inputText" input="text" />
+  <input type='submit' name="SubmitButton" class='btn btn-secondary'/>
+</form>
+
 </div>
 
-
-
-
 </div>
 
-<?php
-    require 'connect.php';
-    function postLoop(){
-
-    $sql = sprintf("INSERT INTO `loops`(`loops`) VALUES ('purple loop')");
-
-    if($result = mysqli_query($con,$sql))
-    {
-        // $text = 'Purple Loop';
-
-        // $text = strip_tags($text);
-        // $text = trim($text);
-        // $text = htmlspecialchars($text);
-
-        
-        $con->query($sql);
-    } else {
-      http_response_code(404);
-    }
-        
-
-
-
-        echo 'here';
-    }
-
-?>
 
 </body>
 
