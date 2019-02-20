@@ -1,5 +1,4 @@
 <?php
-
 // require 'connect.php';
 $loopNames = array();
 
@@ -12,6 +11,7 @@ function makeList(&$loopNames) {
     if($result = mysqli_query($con,$sql))
     {
 
+
       while($row = mysqli_fetch_assoc($result))
       {
         array_push($loopNames, $row);
@@ -22,6 +22,7 @@ function makeList(&$loopNames) {
       http_response_code(404);
     }
 }
+
 
 
 
@@ -42,9 +43,12 @@ function makeList(&$loopNames) {
         }
     </script>
 
+
 </head>
 
+
 <body>
+
 
 <div align="center">
 
@@ -70,19 +74,47 @@ makeList($loopNames);
 </table>
 
 
-<button type='button' onClick="addTextArea();" class='btn btn-secondary'>Add</button>
 
+<button type='button' id="addButton" class='btn btn-secondary'>Add</button>
+
+<div class="newLoop">
+<p>Enter new Loop name here:</p>
+<textArea id="loopName"></textArea>
+<button type='button' id="submit" onClick="echo postLoop"class='btn btn-secondary'>Submit</button>
 </div>
 
 
 
 
+</div>
+
+<?php
+    
+    function postLoop(){
+
+
+        $connect = new mysqli(DBHOST, DBUSER, DBPWD, DBNAME);
+
+        if (mysqli_connect_errno($connect)) {
+            die("Failed to connect:" . mysqli_connect_error());
+        }
+    
+        mysqli_set_charset($connect, "utf8");
+
+        $text = 'Purple Loop';
+
+        $text = strip_tags($text);
+        $text = trim($text);
+        $text = htmlspecialchars($text);
+
+        $sql = "INSERT INTO `loops`(`loops`) VALUES ('purple loop')";
+        $result = $connect->query($sql);
+
+        echo 'here';
+    }
+
+?>
+
 </body>
-
-
-
-
-
-
 
 </html>
