@@ -22,45 +22,51 @@
 </div>
 
 <?php
-##This is to connect to my local connection and will need changed
-const DBHOST = 'localhost';
-const DBNAME = "test284829";
-const DBUSER = "root";
-const DBPWD = "";
+   
+    ##This is to connect to my local connection and will need changed
+     const DBHOST = 'localhost';
+    const DBNAME = "test284829";
+    const DBUSER = "root";
+    const DBPWD = "";
 
+function makeList() {
 
-$connect = new mysqli(DBHOST, DBUSER, DBPWD, DBNAME);
+    $connect = new mysqli(DBHOST, DBUSER, DBPWD, DBNAME);
 
-
-if (mysqli_connect_errno($connect)) {
-    die("Failed to connect:" . mysqli_connect_error());
-}
-
-mysqli_set_charset($connect, "utf8");
-  
-
-echo "Connected successfully";
-
-$sql = "SELECT * FROM LOOPS";
-$result = $connect->query($sql);
-
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        echo $row["id"]. " " .$row["loops"];
+    if (mysqli_connect_errno($connect)) {
+        die("Failed to connect:" . mysqli_connect_error());
     }
+
+    mysqli_set_charset($connect, "utf8");
+
+    $sql = "SELECT * FROM loops";
+    $result = $connect->query($sql);
+
+    $loopNames = array();
+
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+           array_push($loopNames, $row["loops"]);
+        }
+    }else {
+        echo "0 results";
+
+    }
+    foreach($loopNames as $name) {
+        echo $name. " ";
+        echo "<button type='button' class='btn btn-secondary'>edit</button>" ;
+        echo "<br>";
+    }
+
 }
+
+makeList();
 
 ?>
 
 <br>
 
-<?php
-$message = "is this working?"
-?>
 
-
-
-<textarea>Hello? <?php echo $message; ?></textarea>
 
 
 </body>
