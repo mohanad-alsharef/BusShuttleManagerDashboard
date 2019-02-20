@@ -14,17 +14,7 @@
 
 
 
-<?php
-    function postLoop(){
-        $text = $_POST['loopName'];
-        $text = trim($text);
-        $text = htmlspecialchars($text);
 
-        $sql = 'INSERT INTO loops(')
-    }
-
-
-?>
 
 
 
@@ -81,7 +71,6 @@ function makeList() {
     $result = $connect->query($sql);
 
     $loopNames = array();
-
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
            array_push($loopNames, $row["loops"]);
@@ -114,16 +103,55 @@ makeList();
 <div class="newLoop">
 <p>Enter new Loop name here:</p>
 <textArea id="loopName"></textArea>
-<button type='button' id="submit" class='btn btn-secondary'>Submit</button>
+<button type='button' id="submit" onClick="echo postLoop"class='btn btn-secondary'>Submit</button>
 </div>
 
 
 
 </div>
 
+<?php
+    
+    function postLoop(){
+
+
+        $connect = new mysqli(DBHOST, DBUSER, DBPWD, DBNAME);
+
+        if (mysqli_connect_errno($connect)) {
+            die("Failed to connect:" . mysqli_connect_error());
+        }
+    
+        mysqli_set_charset($connect, "utf8");
+    
 
 
 
+
+        $text = 'Purple Loop';
+
+        $text = strip_tags($text);
+        $text = trim($text);
+        $text = htmlspecialchars($text);
+
+        $sql = "INSERT INTO `loops`(`loops`) VALUES ('purple loop')";
+        $result = $connect->query($sql);
+
+
+
+        echo 'here';
+    }
+
+
+
+
+
+?>
+
+
+
+<?php
+postLoop()
+?>
 </body>
 
 
