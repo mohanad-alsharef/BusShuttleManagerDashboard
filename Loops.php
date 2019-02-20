@@ -1,10 +1,11 @@
 <?php
 
-require 'connect.php';
+// require 'connect.php';
+$loopNames = array();
 
-function makeList() {
+function makeList(&$loopNames) {
+  require 'connect.php';
 
-    $loopNames = array();
 
     $sql = sprintf("SELECT * FROM loops");
 
@@ -13,29 +14,26 @@ function makeList() {
 
       while($row = mysqli_fetch_assoc($result))
       {
-        array_push($logs, $row);
+        array_push($loopNames, $row);
       }
 
 
     } else {
       http_response_code(404);
     }
-
-    foreach($loopNames as $name) {
-        echo $name. " ";
-        echo "<button type='button' class='btn btn-secondary'>edit</button>" ;
-        echo "<br>";
-    }
 }
 
 
 
 ?>
+
 <html>
 <head>
+  
   <?php
-  require '/themepart/navbar.php';
+  require './themepart/navbar.php';
   ?>
+
     <script type="text/javascript">
         function addTextArea(){
             var div = document.getElementById('new_loop');
@@ -49,14 +47,27 @@ function makeList() {
 <body>
 
 <div align="center">
+
 <?php
-makeList();
+makeList($loopNames);
 ?>
 
-
-<div id="new_loop"></div>
-
-
+<table>
+   <tr>
+    <th>Loops</th>
+  </tr>
+<ul id="ListOfLogs">
+<?php foreach ($loopNames as $log): ?>
+ <tr>
+     <td>
+       <?php echo $log['loops']; ?>
+       <?php echo "<button type = 'button' class='btn btn-secondary'> edit</button>"?>
+      </td>
+     
+ </tr>
+<?php endforeach; ?>
+</ul>
+</table>
 
 
 <button type='button' onClick="addTextArea();" class='btn btn-secondary'>Add</button>
