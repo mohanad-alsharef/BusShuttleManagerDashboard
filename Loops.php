@@ -54,13 +54,22 @@ function postLoop($con, $input){
     makeList($loopNames, $con);
     ?>
 
-    <div class="newLoop">
-      <p>Enter new Loop name here:</p>
-      <form action="" method="post">
-        <?php echo $input; ?>
-        <input name="inputText" input="text" />
-        <input type='submit' name="SubmitButton" class='btn btn-secondary'/>
-      </form>
+
+    <div class="d-flex justify-content-center"><p><h3>Create a new loop below.</h3></p></div>
+
+    <br>
+    <div class="d-flex justify-content-center">
+    <form action="" method="post">
+      <div class="form-row align-items-center">
+        <div class="col-auto">
+          <label class="sr-only" for="inlineFormInput">Loop Name</label>
+          <input type="text" input="text" class="form-control mb-2" name='inputText' id="inlineFormInput" placeholder="Enter New Loop">
+           </div>
+        <div class="col-auto">
+          <button type="submit" name="SubmitButton" class="btn btn-secondary mb-2">Submit</button>
+        </div>
+        </div>
+    </form>
     </div>
 
     <table id="editable_table" class="table table-bordered table-striped">
@@ -93,8 +102,8 @@ function postLoop($con, $input){
   </div>
 </body>
 
-<script>  
-$(document).ready(function(){  
+<script>
+$(document).ready(function(){
   $('#editable_table').Tabledit({
     url: 'actionLoops.php',
     columns: {
@@ -102,7 +111,7 @@ $(document).ready(function(){
         editable: [[0,'loop']]
     }
 });
- 
-});  
+
+});
  </script>
 </html>
