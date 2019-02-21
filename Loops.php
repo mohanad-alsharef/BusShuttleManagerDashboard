@@ -64,10 +64,6 @@ function makeList(&$loopNames, $con) {
 
   }
 
-
-
-
-
 ?>
 
 <html>
