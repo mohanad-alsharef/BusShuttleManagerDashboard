@@ -13,7 +13,7 @@ if(isset($_POST['SubmitButton'])){
   header('Location: Loops.php');
 }
 
-function makeList(&$loopNames, $con) {
+  function makeList(&$loopNames, $con) {
     $sql = sprintf("SELECT * FROM loops");
     if($result = mysqli_query($con,$sql))
     {
@@ -26,7 +26,7 @@ function makeList(&$loopNames, $con) {
     }
 }
 
-    function postLoop($con, $input){
+  function postLoop($con, $input){
     var_dump($input);
     $sql = sprintf("INSERT INTO `loops`(`loops`) VALUES ( '$input' )");
     if($result = mysqli_query($con,$sql))
