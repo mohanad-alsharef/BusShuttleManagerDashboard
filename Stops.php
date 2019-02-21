@@ -11,15 +11,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.6/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 
+    <?php
+    require './themepart/navbar.php';
+    ?>
+
+
 </HEAD>
 
 <body>
-<div class="btn-group d-flex" role="group" aria-label="Home Buttons">
-    <button type="button" onclick="window.location='/phpTest/Stops.php'"class="btn btn-secondary">Stops</button>
-    <button type="button" onclick="window.location='/phpTest/Users.php'"class="btn btn-secondary">Users</button>
-    <button type="button" onclick="window.location='/phpTest/Entries.php'" class="btn btn-secondary">Entries</button>
-    <button type="button" onclick="window.location='/phpTest/Loops.php'" class="btn btn-secondary">Loops</button>
-</div>
+
 
 <?php
 ##This is to connect to my local connection and will need changed

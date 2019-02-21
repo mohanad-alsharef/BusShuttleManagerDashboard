@@ -7,7 +7,6 @@ $input = "";
 if(isset($_POST['SubmitButton'])){
   $input = $_POST['inputText'];
   if($input != '') {
-
     postLoop($con, $input);
   }
   header('Location: Loops.php');
@@ -27,14 +26,8 @@ function makeList(&$loopNames, $con) {
 
 function postLoop($con, $input){
   $sql = sprintf("INSERT INTO `loops`(`loops`) VALUES ( '$input' )");
-  if($result = mysqli_query($con,$sql))
-  {
-    // $text = 'Purple Loop';
-    // $text = strip_tags($text);
-    // $text = trim($text);
-    // $text = htmlspecialchars($text);
-  } else {
-    echo "anything";
+  if($result = mysqli_query($con,$sql)) { } 
+  else {
     http_response_code(404);
   }
 }
@@ -45,15 +38,16 @@ function postLoop($con, $input){
   <?php
   require './themepart/navbar.php';
   ?>
+
 <script src="jquery.tabledit.min.js"></script>
 </head>
+
 <body>
   <div align="center">
 
     <?php
     makeList($loopNames, $con);
     ?>
-
 
     <div class="d-flex justify-content-center"><p><h3>Create a new loop below.</h3></p></div>
 
