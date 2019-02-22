@@ -1,5 +1,4 @@
 <?php
-
 require 'connect.php';
 
 $userNames = array();

@@ -1,4 +1,4 @@
-<?php  
+<?php
 //action.php$connect = mysqli_connect('localhost', 'root', '', 'testing');
 require 'connect.php';
 
@@ -11,7 +11,7 @@ $id = mysqli_real_escape_string($con, $input["id"]);
 if($input["action"] === 'edit')
 {
  $query = "
- UPDATE `users` 
+ UPDATE `users`
  SET `firstname` = '".$firstName."',
  `lastname` = '".$lastName."'
  WHERE `id` = '".$id."'
@@ -23,12 +23,11 @@ if($input["action"] === 'edit')
 if($input["action"] === 'delete')
 {
  $query = "
- DELETE FROM users 
+ DELETE FROM users
  WHERE id = '".$id."'
  ";
  mysqli_query($con, $query);
 }
-
 echo json_encode($input);
 
 ?>
