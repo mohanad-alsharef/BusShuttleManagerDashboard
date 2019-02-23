@@ -63,7 +63,7 @@ function postLoop($con, $firstName, $lastName, $id){
     <div class="col-auto">
       <label class="sr-only" for="inlineFormInput">First Name</label>
       <input type="text" class="form-control mb-2" name='firstName' id="inlineFormInput" placeholder="First Name">
-       </div>
+    </div>
     <div class="col-auto">
       <label class="sr-only" for="inlineFormInputGroup">Last Name</label>
       <div class="input-group mb-2">
@@ -73,15 +73,15 @@ function postLoop($con, $firstName, $lastName, $id){
     <div class="col-auto">
       <button type="submit" name="SubmitButton" class="btn btn-dark mb-2">Submit</button>
     </div>
-    </div>
+  </div>
 </form>
 </div>
 
     <table id="editable_table" class="table table-bordered table-striped">
      <thead>
       <tr>
-       <th>Firstname</th>
-       <th>Lastname</th>
+       <th>First Name</th>
+       <th>Last Name</th>
       </tr>
      </thead>
      <tbody>

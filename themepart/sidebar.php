@@ -28,6 +28,9 @@
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Manage Data</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
                         <li>
+                            <a class="disabled" href="../Pages/Entries.php">Entries</a>
+                        </li>
+                        <li>
                             <a class="disabled" href="../Pages/Users.php">Drivers</a>
                         </li>
                         <li>
