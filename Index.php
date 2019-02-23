@@ -1,6 +1,4 @@
-<?php
-require './themepart/navbar.php';
+<?php 
+header("Location: ./Pages/Users.php"); /* Redirect browser */
+exit();
 ?>
-
-</body>
-

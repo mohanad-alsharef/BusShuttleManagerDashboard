@@ -1,6 +1,5 @@
 <?php
-
-require 'connect.php';
+require '../Database/connect.php';
 
 $userNames = array();
 $firstName = "";
@@ -46,9 +45,10 @@ function postLoop($con, $firstName, $lastName, $id){
 <html>
 <head>
   <?php
-  require './themepart/navbar.php';
+  require '../themepart/resources.php';
+  require '../themepart/sidebar.php';
   ?>
-<script src="jquery.tabledit.min.js"></script>
+
 </head>
 <body>
     <?php
@@ -71,7 +71,7 @@ function postLoop($con, $firstName, $lastName, $id){
       </div>
     </div>
     <div class="col-auto">
-      <button type="submit" name="SubmitButton" class="btn btn-secondary mb-2">Submit</button>
+      <button type="submit" name="SubmitButton" class="btn btn-dark mb-2">Submit</button>
     </div>
     </div>
 </form>
@@ -100,7 +100,7 @@ function postLoop($con, $firstName, $lastName, $id){
 <script>  
 $(document).ready(function(){  
   $('#editable_table').Tabledit({
-    url: 'actionUsers.php',
+    url: '../Actions/actionUsers.php',
     columns: {
         identifier: [0, 'id'],
         editable: [[1,'firstname'], [2,'lastname'] ]
@@ -110,3 +110,4 @@ $(document).ready(function(){
 });  
  </script>
 </html>
+<?php require '../themepart/footer.php'; ?>

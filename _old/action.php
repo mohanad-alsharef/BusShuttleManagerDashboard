@@ -4,17 +4,15 @@ require 'connect.php';
 
 $input = filter_input_array(INPUT_POST);
 
-$firstName = mysqli_real_escape_string($con, $input["firstname"]);
-$lastName = mysqli_real_escape_string($con, $input["lastname"]);
-$id = mysqli_real_escape_string($con, $input["id"]);
+$loopName = mysqli_real_escape_string($con, $input["loopName"]);
+$newLoopName = mysqli_real_escape_string($con, $input["newLoopName"]);
 
 if($input["action"] === 'edit')
 {
  $query = "
- UPDATE `users` 
- SET `firstname` = '".$firstName."',
- `lastname` = '".$lastName."'
- WHERE `id` = '".$id."'
+ UPDATE loops 
+ SET loops = '".$newLoopName."'
+ WHERE id = '".$loopName."'
  ";
 
  mysqli_query($con, $query);
@@ -23,8 +21,8 @@ if($input["action"] === 'edit')
 if($input["action"] === 'delete')
 {
  $query = "
- DELETE FROM users 
- WHERE id = '".$id."'
+ DELETE FROM loops 
+ WHERE id = '".$loopName."'
  ";
  mysqli_query($con, $query);
 }
