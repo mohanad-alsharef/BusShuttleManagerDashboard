@@ -66,7 +66,7 @@
                     <a href="https://www.mildvariety.club" class="download">Visit Driver Interface</a>
                 </li>
                 <li>
-                    <a href="#" class="article">Have a suggestion?</a>
+                    <a href="../Pages/Feedback.php" class="article">Have a suggestion?</a>
                 </li>
             </ul>
         </nav>
