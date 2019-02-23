@@ -34,7 +34,7 @@
                             <a href="../Pages/Loops.php">Loops</a>
                         </li>
                         <li>
-                            <a href="#">Stops</a>
+                            <a href="../Pages/Loops.php">Stops</a>
                         </li>
                     </ul>
                 </li>
