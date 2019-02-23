@@ -45,8 +45,8 @@ function postLoop($con, $firstName, $lastName, $id){
 <html>
 <head>
   <?php
-  require '../themepart/sidebar.php';
   require '../themepart/resources.php';
+  require '../themepart/sidebar.php';
   ?>
 
 </head>
