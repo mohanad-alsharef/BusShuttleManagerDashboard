@@ -41,6 +41,7 @@ function postLoop($con, $input){
 <?php 
 require '../themepart/resources.php';
 require '../themepart/sidebar.php';
+require '../themepart/pageContentHolder.php';
 ?>
 <html>
 <head>
@@ -54,7 +55,7 @@ require '../themepart/sidebar.php';
     ?>
 
 
-    <div class="d-flex justify-content-center"><p><h3>Create a new loop below.</h3></p></div>
+    <div class="d-flex justify-content-center"><p><h3>Create a New Loop</h3></p></div>
 
     <br>
     <div class="d-flex justify-content-center">

@@ -7,7 +7,8 @@
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <!-- Our Custom CSS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
 
     <link rel="stylesheet" href="style.css">
     <script src="jquery.tabledit.min.js"></script>
@@ -20,7 +21,7 @@
         <!-- Sidebar Holder -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3 style="text-align: center">Admin Panel</h3>
+                <h3 style="text-align: center">Management Dashboard</h3>
             </div>
 
             <ul class="list-unstyled components">
@@ -34,7 +35,10 @@
                             <a href="../Pages/Loops.php">Loops</a>
                         </li>
                         <li>
-                            <a href="../Pages/Loops.php">Stops</a>
+                            <a href="../Pages/Stops.php">Stops</a>
+                        </li>
+                        <li>
+                            <a href="../Pages/Entries.php">Entries</a>
                         </li>
                     </ul>
                 </li>
@@ -70,20 +74,5 @@
                 </li>
             </ul>
         </nav>
-        <!-- Page Content Holder -->
-        <div id="content">
 
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-
-                    <button type="button" id="sidebarCollapse" class="navbar-btn">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                    <!-- <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="fas fa-align-justify"></i>
-                    </button> -->
-                </div>
-            </nav>
         
