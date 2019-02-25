@@ -189,6 +189,6 @@ function updateOrder(data) {
 </script>
 
 
-
 </HTML>
+
 <?php require '../themepart/footer.php'; ?>

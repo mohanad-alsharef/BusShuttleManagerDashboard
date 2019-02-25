@@ -29,6 +29,7 @@ if($input["action"] === 'edit')
  `loop` = '".$loop."',
  `driver` = '".$driver."',
  `leftBehind` = '".$leftBehind."'
+
  WHERE `id` = '".$id."'
  ";
 
@@ -40,13 +41,16 @@ if($input["action"] === 'delete')
 {
  $query = "
  DELETE FROM Entries 
+
  WHERE id = '".$id."'
  ";
  mysqli_query($con, $query);
 }
+
 if($input["action"] === 'restore')
 {
 
 }
 }
+
 ?>
