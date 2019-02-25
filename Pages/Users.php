@@ -47,6 +47,7 @@ function postLoop($con, $firstName, $lastName, $id){
   <?php
   require '../themepart/resources.php';
   require '../themepart/sidebar.php';
+  require '../themepart/pageContentHolder.php';
   ?>
 
 </head>
@@ -54,7 +55,7 @@ function postLoop($con, $firstName, $lastName, $id){
     <?php
     makeList($userNames, $con);
     ?>
-<div class="d-flex justify-content-center"><p><h3>Create a new user below.</h3></p></div>
+<div class="d-flex justify-content-center"><p><h3>Create a New User</h3></p></div>
 
 <br>
 <div class="d-flex justify-content-center">

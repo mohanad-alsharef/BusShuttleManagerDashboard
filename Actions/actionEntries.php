@@ -4,38 +4,53 @@ require '../Database/connect.php';
 
 $input = filter_input_array(INPUT_POST);
 
-$boarded = mysqli_real_escape_string($con, $input["boarded"]);
+$id = mysqli_real_escape_string($con, $input["id"]);
 $stop = mysqli_real_escape_string($con, $input["stop"]);
-$timestamp = mysqli_real_escape_string($con, $input["timestamp"]);
+$time = mysqli_real_escape_string($con, $input["timestamp"]);
 $date = mysqli_real_escape_string($con, $input["date"]);
 $loop = mysqli_real_escape_string($con, $input["loop"]);
 $driver = mysqli_real_escape_string($con, $input["driver"]);
-$id = mysqli_real_escape_string($con, $input["id"]);
+$leftbehind = mysqli_real_escape_string($con, $input["leftBehind"]);
 
+$query = "SELECT * FROM Entries WHERE id='".$id."'";
+
+$result = mysqli_query($con, $query);
+
+if($result) {
+    
 if($input["action"] === 'edit')
 {
  $query = "
- UPDATE `entries`
+ UPDATE `Entries` 
  SET `boarded` = '".$boarded."',
  `stop` = '".$stop."',
- `timestamp` = '".$timestamp."',
+ `timestamp` = '".$time."',
  `date` = '".$date."',
  `loop` = '".$loop."',
- `driver` = '".$driver."'
+ `driver` = '".$driver."',
+ `leftBehind` = '".$leftBehind."'
+
  WHERE `id` = '".$id."'
  ";
 
  mysqli_query($con, $query);
 
 }
+
 if($input["action"] === 'delete')
 {
  $query = "
- DELETE FROM entries
+ DELETE FROM Entries 
+
  WHERE id = '".$id."'
  ";
  mysqli_query($con, $query);
 }
-echo json_encode($input);
+
+if($input["action"] === 'restore')
+{
+
+}
+}
 
 ?>

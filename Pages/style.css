@@ -1,7 +1,5 @@
-/*
-    DEMO STYLE
-*/
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
 
 
 body {
@@ -149,7 +147,19 @@ a.article, a.article:hover {
     color: white;
 }
 
+th {
+    font-size: 25px;
+    font-weight: bold;
+    padding-left: 5px;
+    padding-bottom: 3px;
+  }
 
+td {
+    font-size: 20px;
+    font-weight: bold;
+    padding-left: 5px;
+    padding-bottom: 3px;
+  }
 
 /* ---------------------------------------------------
     CONTENT STYLE
