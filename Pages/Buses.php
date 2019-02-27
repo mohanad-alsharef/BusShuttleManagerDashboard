@@ -9,7 +9,7 @@ if(isset($_POST['SubmitButton'])){
   if($input != '') {
     postLoop($con, $input);
   }
-  header('Location: buses.php');
+  header('Location: Buses.php');
 }
 
 function makeList(&$busNames, $con) {
