@@ -1,4 +1,5 @@
 <?php
+  require '../themepart/resources.php';
   require '../themepart/sidebar.php';
   ?>
 
