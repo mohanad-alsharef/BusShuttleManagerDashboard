@@ -40,6 +40,9 @@
                         <li>
                             <a href="../Pages/Stops.php">Stops</a>
                         </li>
+                        <li>
+                            <a href="../Pages/Buses.php">Buses</a>
+                        </li>
                     </ul>
                 </li>
                 <!-- <li>
