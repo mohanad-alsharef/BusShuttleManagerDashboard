@@ -41,7 +41,7 @@
                             <a href="../Pages/Stops.php">Stops</a>
                         </li>
                         <li>
-                            <a href="../Pages/Entries.php">Entries</a>
+                            <a href="../Pages/Buses.php">Buses</a>
                         </li>
                     </ul>
                 </li>
