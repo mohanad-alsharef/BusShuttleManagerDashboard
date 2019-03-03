@@ -2,6 +2,8 @@
     session_start();
     require '../Database/connect.php';
 
+
+    $hourly = array();
     $entries = array();
     $input = "";
     $loopDropdown = array();
@@ -57,7 +59,26 @@
         }
     }
 
+
+    function showHourly(&$hourly, $con, $input){
+    $sql = sprintf("SELECT * from `entries` where `timestamp` BETWEEN '2019-01-29 23:00:00' and '2019-01-29 23:59:59'");
+        echo 'its woring';
+    if($result = mysqli_query($con,$sql)) {
+        while($row = mysqli_fetch_assoc($result)) {
+            array_push($hourly, $row);
+        }
+        } else {
+        http_response_code(404);
+        }
+    }
+
+
+
 ?>
+
+
+<?php showHourly($hourly, $con, $input) ?>
+
 
 <?php
         require '../themepart/resources.php';
@@ -96,6 +117,9 @@
                                 </div>
         <div class="col-auto">
           <button type="submit" name="SubmitButton" class="btn btn-dark mb-2">Submit</button>
+          
+          <button type="submit" name="HourlyButton" class="btn btn-dark mb-2">Filter by Hour</button>
+
         </div>
         </div>
     </form>
@@ -187,6 +211,23 @@ function updateOrder(data) {
     })
 }
 </script>
+
+
+
+<tbody class="row_position">
+            <?php foreach ($hourly as $log): ?>
+            <tr id="<?php echo $log['id'] ?>">
+                <td><?php echo $log['boarded']; ?></td>
+                <td><?php echo $log['stop']; ?></td>
+                <td><?php echo $log['timestamp']; ?></td>
+                <td><?php echo $log['date']; ?></td>
+                <td><?php echo $log['loop']; ?></td>
+                <td><?php echo $log['driver']; ?></td>
+                <td><?php echo $log['leftBehind']; ?></td>
+                <td style="display:none;"><?php echo $log['id']; ?></td>
+            </tr>
+            <?php endforeach ?>
+        </tbody>
 
 
 </HTML>
