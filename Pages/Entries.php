@@ -60,9 +60,10 @@
     }
 
 
-    function showHourly(&$hourly, $con, $input){
-    $sql = sprintf("SELECT * from `entries` where `timestamp` BETWEEN '2019-01-29 23:00:00' and '2019-01-29 23:59:59'");
-        echo 'its woring';
+    function showHourly(&$hourly, $con, $input, $loop){
+        $hour =  23;
+
+    $sql = sprintf("SELECT * from `entries` where `loop` = '$loop' and `timestamp` BETWEEN '2019-01-29 $hour:00:00' and '2019-01-29 $hour:59:59'");
     if($result = mysqli_query($con,$sql)) {
         while($row = mysqli_fetch_assoc($result)) {
             array_push($hourly, $row);
@@ -77,7 +78,7 @@
 ?>
 
 
-<?php showHourly($hourly, $con, $input) ?>
+<?php showHourly($hourly, $con, $input, 'Red Loop') ?>
 
 
 <?php
@@ -212,7 +213,7 @@ function updateOrder(data) {
 }
 </script>
 
-
+<br><br>
 
 <tbody class="row_position">
             <?php foreach ($hourly as $log): ?>
