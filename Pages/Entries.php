@@ -7,6 +7,7 @@
     $entries = array();
     $input = "";
     $loopDropdown = array();
+    $loop ="";
 
 
     $sql = sprintf("SELECT * FROM loops");
@@ -61,16 +62,19 @@
 
 
     function showHourly(&$hourly, $con, $input, $loop){
-        $hour =  23;
+        $hour =  0;
 
-    $sql = sprintf("SELECT * from `entries` where `loop` = '$loop' and `timestamp` BETWEEN '2019-01-29 $hour:00:00' and '2019-01-29 $hour:59:59'");
-    if($result = mysqli_query($con,$sql)) {
-        while($row = mysqli_fetch_assoc($result)) {
-            array_push($hourly, $row);
+        for($hour=0; $hour<24; $hour++){
+            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `loop` = '$loop' and `timestamp` BETWEEN '2019-01-29 $hour:00:00' and '2019-01-29 $hour:59:59'");
+            if($result = mysqli_query($con,$sql)) {
+            while($row = mysqli_fetch_assoc($result)) {
+                array_push($hourly, $row);
+            }
+            } else {
+            http_response_code(404);
+            }
         }
-        } else {
-        http_response_code(404);
-        }
+    
     }
 
 
@@ -161,7 +165,27 @@
             <?php endforeach ?>
         </tbody>
     </table>
-    </div>
+    
+    <table id="editable_table" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Boarded</th>
+                
+            </tr>
+        </thead>
+        <tbody class="row_position">
+            <?php foreach ($hourly as $log): ?>
+
+                <td><?php echo 0 + $log['boarded']; ?></td>
+
+
+                <td style="display:none;"><?php echo $log['id']; ?></td>
+            </tr>
+            <?php endforeach ?>
+        </tbody>
+    </table>
+
+
 </body>
 
 <script>
@@ -213,22 +237,6 @@ function updateOrder(data) {
 }
 </script>
 
-<br><br>
-
-<tbody class="row_position">
-            <?php foreach ($hourly as $log): ?>
-            <tr id="<?php echo $log['id'] ?>">
-                <td><?php echo $log['boarded']; ?></td>
-                <td><?php echo $log['stop']; ?></td>
-                <td><?php echo $log['timestamp']; ?></td>
-                <td><?php echo $log['date']; ?></td>
-                <td><?php echo $log['loop']; ?></td>
-                <td><?php echo $log['driver']; ?></td>
-                <td><?php echo $log['leftBehind']; ?></td>
-                <td style="display:none;"><?php echo $log['id']; ?></td>
-            </tr>
-            <?php endforeach ?>
-        </tbody>
 
 
 </HTML>
