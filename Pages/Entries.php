@@ -169,14 +169,20 @@
     <table id="editable_table" class="table table-bordered table-striped">
         <thead>
             <tr>
+                <th>Time</th>
                 <th>Boarded</th>
                 
             </tr>
         </thead>
+
+        <?php $time = 1; ?>
+
         <tbody class="row_position">
             <?php foreach ($hourly as $log): ?>
 
+                <td><?php echo "$time:00 - $time:59"; ?></td>
                 <td><?php echo 0 + $log['boarded']; ?></td>
+                <?php $time = $time + 1; ?>
 
 
                 <td style="display:none;"><?php echo $log['id']; ?></td>
