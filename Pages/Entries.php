@@ -31,7 +31,7 @@
         //     }
 
         
-    // If post occurs
+    // If Submit is Clicked
     if(isset($_POST['SubmitButton'])){
         $input = $_POST['loop'];
         $dateInput = $_POST['dateInput'];
@@ -45,7 +45,7 @@
         // header('Location: Entries.php');
   
     }
-
+    //if Filter By Hour is clicked
     if(isset($_POST['HourlyButton'])){
         $input = $_POST['loop'];
         $dateInput = $_POST['dateInput'];
@@ -97,8 +97,6 @@
 ?>
 
 
-<!--  -->
-
 
 <?php
         require '../themepart/resources.php';
@@ -138,8 +136,7 @@
         <div class="col-auto">
           <button type="submit" name="SubmitButton" class="btn btn-dark mb-2">Submit</button>
           
-          <button type="submit" name="HourlyButton" class="btn btn-dark mb-2">Filter by Hour</button>
-
+          
         </div>
         </div>
     </form>
@@ -181,6 +178,8 @@
         </tbody>
     </table>
     
+
+    <!-- Creates table for hourly -->
     <table id="editable_table" class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -189,11 +188,38 @@
                 
             </tr>
         </thead>
+        <!-- ends table for hourly -->
 
+    <!-- Controls the selections for the hourly filter -->
+        <div class="d-flex justify-content-center">
+    <form action="" method="post">
+      <div class="form-row align-items-center">
+         <div class="col-auto">
+             <input class="form-control mb-2" input="text" name="dateInput" id="datepicker" width="276" />
+            </div>
+         <div class="col-auto">
+                                    <select class="form-control mb-2" name="loop" id="loop">
+                                        <option selected="selected">Select a Loop</option>
+                                        <?php
+                            foreach($loopDropdown as $name) { ?>
+                                        <option name="loop" value="<?= $name['loops'] ?>"><?= $name['loops'] ?>
+                                        </option>
+                                        <?php
+                            } ?>
+                                    </select>
+                                </div>
+        <div class="col-auto">
+          
+          <button type="submit" name="HourlyButton" class="btn btn-dark mb-2">Filter By Hour</button>
+
+        </div>
+        </div>
+    </form>
+    </div>
+    <!-- ends hourly selections control -->
+
+    <!-- This adds the sql info the hourly display -->
         <?php $time = 0; ?>
-
-
-<!-- This controls the hourly display -->
         <tbody class="row_position">
             <?php foreach ($hourly as $log): ?>
 
@@ -207,7 +233,7 @@
             <?php endforeach ?>
         </tbody>
     </table>
-
+    <!-- ends sql info -->
 
 </body>
 
