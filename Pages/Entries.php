@@ -39,6 +39,7 @@
 
         $newDate = date("Y-m-d", strtotime($dateInput));
         makeList($entries, $con, $newDate, $input);
+        showHourly($hourly, $con, $input, $input);
 
         }
         // header('Location: Entries.php');
@@ -82,7 +83,7 @@
 ?>
 
 
-<?php showHourly($hourly, $con, $input, 'Red Loop') ?>
+<!--  -->
 
 
 <?php
@@ -175,8 +176,10 @@
             </tr>
         </thead>
 
-        <?php $time = 1; ?>
+        <?php $time = 0; ?>
 
+
+<!-- This controls the hourly display -->
         <tbody class="row_position">
             <?php foreach ($hourly as $log): ?>
 
