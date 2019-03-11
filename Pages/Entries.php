@@ -39,6 +39,20 @@
 
         $newDate = date("Y-m-d", strtotime($dateInput));
         makeList($entries, $con, $newDate, $input);
+        
+
+        }
+        // header('Location: Entries.php');
+  
+    }
+
+    if(isset($_POST['HourlyButton'])){
+        $input = $_POST['loop'];
+        $dateInput = $_POST['dateInput'];
+        if($input != '' && $dateInput != '') {
+
+        $newDate = date("Y-m-d", strtotime($dateInput));
+        
         showHourly($hourly, $con, $input, $input);
 
         }
