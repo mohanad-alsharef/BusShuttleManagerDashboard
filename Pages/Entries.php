@@ -228,13 +228,21 @@
 
 
     <!-- This adds the sql info the hourly display -->
-        <?php $time = 0; ?>
+        <?php $time = 12; ?>
         <tbody class="row_position">
             <?php foreach ($hourly as $log): ?>
 
                 <td><?php echo "$time:00 - $time:59"; ?></td>
                 <td><?php echo 0 + $log['boarded']; ?></td>
-                <?php $time = $time + 1; ?>
+                <?php 
+                    if($time == 12){
+                        $time = 1;
+                    }else{
+                        $time = $time + 1;
+                    }
+                
+                     
+                    ?>
 
 
                 <td style="display:none;"><?php echo $log['id']; ?></td>
