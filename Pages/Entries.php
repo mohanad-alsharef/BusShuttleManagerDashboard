@@ -48,12 +48,12 @@
     //if Filter By Hour is clicked
     if(isset($_POST['HourlyButton'])){
         $input = $_POST['loop'];
-        $dateInput = $_POST['dateInput'];
-        if($input != '' && $dateInput != '') {
+        $dateInputHourly = $_POST['dateInputHourly'];
+        if($input != '' && $dateInputHourly != '') {
 
-        $newDate = date("Y-m-d", strtotime($dateInput));
+        $newDate = date("Y-m-d", strtotime($dateInputHourly));
         
-        showHourly($hourly, $con, $input, $input);
+        showHourly($hourly, $con, $newDate, $input);
 
         }
         // header('Location: Entries.php');
@@ -76,11 +76,11 @@
     }
 
 
-    function showHourly(&$hourly, $con, $input, $loop){
+    function showHourly(&$hourly, $con, $date, $loop){
         $hour =  0;
 
         for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `loop` = '$loop' and `timestamp` BETWEEN '2019-01-29 $hour:00:00' and '2019-01-29 $hour:59:59'");
+            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
@@ -143,6 +143,13 @@
     </div>
 
 
+
+
+
+    
+
+
+
     <script>
         $('#datepicker').datepicker();
     </script>
@@ -179,25 +186,14 @@
     </table>
     
 
-    <!-- Creates table for hourly -->
-    <table id="editable_table" class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Time</th>
-                <th>Boarded</th>
-                
-            </tr>
-        </thead>
-        <!-- ends table for hourly -->
-
-    <!-- Controls the selections for the hourly filter -->
-        <div class="d-flex justify-content-center">
-    <form action="" method="post">
-      <div class="form-row align-items-center">
-         <div class="col-auto">
-             <input class="form-control mb-2" input="text" name="dateInput" id="datepicker" width="276" />
-            </div>
-         <div class="col-auto">
+<!-- Controls the selections for the hourly filter -->
+<div class="d-flex justify-content-center">
+        <form action="" method="post">
+         <div class="form-row align-items-center">
+          <div class="col-auto">
+                 <input class="form-control mb-2" input="text" name="dateInputHourly" id="datepickerHourly" width="276" />
+               </div>
+             <div class="col-auto">
                                     <select class="form-control mb-2" name="loop" id="loop">
                                         <option selected="selected">Select a Loop</option>
                                         <?php
@@ -218,6 +214,19 @@
     </div>
     <!-- ends hourly selections control -->
 
+
+    <!-- Creates table for hourly -->
+    <table id="editable_table" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Boarded</th>
+                
+            </tr>
+        </thead>
+        <!-- ends table for hourly -->
+
+
     <!-- This adds the sql info the hourly display -->
         <?php $time = 0; ?>
         <tbody class="row_position">
@@ -234,6 +243,14 @@
         </tbody>
     </table>
     <!-- ends sql info -->
+
+    <script>
+
+        $('#datepickerHourly').datepicker();
+
+    </script>
+
+
 
 </body>
 
