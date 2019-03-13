@@ -44,6 +44,12 @@
                             <a href="../Pages/Buses.php">Buses</a>
                         </li>
                     </ul>
+                    <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">View Reports</a>
+                        <ul class="collapse list-unstyled" id="reportSubmenu">
+                            <li>
+                                <a href="../Pages/EntryReports.php">Entry Reports</a>
+                            </li>
+                        </ul>
                 </li>
                 <!-- <li>
                     <a href="#">About</a>
