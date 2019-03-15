@@ -5,16 +5,6 @@ $userNames = array();
 $firstName = "";
 $lastName = "";
 
-if(isset($_POST['SubmitButton'])){
-  $firstName = $_POST['firstName'];
-  $lastName = $_POST['lastName'];
-  $id = $_POST['id'];
-  if($firstName != '' || $lastName != '') {
-    postLoop($con, $firstName, $lastName, $id);
-  }
-  header('Location: Users.php');
-}
-
 function makeList(&$userNames, $con) {
   $sql = sprintf("SELECT * FROM users");
 
@@ -26,89 +16,132 @@ function makeList(&$userNames, $con) {
     http_response_code(404);
   }
 }
-
-function postLoop($con, $firstName, $lastName, $id){
-  $sql = sprintf("INSERT INTO `users`(`firstname`, `lastname`) VALUES ( '$firstName', '$lastName' )");
-  if($result = mysqli_query($con,$sql))
-  {
-    // $text = 'Purple Loop';
-    // $text = strip_tags($text);
-    // $text = trim($text);
-    // $text = htmlspecialchars($text);
-  } else {
-    echo "anything";
-    http_response_code(404);
-  }
-}
 ?>
 
 <html>
 <head>
-  <?php
+    <?php
   require '../themepart/resources.php';
   require '../themepart/sidebar.php';
   require '../themepart/pageContentHolder.php';
   ?>
-
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <?php
     makeList($userNames, $con);
     ?>
-<div class="d-flex justify-content-center"><p><h3>Create a New User</h3></p></div>
+    <div id="response"></div>
+    <h2><button class="btn btn-danger" style="color: white; background-color: #BA0C2F; border-color: #BA0C2F;"
+            id="hideshow" value="New Driver">New Driver</button></h2>
+    <form id='form' style="display: none;">
+        <div class="form-group">
+            <label for="firstname">Firstname</label>
+            <input type="text" class="form-control" name="firstname" id="firstname" required />
+        </div>
 
-<br>
-<div class="d-flex justify-content-center">
-<form action="" method="post">
-  <div class="form-row align-items-center">
-    <div class="col-auto">
-      <label class="sr-only" for="inlineFormInput">First Name</label>
-      <input type="text" class="form-control mb-2" name='firstName' id="inlineFormInput" placeholder="First Name">
-    </div>
-    <div class="col-auto">
-      <label class="sr-only" for="inlineFormInputGroup">Last Name</label>
-      <div class="input-group mb-2">
-        <input type="text" class="form-control" name='lastName' id="inlineFormInputGroup" placeholder="Last Name">
-      </div>
-    </div>
-    <div class="col-auto">
-      <button type="submit" name="SubmitButton" class="btn btn-dark mb-2">Submit</button>
-    </div>
-  </div>
-</form>
-</div>
+        <div class="form-group">
+            <label for="lastname">Lastname</label>
+            <input type="text" class="form-control" name="lastname" id="lastname" required />
+        </div>
 
+        <div class="form-group">
+            <label for="email">Username</label>
+            <input type="text" class="form-control" name="email" id="email" required />
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="text" class="form-control" name="password" id="password" required />
+        </div>
+
+        <button type='submit' id="submit" class='btn btn-danger btn-block'
+            style="color: white; background-color: #BA0C2F; border-color: #BA0C2F;">Create Driver</button>
+    </form>
+    <h2>Existing Drivers</h2>
     <table id="editable_table" class="table table-bordered table-striped">
-     <thead>
-      <tr>
-       <th>First Name</th>
-       <th>Last Name</th>
-      </tr>
-     </thead>
-     <tbody>
-     <?php foreach ($userNames as $log): ?>
-          <tr>
-          	<td style="display:none;"><?php echo $log['id']; ?></td>
-            <td><?php echo $log['firstname']; ?></td>
-            <td><?php echo $log['lastname']; ?></td>
-          </tr>
-        <?php endforeach; ?>
-     </tbody>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($userNames as $log): ?>
+            <tr>
+                <td style="display:none;"><?php echo $log['id']; ?></td>
+                <td><?php echo $log['firstname']; ?></td>
+                <td><?php echo $log['lastname']; ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
     </table>
-  </div>
+    </div>
 </body>
 
-<script>  
-$(document).ready(function(){  
-  $('#editable_table').Tabledit({
-    url: '../Actions/actionUsers.php',
-    columns: {
-        identifier: [0, 'id'],
-        editable: [[1,'firstname'], [2,'lastname'] ]
-    }
+<script>
+$(document).ready(function() {
+    $('#hideshow').on('click', function(event) {
+        $('#form').toggle('show');
+    });
+
+    $('#editable_table').Tabledit({
+        url: '../Actions/actionUsers.php',
+        columns: {
+            identifier: [0, 'id'],
+            editable: [
+                [1, 'firstname'],
+                [2, 'lastname']
+            ]
+        }
+    });
+
 });
- 
-});  
- </script>
+</script>
+
+<script>
+$(document).on('submit', '#form', function() {
+
+    var form = $(this);
+    var form_data = JSON.stringify(form.serializeObject());
+
+    $.ajax({
+        url: "https://www.mildvariety.club/api/create_user.php",
+        type: "POST",
+        contentType: 'application/json',
+        data: form_data,
+        success: function(result) {
+            $('#response').html(
+                "<div class='alert alert-success'>Success! Driver has been created.</div>");
+            form.find('input').val('').serialize();
+        },
+        error: function(xhr, resp, text) {
+            $('#response').html(
+                "<div class='alert alert-danger'>Unable to create driver. Please try again or contact an administrator.</div>"
+                );
+        }
+    });
+    return false;
+});
+
+$.fn.serializeObject = function() {
+
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+</script>
+
 </html>
 <?php require '../themepart/footer.php'; ?>
