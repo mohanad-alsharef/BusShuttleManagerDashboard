@@ -9,6 +9,7 @@
     $loopDropdown = array();
     $loop ="";
     $loopArray = array();
+    $allBoarded = array();
 
 
     $sql = sprintf("SELECT * FROM loops");
@@ -41,6 +42,7 @@
 
         $newDate = date("Y-m-d", strtotime($dateInputHourly));
         
+        populateLoops($loopArray, $con, $newDate);
         showHourly($hourly, $con, $newDate, $input);
 
         }
@@ -79,9 +81,9 @@
         }
     
     }
-//Working on this-----------------------------------
-    function populateLoops(&$loopArray, $con){
-        $sql = "SELECT distinct `loop` FROM `entries`";
+
+    function populateLoops(&$loopArray, $con, $date){
+        $sql = "SELECT distinct `loop` FROM `entries` where DATE(`timestamp`) = '$date'";
         
         if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
@@ -93,7 +95,6 @@
         
     }
 
-    //--------------------------------------------------
 
 ?>
 
@@ -159,10 +160,9 @@
     </div>
     <!-- ends hourly selections control -->
 
-    <?php populateLoops($loopArray, $con); ?>
+    
 
     <!-- Creates table for hourly -->
-    <?php $loop = 'Red Loop'; ?>
     <table id="editable_table" class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -182,16 +182,18 @@
     <!-- This adds the sql info the hourly display -->
         <?php $time = 12; ?>
         <tbody class="row_position">
-            <?php foreach ($hourly as $log): ?>
+            <?php                
+                    foreach ($hourly as $log): ?>
 
-                <td><?php echo "$time:00 - $time:59"; ?></td>
-                <td><?php echo 0 + $log['boarded']; ?></td>
-                <?php 
-                    if($time == 12){
-                        $time = 1;
-                    }else{
-                        $time = $time + 1;
-                    }
+                    <td><?php echo "$time:00 - $time:59"; ?></td>
+                    <td><?php echo 0 + $log['boarded']; ?></td>
+                    <td> here </td>
+                    <?php 
+                        if($time == 12){
+                            $time = 1;
+                        }else{
+                            $time = $time + 1;
+                        }
                 
                      
                     ?>
