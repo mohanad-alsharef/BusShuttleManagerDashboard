@@ -22,28 +22,18 @@
         http_response_code(404);
         }
 
-        // $sql = sprintf("SELECT * FROM Entries LIMIT 100");
-        // // Populating the page
-        // if($result = mysqli_query($con,$sql)) {
-        //     while($row = mysqli_fetch_assoc($result)) {
-        //         array_push($entries, $row);
-        //     }
-        //     } else {
-        //     http_response_code(404);
-        //     }
+
 
         
 
     //if Filter By Hour is clicked
     if(isset($_POST['HourlyButton'])){
-        // $input = $_POST['loop'];
         $dateInputHourly = $_POST['dateInputHourly'];
         if($dateInputHourly != '') {
 
         $newDate = date("Y-m-d", strtotime($dateInputHourly));
         
         populateLoops($loopArray, $con, $newDate);
-        // showHourly($hourly, $con, $newDate, $input);
 
         populateTableArray($allBoarded, $con, $newDate, $loopArray);
 
@@ -55,17 +45,6 @@
 
 
     
-    // function makeList(&$entries, $con, $input, $loop) {
-    //     $sql = sprintf("SELECT * FROM `Entries` WHERE `date`='$input' AND `loop`= '$loop'");
-    
-    //     if($result = mysqli_query($con,$sql)) {
-    //     while($row = mysqli_fetch_assoc($result)) {
-    //         array_push($entries, $row);
-    //     }
-    //     } else {
-    //     http_response_code(404);
-    //     }
-    // }
 
 
     function showHourly(&$hourly, $con, $date, $loop){
@@ -129,13 +108,6 @@
             $allBoarded[$counter] = $hourly;
             $counter = $counter + 1;
 
-
- 
-
-
-            
-
-
         }
         $counter = 0;
 
@@ -185,13 +157,10 @@
           <div class="col-auto">
                  <input class="form-control mb-2" input="text" name="dateInputHourly" id="datepickerHourly" width="276" />
                </div>
-             <!-- <div class="col-auto">
-                                    <select class="form-control mb-2" name="loop" id="loop">
-                                        <option selected="selected">Select a Loop</option>
+
                                         <?php
                             foreach($loopDropdown as $name) { ?>
-                                        <option name="loop" value="<?= $name['loops'] ?>"><?= $name['loops'] ?>
-                                        </option>
+
                                         <?php
                             } ?>
                                     </select>
@@ -225,8 +194,6 @@
                             $time = $time + 1;
                         }
                     
-                
-                    //  working here --------------
                     ?>
                 <?php }  ?>          
                 
@@ -264,8 +231,6 @@
                         //  working here --------------
                         ?>
 
-
-                    <!-- <td style="display:none;"><?php //echo $log['id']; ?></td> -->
                 </tr>
                         <?php 
                  
