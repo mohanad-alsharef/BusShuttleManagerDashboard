@@ -158,13 +158,6 @@
                  <input class="form-control mb-2" input="text" name="dateInputHourly" id="datepickerHourly" width="276" />
                </div>
 
-                                        <?php
-                            foreach($loopDropdown as $name) { ?>
-
-                                        <?php
-                            } ?>
-                                    </select>
-                                </div> -->
         <div class="col-auto">
           
           <button type="submit" name="HourlyButton" class="btn btn-dark mb-2">Filter By Hour</button>
@@ -194,6 +187,8 @@
                             $time = $time + 1;
                         }
                     
+                
+                    //  working here --------------
                     ?>
                 <?php }  ?>          
                 
@@ -231,6 +226,8 @@
                         //  working here --------------
                         ?>
 
+
+                    <!-- <td style="display:none;"><?php //echo $log['id']; ?></td> -->
                 </tr>
                         <?php 
                  
