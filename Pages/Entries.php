@@ -2,9 +2,11 @@
     session_start();
     require '../Database/connect.php';
 
+
     $entries = array();
     $input = "";
     $loopDropdown = array();
+    $loop ="";
 
 
     $sql = sprintf("SELECT * FROM loops");
@@ -28,7 +30,7 @@
         //     }
 
         
-    // If post occurs
+    // If Submit is Clicked
     if(isset($_POST['SubmitButton'])){
         $input = $_POST['loop'];
         $dateInput = $_POST['dateInput'];
@@ -36,13 +38,13 @@
 
         $newDate = date("Y-m-d", strtotime($dateInput));
         makeList($entries, $con, $newDate, $input);
+        
 
         }
         // header('Location: Entries.php');
   
     }
-
-
+    
 
     
     function makeList(&$entries, $con, $input, $loop) {
@@ -57,7 +59,11 @@
         }
     }
 
+
+
 ?>
+
+
 
 <?php
         require '../themepart/resources.php';
@@ -96,10 +102,19 @@
                                 </div>
         <div class="col-auto">
           <button type="submit" name="SubmitButton" class="btn btn-dark mb-2">Submit</button>
+          
+          
         </div>
         </div>
     </form>
     </div>
+
+
+
+
+
+    
+
 
 
     <script>
@@ -136,7 +151,23 @@
             <?php endforeach ?>
         </tbody>
     </table>
-    </div>
+    
+
+
+
+
+    
+
+
+    
+    <script>
+
+        $('#datepickerHourly').datepicker();
+
+    </script>
+
+
+
 </body>
 
 <script>
@@ -187,6 +218,7 @@ function updateOrder(data) {
     })
 }
 </script>
+
 
 
 </HTML>
