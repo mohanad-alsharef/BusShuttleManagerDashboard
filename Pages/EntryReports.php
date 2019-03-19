@@ -177,12 +177,22 @@
                 <th>Loops</th>
                 <?php 
                 $time = 12; 
+                $AMOrPM = 'AM';
                 
                 for($i = 0; $i<24; $i=$i+1){ ?>
-                    <td><?php echo "$time:00 - $time:59"; ?></td>
+                    <td><?php echo "$time:00 - $time:59 $AMOrPM" ; ?></td>
                     <?php 
+                        if($time == 11){
+                            if($AMOrPM == 'AM'){
+                                $AMOrPM ='PM';
+                            }elseif($AMOrPM == 'PM'){
+                                $AMorPM = 'AM';
+                        }
+                    }
                         if($time == 12){
                             $time = 1;
+
+                            
                         }else{
                             $time = $time + 1;
                         }
