@@ -43,7 +43,9 @@
         $newDate = date("Y-m-d", strtotime($dateInputHourly));
         
         populateLoops($loopArray, $con, $newDate);
-        showHourly($hourly, $con, $newDate, $input);
+        // showHourly($hourly, $con, $newDate, $input);
+
+        populateTableArray($allBoarded, $con, $newDate, $loopArray);
 
         }
         // header('Location: Entries.php');
@@ -79,6 +81,25 @@
             http_response_code(404);
             }
         }
+        
+    }
+
+    function populateHourly( $con, $date, $loop){
+        $hour =  0;
+
+        $hourly = array();
+
+        for($hour=0; $hour<24; $hour++){
+            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            if($result = mysqli_query($con,$sql)) {
+            while($row = mysqli_fetch_assoc($result)) {
+                array_push($hourly, $row);
+            }
+            } else {
+            http_response_code(404);
+            }
+        }
+        return $hourly;
     
     }
 
@@ -93,6 +114,31 @@
             http_response_code(404);
             }
         
+    }
+
+    function populateTableArray(&$allBoarded, $con, $date, $loopArray){
+
+        $hourly = array();
+
+        $counter = 0;
+        foreach($loopArray as $instance){
+           
+            $allBoarded[$counter] = array();
+            $hourly = populateHourly( $con, $date, $instance['loop']);
+            
+            $allBoarded[$counter] = $hourly;
+            $counter = $counter + 1;
+
+
+ 
+
+
+            
+
+
+        }
+        $counter = 0;
+
     }
 
 
@@ -166,11 +212,22 @@
     <table id="editable_table" class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th>Time</th>
+                <th>Loops</th>
                 <?php 
+                $time = 12; 
                 
-                foreach($loopArray as $log){ ?>
-                    <th><?php echo $log['loop'] ?></th>
+                for($i = 0; $i<24; $i=$i+1){ ?>
+                    <td><?php echo "$time:00 - $time:59"; ?></td>
+                    <?php 
+                        if($time == 12){
+                            $time = 1;
+                        }else{
+                            $time = $time + 1;
+                        }
+                    
+                
+                    //  working here --------------
+                    ?>
                 <?php }  ?>          
                 
                 
@@ -183,25 +240,39 @@
         <?php $time = 12; ?>
         <tbody class="row_position">
             <?php                
-                    foreach ($hourly as $log): ?>
+               $counter = 0;
+               foreach($loopArray as $loop){ ?>
+                    <td> <?php echo $loop['loop']; ?>
+                    <?php    
+                    for($i=0;$i<24;$i=$i+1){ ?>
+                    
 
-                    <td><?php echo "$time:00 - $time:59"; ?></td>
-                    <td><?php echo 0 + $log['boarded']; ?></td>
-                    <td> here </td>
-                    <?php 
+                        <td> <?php echo 0 + $allBoarded[$counter][$i]['boarded'] ?> </td>
+                        
+                
+
+                        
+                            <?php 
+                        }
                         if($time == 12){
                             $time = 1;
                         }else{
                             $time = $time + 1;
                         }
+                        
+                        $counter = $counter+1;
+                        //  working here --------------
+                        ?>
+
+
+                    <!-- <td style="display:none;"><?php //echo $log['id']; ?></td> -->
+                </tr>
+                        <?php 
+                 
                 
-                     
-                    ?>
+             } 
 
-
-                <td style="display:none;"><?php echo $log['id']; ?></td>
-            </tr>
-            <?php endforeach ?>
+             ?>
         </tbody>
     </table>
     <!-- ends sql info -->
