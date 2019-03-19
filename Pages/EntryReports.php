@@ -36,9 +36,9 @@
 
     //if Filter By Hour is clicked
     if(isset($_POST['HourlyButton'])){
-        $input = $_POST['loop'];
+        // $input = $_POST['loop'];
         $dateInputHourly = $_POST['dateInputHourly'];
-        if($input != '' && $dateInputHourly != '') {
+        if($dateInputHourly != '') {
 
         $newDate = date("Y-m-d", strtotime($dateInputHourly));
         
@@ -185,7 +185,7 @@
           <div class="col-auto">
                  <input class="form-control mb-2" input="text" name="dateInputHourly" id="datepickerHourly" width="276" />
                </div>
-             <div class="col-auto">
+             <!-- <div class="col-auto">
                                     <select class="form-control mb-2" name="loop" id="loop">
                                         <option selected="selected">Select a Loop</option>
                                         <?php
@@ -195,7 +195,7 @@
                                         <?php
                             } ?>
                                     </select>
-                                </div>
+                                </div> -->
         <div class="col-auto">
           
           <button type="submit" name="HourlyButton" class="btn btn-dark mb-2">Filter By Hour</button>
