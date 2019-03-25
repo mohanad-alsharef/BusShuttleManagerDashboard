@@ -82,6 +82,11 @@
                     <a href="../Pages/Feedback.php" class="article">Have a suggestion?</a>
                 </li>
             </ul>
+
+            <div style= "margin:250px 50px 0px 50px;background-color: #4CAF50;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;">
+                <a href="Logout.php">Logout</a>
+            </div>
+
         </nav>
 
         

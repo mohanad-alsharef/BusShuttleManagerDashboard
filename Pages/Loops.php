@@ -1,5 +1,11 @@
 <?php
+session_start();
 require '../Database/connect.php';
+
+if ( isset( $_SESSION['user_id'] ) ) {
+} else {
+header("Location: Login.php");
+}
 
 $loopNames = array();
 $input = "";
