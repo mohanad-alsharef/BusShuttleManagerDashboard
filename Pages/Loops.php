@@ -13,7 +13,7 @@ if(isset($_POST['SubmitButton'])){
 }
 
 function makeList(&$loopNames, $con) {
-  $sql = sprintf("SELECT * FROM loops");
+  $sql = sprintf("SELECT * FROM loops ORDER BY loops ASC");
 
   if($result = mysqli_query($con,$sql)) {
     while($row = mysqli_fetch_assoc($result)) {

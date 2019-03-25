@@ -13,7 +13,7 @@ if(isset($_POST['SubmitButton'])){
 }
 
 function makeList(&$busNames, $con) {
-  $sql = sprintf("SELECT * FROM buses");
+  $sql = sprintf("SELECT * FROM buses ORDER BY busIdentifier ASC");
 
   if($result = mysqli_query($con,$sql)) {
     while($row = mysqli_fetch_assoc($result)) {

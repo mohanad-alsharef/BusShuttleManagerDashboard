@@ -9,7 +9,7 @@
     $loop ="";
 
 
-    $sql = sprintf("SELECT * FROM loops");
+    $sql = sprintf("SELECT * FROM loops ORDER BY loops ASC");
     // Populating the loops dropdown
     if($result = mysqli_query($con,$sql)) {
         while($row = mysqli_fetch_assoc($result)) {
@@ -48,7 +48,7 @@
 
     
     function makeList(&$entries, $con, $input, $loop) {
-        $sql = sprintf("SELECT * FROM `Entries` WHERE `date`='$input' AND `loop`= '$loop'");
+        $sql = sprintf("SELECT * FROM `Entries` WHERE `date`='$input' AND `loop`= '$loop' ORDER BY `timestamp` DESC");
     
         if($result = mysqli_query($con,$sql)) {
         while($row = mysqli_fetch_assoc($result)) {
@@ -191,18 +191,18 @@ $(document).ready(function() {
 
 });
 
-$(".row_position").sortable({
-    delay: 150,
-    stop: function() {
-        var selectedData = new Array();
-        $('.row_position>tr').each(function() {
-            var test = $(this).attr("id");
-            selectedData.push($.trim(test));
-        });
-        console.log(selectedData);
-        updateOrder(selectedData);
-    }
-});
+// $(".row_position").sortable({
+//     delay: 150,
+//     stop: function() {
+//         var selectedData = new Array();
+//         $('.row_position>tr').each(function() {
+//             var test = $(this).attr("id");
+//             selectedData.push($.trim(test));
+//         });
+//         console.log(selectedData);
+//         updateOrder(selectedData);
+//     }
+// });
 
 
 function updateOrder(data) {

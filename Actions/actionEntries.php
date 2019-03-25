@@ -5,6 +5,7 @@ require '../Database/connect.php';
 $input = filter_input_array(INPUT_POST);
 
 $id = mysqli_real_escape_string($con, $input["id"]);
+$boarded = mysqli_real_escape_string($con, $input["boarded"]);
 $stop = mysqli_real_escape_string($con, $input["stop"]);
 $time = mysqli_real_escape_string($con, $input["timestamp"]);
 $date = mysqli_real_escape_string($con, $input["date"]);
