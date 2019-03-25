@@ -51,7 +51,7 @@
         $hour =  0;
 
         for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `Entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
@@ -69,7 +69,7 @@
         $hourly = array();
 
         for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `Entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
@@ -83,7 +83,7 @@
     }
 
     function populateLoops(&$loopArray, $con, $date){
-        $sql = "SELECT distinct `loop` FROM `entries` where DATE(`timestamp`) = '$date'";
+        $sql = "SELECT distinct `loop` FROM `Entries` where DATE(`timestamp`) = '$date'";
         
         if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
