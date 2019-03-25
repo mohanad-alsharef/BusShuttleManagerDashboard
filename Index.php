@@ -1,4 +1,4 @@
 <?php 
-header("Location: ./Pages/Users.php"); /* Redirect browser */
+header("Location: ./Pages/Login.php"); /* Redirect browser */
 exit();
 ?>
