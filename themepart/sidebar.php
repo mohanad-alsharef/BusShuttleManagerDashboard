@@ -49,6 +49,9 @@
                             <li>
                                 <a href="../Pages/EntryReports.php">Entry Reports</a>
                             </li>
+			    <li>
+                                <a href="../Pages/StopReports.php">Stop Reports</a>
+                            </li>
                         </ul>
                 </li>
                 <!-- <li>
