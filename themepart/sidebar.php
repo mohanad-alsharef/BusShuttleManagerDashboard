@@ -79,10 +79,10 @@
 
             <ul class="list-unstyled CTAs">
                 <li>
-                    <a href="https://www.mildvariety.club" class="download">Visit Driver Interface</a>
+                    <a href="https://www.mildvariety.club" class="download">Driver App</a>
                 </li>
                 <li>
-                    <a href="../Pages/Feedback.php" class="article">Have a suggestion?</a>
+                    <a href="../Pages/Feedback.php" class="article">Find a Bug?</a>
                 </li>
             </ul>
         </nav>

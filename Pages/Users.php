@@ -6,7 +6,7 @@ $firstName = "";
 $lastName = "";
 
 function makeList(&$userNames, $con) {
-  $sql = sprintf("SELECT * FROM users");
+  $sql = sprintf("SELECT * FROM users ORDER BY lastname ASC");
 
   if($result = mysqli_query($con,$sql)) {
     while($row = mysqli_fetch_assoc($result)) {
@@ -107,7 +107,7 @@ $(document).on('submit', '#form', function() {
     var form_data = JSON.stringify(form.serializeObject());
 
     $.ajax({
-        url: "https://www.mildvariety.club/api/create_user.php",
+        url: "https://pbuslog01.aws.bsu.edu/api/create_user.php",
         type: "POST",
         contentType: 'application/json',
         data: form_data,
