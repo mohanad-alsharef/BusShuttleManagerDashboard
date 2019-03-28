@@ -47,11 +47,17 @@
                     <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">View Reports</a>
                         <ul class="collapse list-unstyled" id="reportSubmenu">
                             <li>
-                                <a href="../Pages/EntryReports.php">Entry Reports</a>
+                                <a href="../Pages/EntryReports.php">Loop Reports</a>
                             </li>
 			    <li>
                                 <a href="../Pages/StopReports.php">Stop Reports</a>
                             </li>
+			    <li>
+				<a href="../Pages/LeftBehindStopReport.php">Left Behind Stop Reports</a>
+			    </li>
+			    <li>
+				<a href="../Pages/LeftBehindEntryReports.php">Left Behind Loop Reports</a>
+			    </li>
                         </ul>
                 </li>
                 <!-- <li>
@@ -79,7 +85,7 @@
 
             <ul class="list-unstyled CTAs">
                 <li>
-                    <a href="https://www.mildvariety.club" class="download">Driver App</a>
+                    <a href="https://pbuslog01.aws.bsu.edu" class="download">Driver App</a>
                 </li>
                 <li>
                     <a href="../Pages/Feedback.php" class="article">Find a Bug?</a>
