@@ -13,7 +13,7 @@ if(isset($_POST['SubmitButton'])){
 }
 
 function makeList(&$loopNames, $con) {
-  $sql = sprintf("SELECT * FROM loops ORDER BY loops ASC");
+  $sql = sprintf("SELECT * FROM loops");
 
   if($result = mysqli_query($con,$sql)) {
     while($row = mysqli_fetch_assoc($result)) {
@@ -28,10 +28,7 @@ function postLoop($con, $input){
   $sql = sprintf("INSERT INTO `loops`(`loops`) VALUES ( '$input' )");
   if($result = mysqli_query($con,$sql))
   {
-    // $text = 'Purple Loop';
-    // $text = strip_tags($text);
-    // $text = trim($text);
-    // $text = htmlspecialchars($text);
+
   } else {
     echo "anything";
     http_response_code(404);
@@ -83,8 +80,8 @@ require '../themepart/pageContentHolder.php';
           <tr>
             <td><?php echo $log['loops']; ?></td>
             <td style="display:none;"><?php echo $log['id']; ?></td>
-            <!-- <td><form action='edit.php?name="<?php echo $log['loops']; ?>"' method="post">
-                  <input type="hidden" name="name" value="<?php echo $log['loops']; ?>">
+            <!-- <td><form action='edit.php?name="<?php// echo $log['loops']; ?>"' method="post">
+                  <input type="hidden" name="name" value="<?php// echo $log['loops']; ?>">
                   <input type="submit" name="editButton" value="edit">
                 </form>
             </td>
