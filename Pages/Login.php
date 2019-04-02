@@ -1,7 +1,8 @@
 <?php
+
 session_start();
  
-
+//Checks if user is signed in, otherwise takes them back to login page
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     header("location: Entries.php");
     exit;
@@ -13,7 +14,8 @@ $username = $password = "";
 $username_err = $password_err = "";
  
 if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
+
+    //Checks if text fields were left blank
     if(empty(trim($_POST["username"]))){
         $username_err = "Please enter username.";
     } else{
@@ -26,7 +28,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $password = trim($_POST["password"]);
     }
     
-
+    //Validate credentials
     if(empty($username_err) && empty($password_err)){
         $sql = "SELECT id, username, password FROM admins WHERE username = ?";
 
@@ -52,10 +54,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             
                             header("location: Entries.php");
                         } else{
+
+                            //Displays error if password is not valid
                             $password_err = "The password you entered was not valid.";
                         }
                     }
                 } else{
+                    //Displays error message if username can't be found
                     $username_err = "No account found with that username.";
                 }
             } else{
@@ -76,7 +81,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       
       
       <style>
-         /* Border around form */
+         /* Border style around form */
          form {
             border: 3px solid #f1f1f1;
          }
@@ -108,7 +113,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             opacity: 0.8;
          }
 
-         /* Add padding to containers */
+         /* Add padding style to containers */
          .container {
             padding: 16px;
             width: 50%;

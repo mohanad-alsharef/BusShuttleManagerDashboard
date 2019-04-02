@@ -7,6 +7,7 @@ $username_err = $password_err = $confirm_password_err = "";
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
+    //Check username
     if(empty(trim($_POST["username"]))){
         $username_err = "Please enter a username.";
     } else{
@@ -33,13 +34,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         mysqli_stmt_close($stmt);
     }
     
-
+    //Check password
     if(empty(trim($_POST["password"]))){
         $password_err = "Please enter a password.";     
     } else{
         $password = trim($_POST["password"]);
     }
 
+    //Check confirm password
     if(empty(trim($_POST["confirm_password"]))){
         $confirm_password_err = "Please confirm password.";     
     } else{
@@ -49,7 +51,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
     }
     
-
+    //Check for input errors
     if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
         $sql = "INSERT INTO admins (firstname, lastname, username, password) VALUES (?, ?, ?, ?)";
          
@@ -80,7 +82,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <style>
                 * {box-sizing: border-box}
 
-                /* Add padding to containers */
+                /* Add padding style to containers */
                 .container {
                   padding: 16px;
                 }
