@@ -49,6 +49,9 @@
                             <li>
                                 <a href="../Pages/EntryReports.php">Entry Reports</a>
                             </li>
+			    <li>
+                                <a href="../Pages/StopReports.php">Stop Reports</a>
+                            </li>
                         </ul>
                 </li>
                 <!-- <li>
@@ -76,13 +79,13 @@
 
             <ul class="list-unstyled CTAs">
                 <li>
-                    <a href="https://www.mildvariety.club" class="download">Visit Driver Interface</a>
+                    <a href="https://pbuslog01.aws.bsu.edu/" class="download">Driver App</a>
                 </li>
                 <li>
-                    <a href="../Pages/Feedback.php" class="article">Have a suggestion?</a>
+                    <a href="../Pages/Feedback.php" class="article">Find a Bug?</a>
                 </li>
             </ul>
-
+            
             <div style= "margin:250px 50px 0px 50px;background-color: #4CAF50;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;">
                 <a href="Logout.php">Logout</a>
             </div>
