@@ -12,20 +12,6 @@
     $allLeft = array();
 
 
-    // $sql = sprintf("SELECT * FROM loops");
-    // // Populating the loops dropdown
-    // if($result = mysqli_query($con,$sql)) {
-    //     while($row = mysqli_fetch_assoc($result)) {
-    //         array_push($loopDropdown, $row);
-    //     }
-    //     } else {
-    //     http_response_code(404);
-    //     }
-
-
-
-        
-
     //if Filter By Hour is clicked
     if(isset($_POST['HourlyButton'])){
         $dateInputHourly = $_POST['dateInputHourly'];
@@ -41,8 +27,6 @@
         // header('Location: Entries.php');
   
     }
-
-
 
     
 //--done----------------------------
