@@ -85,7 +85,8 @@
 
             <ul class="list-unstyled CTAs">
                 <li>
-                    <a href="https://pbuslog01.aws.bsu.edu" class="download">Driver App</a>
+                    <a href="https://pbuslog01.aws.bsu.edu/" class="download">Driver App</a>
+
                 </li>
                 <li>
                     <a href="../Pages/Feedback.php" class="article">Find a Bug?</a>
