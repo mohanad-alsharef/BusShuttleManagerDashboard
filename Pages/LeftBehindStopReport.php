@@ -50,7 +50,7 @@
     function showHourly(&$hourly, $con, $date, $stop){
         $hour =  0;
 
-        for($hour=0; $hour<24; $hour++){
+        for($hour=7; $hour<24; $hour++){
             $sql = sprintf("SELECT SUM(`leftBehind`) as `leftBehind` from `Entries` where `stop` = '$stop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
@@ -68,11 +68,11 @@
 //---done--------------------
 
     function populateHourly( $con, $date, $stop){
-        $hour =  0;
+        $hour =  7;
 
         $hourly = array();
 
-        for($hour=0; $hour<24; $hour++){
+        for($hour=7; $hour<24; $hour++){
             $sql = sprintf("SELECT SUM(`leftBehind`) as `leftBehind` from `Entries` where `stop` = '$stop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
@@ -193,7 +193,7 @@
                 $time = 7; 
                 $AMOrPM = 'AM';
                 
-                for($i = 7; $i<24; $i=$i+1){ ?>
+                for($i = 0; $i<17; $i=$i+1){ ?>
                     <td><?php echo "$time:00 - $time:59 $AMOrPM" ; ?></td>
                     <?php 
                         if($time == 11){
@@ -228,14 +228,9 @@
                foreach($stopArray as $stop){ ?>
                     <td> <?php echo $stop['stop']; ?>
                     <?php    
-                    for($i=7;$i<24;$i=$i+1){ ?>
-                    
-
+                    for($i=0;$i<17;$i=$i+1){ ?>                   
                         <td> <?php echo 0 + $allLeft[$counter][$i]['leftBehind'] ?> </td>
-                        
-                
-
-                        
+                               
                             <?php 
                         }
                         if($time == 12){
