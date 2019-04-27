@@ -10,7 +10,7 @@
     $stop ="";
     $stopArray = array();
     $allBoarded = array();
-
+    $entryDate = date("m-d-Y");
 
 
     //if Filter By Hour is clicked
@@ -19,7 +19,8 @@
         if($dateInputHourly != '') {
 
         $newDate = date("Y-m-d", strtotime($dateInputHourly));
-        
+        $entryDate = date("m-d-Y", strtotime($dateInputHourly));
+
         populateStops($stopArray, $con, $newDate);
 
         populateTableArray($allBoarded, $con, $newDate, $stopArray);
@@ -174,6 +175,7 @@
     <!-- Creates table for hourly -->
     <table id="editable_table" class="table table-bordered table-striped">
         <thead>
+        <tr><th colspan="18"><?php echo $entryDate?></th></tr>
             <tr>
                 <th>Stops</th>
                 <?php 

@@ -9,6 +9,7 @@
     $bus ="";
     $busArray = array();
     $allBoarded = array();
+    $entryDate = date("m-d-Y");
 
 
     //if Filter By Hour is clicked
@@ -17,6 +18,7 @@
         if($dateInputHourly != '') {
 
         $newDate = date("Y-m-d", strtotime($dateInputHourly));
+        $entryDate = date("m-d-Y", strtotime($dateInputHourly));
         
         populateBuses($busArray, $con, $newDate);
 
@@ -154,6 +156,7 @@
     <!-- Creates table for hourly -->
     <table id="editable_table" class="table table-bordered table-striped">
         <thead>
+        <tr><th colspan="18"><?php echo $entryDate?></th></tr>
             <tr>
                 <th>Buses</th>
                 <?php 

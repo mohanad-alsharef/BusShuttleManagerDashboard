@@ -10,7 +10,7 @@
     $loop ="";
     $loopArray = array();
     $allLeft = array();
-
+    $entryDate = date("m-d-Y");
 
     $sql = sprintf("SELECT * FROM loops");
     // Populating the loops dropdown
@@ -32,7 +32,8 @@
         if($dateInputHourly != '') {
 
         $newDate = date("Y-m-d", strtotime($dateInputHourly));
-        
+        $entryDate = date("m-d-Y", strtotime($dateInputHourly));
+
         populateLoops($loopArray, $con, $newDate);
 
         populateTableArray($allLeft, $con, $newDate, $loopArray);
@@ -176,6 +177,7 @@
     <!-- Creates table for hourly -->
     <table id="editable_table" class="table table-bordered table-striped">
         <thead>
+        <tr><th colspan="18"><?php echo $entryDate?></th></tr>
             <tr>
                 <th>Loops</th>
                 <?php 
