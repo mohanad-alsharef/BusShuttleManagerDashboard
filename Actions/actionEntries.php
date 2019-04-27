@@ -6,10 +6,10 @@ $input = filter_input_array(INPUT_POST);
 
 $id = mysqli_real_escape_string($con, $input["id"]);
 $boarded = mysqli_real_escape_string($con, $input["boarded"]);
-$stop = mysqli_real_escape_string($con, $input["stop"]);
-$time = mysqli_real_escape_string($con, $input["timestamp"]);
-$date = mysqli_real_escape_string($con, $input["date"]);
-$loop = mysqli_real_escape_string($con, $input["loop"]);
+// $stop = mysqli_real_escape_string($con, $input["stop"]);
+// $time = mysqli_real_escape_string($con, $input["timestamp"]);
+// $date = mysqli_real_escape_string($con, $input["date"]);
+// $loop = mysqli_real_escape_string($con, $input["loop"]);
 $driver = mysqli_real_escape_string($con, $input["driver"]);
 $leftbehind = mysqli_real_escape_string($con, $input["leftBehind"]);
 
@@ -24,12 +24,8 @@ if($input["action"] === 'edit')
  $query = "
  UPDATE `Entries` 
  SET `boarded` = '".$boarded."',
- `stop` = '".$stop."',
- `timestamp` = '".$time."',
- `date` = '".$date."',
- `loop` = '".$loop."',
  `driver` = '".$driver."',
- `leftBehind` = '".$leftBehind."'
+ `leftBehind` = '".$leftBehind."',
 
  WHERE `id` = '".$id."'
  ";

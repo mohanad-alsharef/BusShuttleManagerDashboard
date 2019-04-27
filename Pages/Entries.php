@@ -133,6 +133,7 @@
                 <th>Date</th>
                 <th>Loop</th>
                 <th>Driver</th>
+                <th>Bus #</th>
                 <th>Left Behind</th>
             </tr>
         </thead>
@@ -145,6 +146,7 @@
                 <td><?php echo $log['date']; ?></td>
                 <td><?php echo $log['loop']; ?></td>
                 <td><?php echo $log['driver']; ?></td>
+                <td><?php echo $log['busIdentifier']; ?></td>
                 <td><?php echo $log['leftBehind']; ?></td>
                 <td style="display:none;"><?php echo $log['id']; ?></td>
             </tr>
@@ -175,16 +177,13 @@ $(document).ready(function() {
     $('#editable_table').Tabledit({
         url: '../Actions/actionEntries.php',
         hideIdentifier: true,
+        editButton: false,
         columns: {
-            identifier: [7, 'id'],
+            identifier: [8, 'id'],
             editable: [
                 [0, 'boarded'],
-                [1, 'stop'],
-                [2, 'timestamp'],
-                [3, 'date'],
-                [4, 'loop'],
                 [5, 'driver'],
-                [6, 'leftBehind']
+                [7, 'leftBehind']
             ]
         }
     });
