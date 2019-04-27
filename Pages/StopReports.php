@@ -190,10 +190,10 @@
             <tr>
                 <th>Stops</th>
                 <?php 
-                $time = 12; 
+                $time = 7; 
                 $AMOrPM = 'AM';
                 
-                for($i = 0; $i<24; $i=$i+1){ ?>
+                for($i = 7; $i<24; $i=$i+1){ ?>
                     <td><?php echo "$time:00 - $time:59 $AMOrPM" ; ?></td>
                     <?php 
                         if($time == 11){
@@ -228,7 +228,7 @@
                foreach($stopArray as $stop){ ?>
                     <td> <?php echo $stop['stop']; ?>
                     <?php    
-                    for($i=0;$i<24;$i=$i+1){ ?>
+                    for($i=7;$i<24;$i=$i+1){ ?>
                     
 
                         <td> <?php echo 0 + $allBoarded[$counter][$i]['boarded'] ?> </td>
