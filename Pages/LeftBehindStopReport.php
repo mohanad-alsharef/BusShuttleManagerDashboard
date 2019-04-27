@@ -228,14 +228,9 @@
                foreach($stopArray as $stop){ ?>
                     <td> <?php echo $stop['stop']; ?>
                     <?php    
-                    for($i=0;$i<17;$i=$i+1){ ?>
-                    
-
+                    for($i=0;$i<17;$i=$i+1){ ?>                   
                         <td> <?php echo 0 + $allLeft[$counter][$i]['leftBehind'] ?> </td>
-                        
-                
-
-                        
+                               
                             <?php 
                         }
                         if($time == 12){
