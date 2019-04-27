@@ -6,25 +6,12 @@
      $hourly = array();
     $entries = array();
     $input = "";
-    // $loopDropdown = array();
+
     $stop ="";
     $stopArray = array();
     $allBoarded = array();
 
 
-    // $sql = sprintf("SELECT * FROM loops");
-    // // Populating the loops dropdown
-    // if($result = mysqli_query($con,$sql)) {
-    //     while($row = mysqli_fetch_assoc($result)) {
-    //         array_push($loopDropdown, $row);
-    //     }
-    //     } else {
-    //     http_response_code(404);
-    //     }
-
-
-
-        
 
     //if Filter By Hour is clicked
     if(isset($_POST['HourlyButton'])){
@@ -190,10 +177,10 @@
             <tr>
                 <th>Stops</th>
                 <?php 
-                $time = 12; 
+                $time = 7; 
                 $AMOrPM = 'AM';
                 
-                for($i = 0; $i<24; $i=$i+1){ ?>
+                for($i = 7; $i<24; $i=$i+1){ ?>
                     <td><?php echo "$time:00 - $time:59 $AMOrPM" ; ?></td>
                     <?php 
                         if($time == 11){
@@ -228,7 +215,7 @@
                foreach($stopArray as $stop){ ?>
                     <td> <?php echo $stop['stop']; ?>
                     <?php    
-                    for($i=0;$i<24;$i=$i+1){ ?>
+                    for($i=7;$i<24;$i=$i+1){ ?>
                     
 
                         <td> <?php echo 0 + $allBoarded[$counter][$i]['boarded'] ?> </td>

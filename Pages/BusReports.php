@@ -6,21 +6,11 @@
     $hourly = array();
     $entries = array();
     $input = "";
-    $loopDropdown = array();
-    $loop ="";
-    $loopArray = array();
+    $bus ="";
+    $busArray = array();
     $allBoarded = array();
 
 
-    $sql = sprintf("SELECT * FROM loops");
-    // Populating the loops dropdown
-    if($result = mysqli_query($con,$sql)) {
-        while($row = mysqli_fetch_assoc($result)) {
-            array_push($loopDropdown, $row);
-        }
-        } else {
-        http_response_code(404);
-        }
 
 
 
@@ -33,9 +23,9 @@
 
         $newDate = date("Y-m-d", strtotime($dateInputHourly));
         
-        populateLoops($loopArray, $con, $newDate);
+        populateBuses($busArray, $con, $newDate);
 
-        populateTableArray($allBoarded, $con, $newDate, $loopArray);
+        populateTableArray($allBoarded, $con, $newDate, $busArray);
 
         }
         // header('Location: Entries.php');
@@ -47,11 +37,11 @@
     
 
 
-    function showHourly(&$hourly, $con, $date, $loop){
+    function showHourly(&$hourly, $con, $date, $bus){
         $hour =  0;
 
         for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `Entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `Entries` where `busIdentifier` = '$bus' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
@@ -63,13 +53,13 @@
         
     }
 
-    function populateHourly( $con, $date, $loop){
+    function populateHourly( $con, $date, $bus){
         $hour =  0;
 
         $hourly = array();
 
         for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `Entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `Entries` where `busIdentifier` = '$bus' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
@@ -82,12 +72,12 @@
     
     }
 
-    function populateLoops(&$loopArray, $con, $date){
-        $sql = "SELECT distinct `loop` FROM `Entries` where DATE(`timestamp`) = '$date'";
+    function populateBuses(&$busArray, $con, $date){
+        $sql = "SELECT distinct `busIdentifier` FROM `Entries` where DATE(`timestamp`) = '$date'";
         
         if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
-                array_push($loopArray, $row);
+                array_push($busArray, $row);
             }
             } else {
             http_response_code(404);
@@ -95,15 +85,15 @@
         
     }
 
-    function populateTableArray(&$allBoarded, $con, $date, $loopArray){
+    function populateTableArray(&$allBoarded, $con, $date, $busArray){
 
         $hourly = array();
 
         $counter = 0;
-        foreach($loopArray as $instance){
+        foreach($busArray as $instance){
            
             $allBoarded[$counter] = array();
-            $hourly = populateHourly( $con, $date, $instance['loop']);
+            $hourly = populateHourly( $con, $date, $instance['busIdentifier']);
             
             $allBoarded[$counter] = $hourly;
             $counter = $counter + 1;
@@ -175,7 +165,7 @@
     <table id="editable_table" class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th>Loops</th>
+                <th>Buses</th>
                 <?php 
                 $time = 7; 
                 $AMOrPM = 'AM';
@@ -214,8 +204,8 @@
         <tbody id="tbodyid" class="row_position">
             <?php                
                $counter = 0;
-               foreach($loopArray as $loop){ ?>
-                    <td> <?php echo $loop['loop']; ?>
+               foreach($busArray as $bus){ ?>
+                    <td> <?php echo $bus['busIdentifier']; ?>
                     <?php    
                     for($i=7;$i<24;$i=$i+1){ ?>
                     

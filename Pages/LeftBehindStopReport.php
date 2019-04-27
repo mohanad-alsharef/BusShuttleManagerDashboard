@@ -3,24 +3,24 @@
     require '../Database/connect.php';
 
 
-    $hourly = array();
+     $hourly = array();
     $entries = array();
     $input = "";
-    $loopDropdown = array();
-    $loop ="";
-    $loopArray = array();
-    $allBoarded = array();
+    // $loopDropdown = array();
+    $stop ="";
+    $stopArray = array();
+    $allLeft = array();
 
 
-    $sql = sprintf("SELECT * FROM loops");
-    // Populating the loops dropdown
-    if($result = mysqli_query($con,$sql)) {
-        while($row = mysqli_fetch_assoc($result)) {
-            array_push($loopDropdown, $row);
-        }
-        } else {
-        http_response_code(404);
-        }
+    // $sql = sprintf("SELECT * FROM loops");
+    // // Populating the loops dropdown
+    // if($result = mysqli_query($con,$sql)) {
+    //     while($row = mysqli_fetch_assoc($result)) {
+    //         array_push($loopDropdown, $row);
+    //     }
+    //     } else {
+    //     http_response_code(404);
+    //     }
 
 
 
@@ -33,9 +33,9 @@
 
         $newDate = date("Y-m-d", strtotime($dateInputHourly));
         
-        populateLoops($loopArray, $con, $newDate);
+        populateStops($stopArray, $con, $newDate);
 
-        populateTableArray($allBoarded, $con, $newDate, $loopArray);
+        populateTableArray($allLeft, $con, $newDate, $stopArray);
 
         }
         // header('Location: Entries.php');
@@ -45,13 +45,13 @@
 
 
     
+//--done----------------------------
 
-
-    function showHourly(&$hourly, $con, $date, $loop){
+    function showHourly(&$hourly, $con, $date, $stop){
         $hour =  0;
 
         for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `Entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            $sql = sprintf("SELECT SUM(`leftBehind`) as `leftBehind` from `Entries` where `stop` = '$stop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
@@ -63,13 +63,17 @@
         
     }
 
-    function populateHourly( $con, $date, $loop){
+//-------------------
+
+//---done--------------------
+
+    function populateHourly( $con, $date, $stop){
         $hour =  0;
 
         $hourly = array();
 
         for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `Entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            $sql = sprintf("SELECT SUM(`leftBehind`) as `leftBehind` from `Entries` where `stop` = '$stop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
@@ -82,12 +86,16 @@
     
     }
 
-    function populateLoops(&$loopArray, $con, $date){
-        $sql = "SELECT distinct `loop` FROM `Entries` where DATE(`timestamp`) = '$date'";
+    //----------------------------
+
+// should be done --------------------
+
+    function populateStops(&$stopArray, $con, $date){
+        $sql = "SELECT distinct `stop` FROM `Entries` where DATE(`timestamp`) = '$date'";
         
         if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
-                array_push($loopArray, $row);
+                array_push($stopArray, $row);
             }
             } else {
             http_response_code(404);
@@ -95,17 +103,21 @@
         
     }
 
-    function populateTableArray(&$allBoarded, $con, $date, $loopArray){
+    // -------------------------------
+
+//----------------------
+
+    function populateTableArray(&$allLeft, $con, $date, $stopArray){
 
         $hourly = array();
 
         $counter = 0;
-        foreach($loopArray as $instance){
+        foreach($stopArray as $instance){
            
-            $allBoarded[$counter] = array();
-            $hourly = populateHourly( $con, $date, $instance['loop']);
+            $allLeft[$counter] = array();
+            $hourly = populateHourly( $con, $date, $instance['stop']);
             
-            $allBoarded[$counter] = $hourly;
+            $allLeft[$counter] = $hourly;
             $counter = $counter + 1;
 
         }
@@ -113,6 +125,7 @@
 
     }
 
+    //-------------------------------------------
 
 ?>
 
@@ -175,7 +188,7 @@
     <table id="editable_table" class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th>Loops</th>
+                <th>Stops</th>
                 <?php 
                 $time = 7; 
                 $AMOrPM = 'AM';
@@ -198,8 +211,6 @@
                             $time = $time + 1;
                         }
                     
-                
-                    //  working here --------------
                     ?>
                 <?php }  ?>          
                 
@@ -210,17 +221,17 @@
 
 
     <!-- This adds the sql info the hourly display -->
-        <?php $time = 12; ?>
+        <?php $time = 7; ?>
         <tbody id="tbodyid" class="row_position">
             <?php                
                $counter = 0;
-               foreach($loopArray as $loop){ ?>
-                    <td> <?php echo $loop['loop']; ?>
+               foreach($stopArray as $stop){ ?>
+                    <td> <?php echo $stop['stop']; ?>
                     <?php    
                     for($i=7;$i<24;$i=$i+1){ ?>
                     
 
-                        <td> <?php echo 0 + $allBoarded[$counter][$i]['boarded'] ?> </td>
+                        <td> <?php echo 0 + $allLeft[$counter][$i]['leftBehind'] ?> </td>
                         
                 
 
@@ -234,7 +245,7 @@
                         }
                         
                         $counter = $counter+1;
-                        //  working here --------------
+                        
                         ?>
 
 
@@ -259,7 +270,6 @@
 
 
 </body>
-
 
 <script>
     $(document).ready(function () {
@@ -319,6 +329,9 @@ $("#xx").on('click', function (event) {
 
 });
 </script>
+
+
+
 </HTML>
 
 <?php require '../themepart/footer.php'; ?>

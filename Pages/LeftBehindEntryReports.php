@@ -9,7 +9,7 @@
     $loopDropdown = array();
     $loop ="";
     $loopArray = array();
-    $allBoarded = array();
+    $allLeft = array();
 
 
     $sql = sprintf("SELECT * FROM loops");
@@ -35,7 +35,7 @@
         
         populateLoops($loopArray, $con, $newDate);
 
-        populateTableArray($allBoarded, $con, $newDate, $loopArray);
+        populateTableArray($allLeft, $con, $newDate, $loopArray);
 
         }
         // header('Location: Entries.php');
@@ -51,7 +51,7 @@
         $hour =  0;
 
         for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `Entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            $sql = sprintf("SELECT SUM(`leftBehind`) as `leftBehind` from `Entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
@@ -69,7 +69,7 @@
         $hourly = array();
 
         for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `Entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            $sql = sprintf("SELECT SUM(`leftBehind`) as `leftBehind` from `Entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
@@ -95,17 +95,17 @@
         
     }
 
-    function populateTableArray(&$allBoarded, $con, $date, $loopArray){
+    function populateTableArray(&$allLeft, $con, $date, $loopArray){
 
         $hourly = array();
 
         $counter = 0;
         foreach($loopArray as $instance){
            
-            $allBoarded[$counter] = array();
+            $allLeft[$counter] = array();
             $hourly = populateHourly( $con, $date, $instance['loop']);
             
-            $allBoarded[$counter] = $hourly;
+            $allLeft[$counter] = $hourly;
             $counter = $counter + 1;
 
         }
@@ -220,7 +220,7 @@
                     for($i=7;$i<24;$i=$i+1){ ?>
                     
 
-                        <td> <?php echo 0 + $allBoarded[$counter][$i]['boarded'] ?> </td>
+                        <td> <?php echo 0 + $allLeft[$counter][$i]['leftBehind'] ?> </td>
                         
                 
 
