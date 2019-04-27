@@ -11,11 +11,6 @@
     $allBoarded = array();
 
 
-
-
-
-        
-
     //if Filter By Hour is clicked
     if(isset($_POST['HourlyButton'])){
         $dateInputHourly = $_POST['dateInputHourly'];
@@ -31,11 +26,6 @@
         // header('Location: Entries.php');
   
     }
-
-
-
-    
-
 
     function showHourly(&$hourly, $con, $date, $bus){
         $hour =  0;
@@ -302,8 +292,6 @@ function exportTableToCSV($table, filename) {
 $("#xx").on('click', function (event) {
     
     exportTableToCSV.apply(this, [$('#editable_table'), 'export.csv']);
-    
-    // IF CSV, don't do event.preventDefault() or return false
     // We actually need this to be a typical hyperlink
 });
 
