@@ -18,17 +18,6 @@
         } else {
         http_response_code(404);
         }
-
-        // $sql = sprintf("SELECT * FROM Entries LIMIT 100");
-        // // Populating the page
-        // if($result = mysqli_query($con,$sql)) {
-        //     while($row = mysqli_fetch_assoc($result)) {
-        //         array_push($entries, $row);
-        //     }
-        //     } else {
-        //     http_response_code(404);
-        //     }
-
         
     // If Submit is Clicked
     if(isset($_POST['SubmitButton'])){
@@ -45,8 +34,6 @@
   
     }
     
-
-    
     function makeList(&$entries, $con, $input, $loop) {
         $sql = sprintf("SELECT * FROM `Entries` WHERE `date`='$input' AND `loop`= '$loop' ORDER BY `timestamp` DESC");
     
@@ -58,13 +45,7 @@
         http_response_code(404);
         }
     }
-
-
-
 ?>
-
-
-
 <?php
         require '../themepart/resources.php';
         require '../themepart/sidebar.php';
@@ -108,15 +89,6 @@
         </div>
     </form>
     </div>
-
-
-
-
-
-    
-
-
-
     <script>
         $('#datepicker').datepicker();
     </script>
@@ -153,15 +125,7 @@
             <?php endforeach ?>
         </tbody>
     </table>
-    
 
-
-
-
-    
-
-
-    
     <script>
 
         $('#datepickerHourly').datepicker();
@@ -189,20 +153,6 @@ $(document).ready(function() {
     });
 
 });
-
-// $(".row_position").sortable({
-//     delay: 150,
-//     stop: function() {
-//         var selectedData = new Array();
-//         $('.row_position>tr').each(function() {
-//             var test = $(this).attr("id");
-//             selectedData.push($.trim(test));
-//         });
-//         console.log(selectedData);
-//         updateOrder(selectedData);
-//     }
-// });
-
 
 function updateOrder(data) {
     $.ajax({
