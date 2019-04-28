@@ -62,6 +62,9 @@
 			    <li>
 				<a href="../Pages/LeftBehindEntryReports.php">Left Behind Loop Reports</a>
 			    </li>
+                <li>
+				<a href="../Pages/LeftBehindBusReports.php">Left Behind Bus Reports</a>
+			    </li>
                         </ul>
                 </li>
                 <!-- <li>
