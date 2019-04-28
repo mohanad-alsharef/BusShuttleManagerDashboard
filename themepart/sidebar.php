@@ -55,6 +55,7 @@
                             <li>
                                 <a href="../Pages/BusReports.php">Bus Reports</a>
                             </li>
+
 			    <li>
 				<a href="../Pages/LeftBehindStopReport.php">Left Behind Stop Reports</a>
 			    </li>
@@ -91,7 +92,7 @@
 
             <ul class="list-unstyled CTAs">
                 <li>
-                    <a href="https://pbuslog01.aws.bsu.edu" class="download">Driver App</a>
+                    <a href="https://pbuslog01.aws.bsu.edu/" class="download">Driver App</a>
                 </li>
                 <li>
                     <a href="../Pages/Feedback.php" class="article">Find a Bug?</a>
