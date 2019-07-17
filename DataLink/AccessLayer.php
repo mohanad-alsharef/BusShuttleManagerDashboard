@@ -1,4 +1,5 @@
 <?php
+include_once('../Model/User.php');
 
 class AccessLayer
 {
@@ -16,13 +17,60 @@ class AccessLayer
         return $conn;
     }
 
-    // CUSTOM QUERIES HERE
-    public function get_user($id){
+    // CUSTOM METHODS HERE
+      public function get_user_as_User_Object($id){
+        // Reuse existing query
         $sql = "SELECT * FROM users WHERE id='$id'";
-        return $this->query($sql);
+        $results = $this->query($sql);
+         
+        // check for results
+        if (!$results){
+          return $results;
+        }
+        else{
+          // array to hold User objects
+          $object_results = array();
+          // cycle through and convert to User objects
+          foreach ($results as $result){
+            $object_results[] = new User($result);
+          }
+          // return array of User objects
+          return $object_results;
+        }
       }
 
-    // END CUSTOM QUERIES
+      public function get_all_users_as_User_Objects(){
+        // Reuse existing query
+        $sql = "SELECT * FROM users";
+        $results = $this->query($sql);
+         
+        // check for results
+        if (!$results){
+          return $results;
+        }
+        else{
+          // array to hold User objects
+          $object_results = array();
+          // cycle through and convert to User objects
+          foreach ($results as $result){
+            $object_results[] = new User($result);
+          }
+          // return array of User objects
+          return $object_results;
+        }
+      }
+
+      public function update_user($userID, $firstname, $lastname) {
+        $sql = "UPDATE users SET firstname='$firstname', lastname='$lastname' WHERE id='$userID'";
+        $results = $this->query($sql);
+      }
+
+      public function remove_user($userID) {
+        $sql = "UPDATE users SET is_deleted=1 WHERE id='$userID'";
+        $results = $this->query($sql);
+      }
+
+    // END METHODS QUERIES
 
 
     // Turns each returned field name into a property of the QueryResult object. 
