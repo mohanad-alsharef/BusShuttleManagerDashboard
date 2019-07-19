@@ -37,9 +37,9 @@ if($input["action"] === 'edit')
 if($input["action"] === 'delete')
 {
  $query = "
- DELETE FROM Entries 
-
- WHERE id = '".$id."'
+ UPDATE `entries` 
+ SET `is_deleted` = 1
+ WHERE `id` = '".$id."'
  ";
  mysqli_query($con, $query);
 }

@@ -35,7 +35,7 @@
     }
     
     function makeList(&$entries, $con, $input, $loop) {
-        $sql = sprintf("SELECT * FROM `Entries` WHERE `date`='$input' AND `loop`= '$loop' ORDER BY `timestamp` DESC");
+        $sql = sprintf("SELECT * FROM `entries` WHERE `date_added`='$input' AND `loop`= '$loop' AND `is_deleted`='0' ORDER BY `t_stamp` DESC");
     
         if($result = mysqli_query($con,$sql)) {
         while($row = mysqli_fetch_assoc($result)) {
@@ -75,7 +75,7 @@
                                         <option selected="selected">Select a Loop</option>
                                         <?php
                             foreach($loopDropdown as $name) { ?>
-                                        <option name="loop" value="<?= $name['loops'] ?>"><?= $name['loops'] ?>
+                                        <option name="loop" value="<?= $name['id'] ?>"><?= $name['loops'] ?>
                                         </option>
                                         <?php
                             } ?>
@@ -114,12 +114,12 @@
             <tr id="<?php echo $log['id'] ?>">
                 <td><?php echo $log['boarded']; ?></td>
                 <td><?php echo $log['stop']; ?></td>
-                <td><?php echo $log['timestamp']; ?></td>
-                <td><?php echo $log['date']; ?></td>
+                <td><?php echo $log['t_stamp']; ?></td>
+                <td><?php echo $log['date_added']; ?></td>
                 <td><?php echo $log['loop']; ?></td>
                 <td><?php echo $log['driver']; ?></td>
-                <td><?php echo $log['busIdentifier']; ?></td>
-                <td><?php echo $log['leftBehind']; ?></td>
+                <td><?php echo $log['bus_identifier']; ?></td>
+                <td><?php echo $log['left_behind']; ?></td>
                 <td style="display:none;"><?php echo $log['id']; ?></td>
             </tr>
             <?php endforeach ?>
