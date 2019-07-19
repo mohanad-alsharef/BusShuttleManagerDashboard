@@ -1,5 +1,6 @@
 <?php
 require '../Database/connect.php';
+$_SESSION["Title"]="Loops";
 
 $loopNames = array();
 $input = "";
@@ -60,10 +61,10 @@ require '../themepart/pageContentHolder.php';
       <div class="form-row align-items-center">
         <div class="col-auto">
           <label class="sr-only" for="inlineFormInput">Loop Name</label>
-          <input type="text" input="text" class="form-control mb-2" name='inputText' id="inlineFormInput" placeholder="Enter New Loop">
+          <input type="text" input="text" class="form-control mb-2" name='inputText' id="inlineFormInput" placeholder="enter loop name">
            </div>
         <div class="col-auto">
-          <button type="submit" name="SubmitButton" class="btn btn-dark mb-2">Submit</button>
+          <button type="submit" name="SubmitButton" class="btn btn-dark mb-2">Create</button>
         </div>
         </div>
     </form>

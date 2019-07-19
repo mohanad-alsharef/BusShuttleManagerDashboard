@@ -1,6 +1,7 @@
 <?php
     session_start();
     require '../Database/connect.php';
+    $_SESSION["Title"]="Students Left Behind by Bus";
 
 
     $hourly = array();

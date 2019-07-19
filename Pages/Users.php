@@ -2,6 +2,7 @@
 require ('../Model/User.php');
 //include the configuration
 require_once(dirname(__FILE__) . '/../Configuration/config.php');
+$_SESSION["Title"]="Drivers";
 
 $userNames = array();
 $firstName = "";

@@ -1,6 +1,7 @@
 <?php
 session_start();
 require '../Database/connect.php';
+$_SESSION["Title"]="Stops";
 
 $stopNames = array();
 $input = "";
@@ -67,12 +68,12 @@ require '../themepart/pageContentHolder.php';
                     <div class="form-row align-items-center">
                         <div class="col-auto">
                             <label class="sr-only" for="inlineFormInput">Stop Name</label>
-                            <input type="text" input="text" class="form-control mb-2" name='inputText' id="inlineFormInput" placeholder="Enter New Stop" required>
+                            <input type="text" input="text" class="form-control mb-2" name='inputText' id="inlineFormInput" placeholder="enter stop name" required>
                         </div>
                         <div class="col-auto">
                         </div>
                         <div class="col-auto">
-                            <button type="submit" name="SubmitButton" class="btn btn-dark form-control mb-2">Submit</button>
+                            <button type="submit" name="SubmitButton" class="btn btn-dark form-control mb-2">Create</button>
                         </div>
                     </div>
                 </form>

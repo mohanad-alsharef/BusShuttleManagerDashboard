@@ -9,6 +9,6 @@
                 <span></span>
                 <span></span>
             </button>
-
+            <h3><?php if(isset($_SESSION["Title"])){echo $_SESSION["Title"];} ?></h3>
         </div>
     </nav>

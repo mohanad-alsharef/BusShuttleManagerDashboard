@@ -1,5 +1,6 @@
 <?php
 require '../Database/connect.php';
+$_SESSION["Title"]="Buses";
 
 $busNames = array();
 $input = "";

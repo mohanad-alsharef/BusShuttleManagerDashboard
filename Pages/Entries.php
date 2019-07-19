@@ -1,6 +1,7 @@
 <?php
     session_start();
     require '../Database/connect.php';
+    $_SESSION["Title"]="Entries in the Database";
 
 
     $entries = array();
@@ -82,7 +83,7 @@
                                     </select>
                                 </div>
         <div class="col-auto">
-          <button type="submit" name="SubmitButton" class="btn btn-dark mb-2">Submit</button>
+          <button type="submit" name="SubmitButton" class="btn btn-dark mb-2">Search</button>
           
           
         </div>

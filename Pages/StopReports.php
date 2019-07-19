@@ -1,7 +1,7 @@
 <?php
     session_start();
     require '../Database/connect.php';
-
+    $_SESSION["Title"]="Stop Reports";
 
      $hourly = array();
     $entries = array();
