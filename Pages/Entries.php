@@ -68,7 +68,7 @@
     <form action="" method="post">
       <div class="form-row align-items-center">
          <div class="col-auto">
-             <input class="form-control mb-2" input="text" name="dateInput" id="datepicker" width="276" />
+             <input class="form-control mb-2" input="text" name="dateInput" id="datepicker" width="276" placeholder="Click to Select Date" required  />
             </div>
          <div class="col-auto">
                                     <select class="form-control mb-2" name="loop" id="loop">
