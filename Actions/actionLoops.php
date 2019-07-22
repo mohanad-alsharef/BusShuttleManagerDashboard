@@ -14,6 +14,3 @@ if($input["action"] === 'edit') {
 if($input["action"] === 'delete') {
     $AccessLayer->remove_loop($loopID);
 }
-
-
-?>
