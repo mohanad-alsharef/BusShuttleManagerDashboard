@@ -1,39 +1,29 @@
 <?php
-require '../Database/connect.php';
+//include the configuration
+require_once(dirname(__FILE__) . '/../Configuration/config.php');
 $_SESSION["Title"]="Loops";
 
 $loopNames = array();
 $input = "";
+$results;
+
 
 if(isset($_POST['SubmitButton'])){
   $input = $_POST['inputText'];
   if($input != '') {
-    postLoop($con, $input);
+    postLoop($input);
   }
   header('Location: Loops.php');
 }
 
-function makeList(&$loopNames, $con) {
-  $sql = sprintf("SELECT * FROM loops ORDER BY loops ASC");
-
-  if($result = mysqli_query($con,$sql)) {
-    while($row = mysqli_fetch_assoc($result)) {
-      array_push($loopNames, $row);
-    }
-  } else {
-    http_response_code(404);
-  }
+function makeList(&$results) {
+  $AccessLayer = new AccessLayer();
+  $results = $AccessLayer->get_loops();
 }
 
-function postLoop($con, $input){
-  $sql = sprintf("INSERT INTO `loops`(`loops`) VALUES ( '$input' )");
-  if($result = mysqli_query($con,$sql))
-  {
-
-  } else {
-    echo "anything";
-    http_response_code(404);
-  }
+function postLoop($input){
+  $AccessLayer = new AccessLayer();
+  $AccessLayer->add_loop($input);
 }
 ?>
 <?php 
@@ -49,7 +39,7 @@ require '../themepart/pageContentHolder.php';
   <div align="center">
 
     <?php
-    makeList($loopNames, $con);
+    makeList($results);
     ?>
 
 
@@ -77,22 +67,10 @@ require '../themepart/pageContentHolder.php';
       </tr>
      </thead>
      <tbody>
-     <?php foreach ($loopNames as $log): ?>
+     <?php foreach ($results as $loop): ?>
           <tr>
-            <td><?php echo $log['loops']; ?></td>
-            <td style="display:none;"><?php echo $log['id']; ?></td>
-            <!-- <td><form action='edit.php?name="<?php// echo $log['loops']; ?>"' method="post">
-                  <input type="hidden" name="name" value="<?php// echo $log['loops']; ?>">
-                  <input type="submit" name="editButton" value="edit">
-                </form>
-            </td>
-            <td>
-            <form action='delete.php?name="<?php echo $log['loops']; ?>"' method="post">
-                  <input type="hidden" name="name" value="<?php echo $log['loops']; ?>">
-                  <input type="submit" name="editButton" value="delete">
-                </form>
-            </td> -->
-
+            <td><?php echo $loop->loops; ?></td>
+            <td style="display:none;"><?php echo $loop->id; ?></td>
           </tr>
         <?php endforeach; ?>
      </tbody>

@@ -41,7 +41,7 @@ class AccessLayer
 
       public function get_all_users_as_User_Objects(){
         // Reuse existing query
-        $sql = "SELECT * FROM users";
+        $sql = "SELECT * FROM users WHERE is_deleted='0' ORDER BY lastname ASC";
         $results = $this->query($sql);
          
         // check for results
@@ -68,6 +68,30 @@ class AccessLayer
       public function remove_user($userID) {
         $sql = "UPDATE users SET is_deleted=1 WHERE id='$userID'";
         $results = $this->query($sql);
+      }
+
+
+      public function get_loops() {
+        $sql = sprintf("SELECT * FROM loops WHERE is_deleted='0' ORDER BY loops ASC");
+         return $this->query($sql);
+      }
+
+      public function add_loop($loopName) {
+        $sql = sprintf("INSERT INTO `loops`(`loops`) VALUES ( '$loopName' )");
+        $results = $this->query($sql);
+
+      }
+
+      public function remove_loop($loopID) {
+        $sql = sprintf("UPDATE loops SET is_deleted=1 WHERE id='$loopID'");
+        $results = $this->query($sql);
+
+      }
+
+      public function update_loop($loopID, $loopName) {
+        $sql = sprintf("UPDATE loops SET loops='$loopName'WHERE id='$loopID'");
+        $results = $this->query($sql);
+
       }
 
     // END METHODS QUERIES
