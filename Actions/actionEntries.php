@@ -16,18 +16,7 @@ if($input["action"] === 'edit')
 
 if($input["action"] === 'delete')
 {
- $query = "
- UPDATE `entries` 
- SET `is_deleted` = 1
- WHERE `id` = '".$id."'
- ";
- mysqli_query($con, $query);
+    //Do nothing as of right now.
 }
-
-if($input["action"] === 'restore')
-{
-
-}
-
 
 ?>

@@ -107,8 +107,9 @@ require '../themepart/pageContentHolder.php';
                     <td><?php echo $AccessLayer->get_user_name($entry->driver)[0]->firstname . " " . $AccessLayer->get_user_name($entry->driver)[0]->lastname ; ?></td>
                     <td><?php echo $AccessLayer->get_bus_name($entry->bus_identifier)[0]->busIdentifier; ?></td>
                     <td style="display:none;"><?php echo $entry->id; ?></td>
+                    
                 </tr>
-            <?php endforeach ;}  ?>
+            <?php endforeach ;} ?>
         </tbody>
     </table>
     
