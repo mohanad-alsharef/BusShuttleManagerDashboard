@@ -74,6 +74,11 @@ class AccessLayer
     $results = $this->query($sql);
   }
 
+  public function get_user_name($userID){
+    $sql = sprintf("SELECT firstname,lastname FROM users WHERE is_deleted='0' AND id=$userID");
+    return $this->query($sql);
+  }
+
   // Loops
   public function get_loops()
   {
@@ -97,6 +102,11 @@ class AccessLayer
   {
     $sql = sprintf("UPDATE loops SET loops='$loopName'WHERE id='$loopID'");
     $results = $this->query($sql);
+  }
+
+  public function get_loop_name($loopID){
+    $sql = sprintf("SELECT loops FROM loops WHERE is_deleted='0' AND id=$loopID");
+    return $this->query($sql);
   }
 
   // Stops
@@ -124,6 +134,11 @@ class AccessLayer
     $results = $this->query($sql);
   }
 
+  public function get_stop_name($stopID) {
+    $sql = sprintf("SELECT stops FROM stops WHERE is_deleted='0' AND id=$stopID");
+    return $this->query($sql);
+  }
+
   // Buses
   public function get_buses()
   {
@@ -148,6 +163,28 @@ class AccessLayer
     $sql = sprintf("UPDATE buses SET busIdentifier='$busName'WHERE id='$busID'");
     $results = $this->query($sql);
   }
+
+  public function get_bus_name($busID) {
+    $sql = sprintf("SELECT busIdentifier FROM buses WHERE is_deleted='0' AND id=$busID");
+    return $this->query($sql);
+  }
+
+  // Entries
+  public function get_entries_by_date_and_loopID($dateAdded, $loopID) {
+    $sql = sprintf("SELECT * FROM `entries` WHERE `date_added`='$dateAdded' AND `loop`= '$loopID' AND `is_deleted`='0' ORDER BY `t_stamp` DESC");
+    return $this->query($sql);
+  } 
+
+  public function update_entries_boarded_and_leftbehind($boarded, $leftBehind, $entryID) {
+    $sql = sprintf("UPDATE entries SET boarded='$boarded', left_behind='$leftBehind' WHERE id='$entryID'");
+    $this->query($sql);
+  } 
+
+  // Will likely be wanted eventually so here it is. 
+  public function remove_entry($entryID) {
+    $sql = sprintf("UPDATE entries SET is_deleted='1' WHERE id='$entryID'");
+    $this->query($sql);
+  } 
 
   // END CUSTOM METHODS
 

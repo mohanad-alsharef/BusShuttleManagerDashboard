@@ -1,37 +1,17 @@
 <?php  
-//action.php$connect = mysqli_connect('localhost', 'root', '', 'testing');
-require '../Database/connect.php';
+require_once(dirname(__FILE__) . '/../Configuration/config.php');
 
 $input = filter_input_array(INPUT_POST);
 
-$id = mysqli_real_escape_string($con, $input["id"]);
-$boarded = mysqli_real_escape_string($con, $input["boarded"]);
-// $stop = mysqli_real_escape_string($con, $input["stop"]);
-// $time = mysqli_real_escape_string($con, $input["timestamp"]);
-// $date = mysqli_real_escape_string($con, $input["date"]);
-// $loop = mysqli_real_escape_string($con, $input["loop"]);
-$driver = mysqli_real_escape_string($con, $input["driver"]);
-$leftbehind = mysqli_real_escape_string($con, $input["leftBehind"]);
+$entryID = filter_var(trim($input["id"]), FILTER_SANITIZE_STRING);
+$boarded = filter_var(trim($input["boarded"]), FILTER_SANITIZE_STRING);
+$leftBehind = filter_var(trim($input["leftBehind"]), FILTER_SANITIZE_STRING);
+$AccessLayer = new AccessLayer();
 
-$query = "SELECT * FROM Entries WHERE id='".$id."'";
-
-$result = mysqli_query($con, $query);
-
-if($result) {
     
 if($input["action"] === 'edit')
 {
- $query = "
- UPDATE `Entries` 
- SET `boarded` = '".$boarded."',
- `driver` = '".$driver."',
- `leftBehind` = '".$leftBehind."',
-
- WHERE `id` = '".$id."'
- ";
-
- mysqli_query($con, $query);
-
+    $AccessLayer->update_entries_boarded_and_leftbehind($boarded, $leftBehind, $entryID);
 }
 
 if($input["action"] === 'delete')
@@ -48,6 +28,6 @@ if($input["action"] === 'restore')
 {
 
 }
-}
+
 
 ?>

@@ -1,57 +1,46 @@
 <?php
-    session_start();
-    require '../Database/connect.php';
-    $_SESSION["Title"]="Entries in the Database";
+session_start();
+require '../Database/connect.php';
+//include the configuration
+require_once(dirname(__FILE__) . '/../Configuration/config.php');
+$_SESSION["Title"] = "Entries in the Database";
 
 
-    $entries = array();
-    $input = "";
-    $loopDropdown = array();
-    $loop ="";
+$entries;
+$input = "";
+$loopDropdown = array();
+$loop = "";
+$buttonState = "disabled";
 
 
-    $sql = sprintf("SELECT * FROM loops ORDER BY loops ASC");
-    // Populating the loops dropdown
-    if($result = mysqli_query($con,$sql)) {
-        while($row = mysqli_fetch_assoc($result)) {
-            array_push($loopDropdown, $row);
-        }
-        } else {
-        http_response_code(404);
-        }
-        
-    // If Submit is Clicked
-    if(isset($_POST['SubmitButton'])){
-        $input = $_POST['loop'];
-        $dateInput = $_POST['dateInput'];
-        if($input != '' && $dateInput != '') {
+$AccessLayer = new AccessLayer();
+$loopDropdown = $AccessLayer->get_loops();
+
+
+// If Submit is Clicked
+if (isset($_POST['SubmitButton'])) {
+    $input = $_POST['loop'];
+    $dateInput = $_POST['dateInput'];
+    if ($input != '' && $dateInput != '') {
 
         $newDate = date("Y-m-d", strtotime($dateInput));
-        makeList($entries, $con, $newDate, $input);
-        
+        makeList($entries, $newDate, $input);
+    }
+    // header('Location: Entries.php');
 
-        }
-        // header('Location: Entries.php');
-  
-    }
-    
-    function makeList(&$entries, $con, $input, $loop) {
-        $sql = sprintf("SELECT * FROM `entries` WHERE `date_added`='$input' AND `loop`= '$loop' AND `is_deleted`='0' ORDER BY `t_stamp` DESC");
-    
-        if($result = mysqli_query($con,$sql)) {
-        while($row = mysqli_fetch_assoc($result)) {
-            array_push($entries, $row);
-        }
-        } else {
-        http_response_code(404);
-        }
-    }
+}
+
+function makeList(&$entries, $date, $loopID)
+{
+    $AccessLayer = new AccessLayer();
+    $entries = $AccessLayer->get_entries_by_date_and_loopID($date, $loopID);
+}
 ?>
 <?php
-        require '../themepart/resources.php';
-        require '../themepart/sidebar.php';
-        require '../themepart/pageContentHolder.php';
-    ?>
+require '../themepart/resources.php';
+require '../themepart/sidebar.php';
+require '../themepart/pageContentHolder.php';
+?>
 
 
 <HTML LANG="EN">
@@ -65,108 +54,93 @@
 
 </form>
 
-<div class="d-flex justify-content-center">
-    <form action="" method="post">
-      <div class="form-row align-items-center">
-         <div class="col-auto">
-             <input class="form-control mb-2" input="text" name="dateInput" id="datepicker" width="276" placeholder="Click to Select Date" required  />
-            </div>
-         <div class="col-auto">
-                                    <select class="form-control mb-2" name="loop" id="loop">
-                                        <option selected="selected">Select a Loop</option>
-                                        <?php
-                            foreach($loopDropdown as $name) { ?>
-                                        <option name="loop" value="<?= $name['id'] ?>"><?= $name['loops'] ?>
-                                        </option>
-                                        <?php
-                            } ?>
-                                    </select>
-                                </div>
-        <div class="col-auto">
-          <button type="submit" name="SubmitButton" class="btn btn-dark mb-2">Search</button>
-          
-          
-        </div>
-        </div>
-    </form>
-    </div>
-    <script>
-        $('#datepicker').datepicker();
-    </script>
+
+
 
 <body>
-
-
-    <table id="editable_table" class="table table-bordered table-striped">
+<div class="d-flex justify-content-center">
+    <form action="" method="post">
+        <div class="form-row align-items-center">
+            <div class="col-auto">
+                <input class="form-control mb-2" input="text" name="dateInput" id="datepicker" width="276" placeholder="Click to Select Date" required />
+            </div>
+            <div class="col-auto">
+                <select class="form-control mb-2" name="loop" id="loop">
+                    <option selected="selected">Select a Loop</option>
+                    <?php
+                    foreach ($loopDropdown as $loop) { ?>
+                        <option name="loop" value="<?= $loop->id ?>"><?= $loop->loops ?>
+                        </option>
+                    <?php
+                    } ?>
+                </select>
+            </div>
+            <div id='submitElement' class="col-auto">
+                <button type="submit" id='submitButton' name="SubmitButton" class="btn btn-dark mb-2" <?php echo $buttonState; ?> >Search</button>
+                <span id="loadingMessage"> loading...</span>
+            </div>
+        </div>
+    </form>
+</div>
+    <table id="editable_table"  class="table table-bordered table-striped">
         <thead>
             <tr>
                 <th>Boarded</th>
+                <th>Left Behind</th>
                 <th>Stop</th>
                 <th>Time</th>
                 <th>Date</th>
                 <th>Loop</th>
                 <th>Driver</th>
-                <th>Bus #</th>
-                <th>Left Behind</th>
+                <th>Bus</th> 
             </tr>
         </thead>
-        <tbody class="row_position">
-            <?php foreach ($entries as $log): ?>
-            <tr id="<?php echo $log['id'] ?>">
-                <td><?php echo $log['boarded']; ?></td>
-                <td><?php echo $log['stop']; ?></td>
-                <td><?php echo $log['t_stamp']; ?></td>
-                <td><?php echo $log['date_added']; ?></td>
-                <td><?php echo $log['loop']; ?></td>
-                <td><?php echo $log['driver']; ?></td>
-                <td><?php echo $log['bus_identifier']; ?></td>
-                <td><?php echo $log['left_behind']; ?></td>
-                <td style="display:none;"><?php echo $log['id']; ?></td>
-            </tr>
-            <?php endforeach ?>
+        <tbody id="loadingTable" style="display:none" class="row_position">
+            <?php if(isset($entries)){ foreach ($entries as $entry) :?>
+                <tr id="<?php echo $entry->id ?>">
+                    <td><?php echo $entry->boarded; ?></td>
+                    <td><?php echo $entry->left_behind; ?></td>
+                    <td><?php echo $AccessLayer->get_stop_name($entry->stop)[0]->stops; ?></td>
+                    <td><?php echo $entry->t_stamp; ?></td>
+                    <td><?php echo $entry->date_added; ?></td>
+                    <td><?php echo $AccessLayer->get_loop_name($entry->loop)[0]->loops; ?></td>
+                    <td><?php echo $AccessLayer->get_user_name($entry->driver)[0]->firstname . " " . $AccessLayer->get_user_name($entry->driver)[0]->lastname ; ?></td>
+                    <td><?php echo $AccessLayer->get_bus_name($entry->bus_identifier)[0]->busIdentifier; ?></td>
+                    <td style="display:none;"><?php echo $entry->id; ?></td>
+                </tr>
+            <?php endforeach ;}  ?>
         </tbody>
     </table>
-
+    
     <script>
-
         $('#datepickerHourly').datepicker();
-
     </script>
 
 
 
 </body>
-
 <script>
-$(document).ready(function() {
-    $('#editable_table').Tabledit({
-        url: '../Actions/actionEntries.php',
-        hideIdentifier: true,
-        editButton: false,
-        columns: {
-            identifier: [8, 'id'],
-            editable: [
-                [0, 'boarded'],
-                [5, 'driver'],
-                [7, 'leftBehind']
-            ]
-        }
+    $('#datepicker').datepicker();
+</script>
+<script>
+    $(document).ready(function() {
+        
+        $('#editable_table').Tabledit({
+            url: '../Actions/actionEntries.php',
+            hideIdentifier: true,
+            deleteButton: false,
+            columns: {
+                identifier: [8, 'id'],
+                editable: [
+                    [0, 'boarded'],
+                    [1, 'leftBehind']
+                ]
+            }
+        });
+        $('#loadingTable').removeAttr("style");
+        $('#loadingMessage').hide();
+        $('#submitButton').prop('disabled', false)
     });
-
-});
-
-function updateOrder(data) {
-    $.ajax({
-        url: "../Actions/actionEntries.php",
-        type: 'post',
-        data: {
-            position: data
-        },
-        success: function() {
-            alert('your change successfully saved');
-        }
-    })
-}
 </script>
 
 
