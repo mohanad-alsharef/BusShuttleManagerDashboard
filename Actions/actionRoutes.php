@@ -1,49 +1,20 @@
 <?php  
-//action.php$connect = mysqli_connect('localhost', 'root', '', 'testing');
-require '../Database/connect.php';
+require_once(dirname(__FILE__) . '/../Configuration/config.php');
 
 $input = filter_input_array(INPUT_POST);
 
-$stopID = mysqli_real_escape_string($con, $input["id"]);
-var_dump($stopID);
-$stop = mysqli_real_escape_string($con, $input["stops"]);
+$routeID = filter_var(trim($input["id"]), FILTER_SANITIZE_STRING);
+$route = filter_var(trim($input["stops"]), FILTER_SANITIZE_STRING);
 
-$query = "SELECT * FROM stops WHERE stops='".$stop."'";
-
-$result = mysqli_query($con, $query);
-
-if($result) {
-    
+$AccessLayer = new AccessLayer();
 
 //Not used right now
-if($input["action"] === 'edit')
-{
- $query = "
- UPDATE stop_loop 
- SET stops = '".$stop."'
- WHERE id = '".$stopID."'
- ";
-
- mysqli_query($con, $query);
-
-}
+if($input["action"] === 'edit') { }
 
 if($input["action"] === 'delete')
 {
- $query = "
- DELETE FROM stop_loop 
- WHERE stop = '".$stopID."'
- ";
- if(mysqli_query($con, $query)) {
- } else {
-    http_response_code(400);
-    echo json_encode(array("message" => "Unable to create user."));
- }
- 
+   $AccessLayer->remove_route($routeID);
 }
-if($input["action"] === 'restore')
-{
 
-}
-}
+echo json_encode($input);
 ?>
