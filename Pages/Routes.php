@@ -179,7 +179,7 @@ require '../themepart/pageContentHolder.php';
     <table id="editable_table" class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th><?php if(isset($loopName)){echo $loopName[0]['loops'] ;} ?> - Route Order</th>
+                <th><?php if(isset($loopName[0]['loops'])){echo $loopName[0]['loops'] ;} ?> - Route Order</th>
                 <th>Stop                                                                                </th>
             </tr>
         </thead>
