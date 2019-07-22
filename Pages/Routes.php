@@ -150,13 +150,13 @@ require '../themepart/pageContentHolder.php';
             </tr>
         </thead>
         <tbody class="row_position">
-            <?php foreach ($stopNames as $log) : ?>
+            <?php if(isset($stopNames)) {foreach ($stopNames as $log) : ?>
                 <tr id="<?php $log->id; ?>">
                     <td><?php if($log->displayOrder == "0"){echo "Click and Drag To Set Position" ;} else {echo $log->displayOrder ;} ?></td>
                     <td><?php echo $log->stops; ?></td>
                     <td style="display:none;"><?php echo $log->id; ?></td>
                 </tr>
-            <?php endforeach ?>
+            <?php endforeach ;}?>
         </tbody>
     </table>
     <button type="submit" id="refreshButton" class="btn btn-success">Set Order</button>
