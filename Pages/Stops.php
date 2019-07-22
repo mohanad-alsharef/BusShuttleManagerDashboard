@@ -1,43 +1,34 @@
 <?php
 session_start();
-require '../Database/connect.php';
+//include the configuration
+require_once(dirname(__FILE__) . '/../Configuration/config.php');
 $_SESSION["Title"]="Stops";
 
-$stopNames = array();
 $input = "";
+$results;
 
-makeList($stopNames, $con);
+makeList($results);
 
 
 // If post occurs
 if (isset($_POST['SubmitButton'])) {
     $input = $_POST['inputText'];
     if ($input != '') {
-        postLoop($con, $input);
+        postLoop($input);
     }
     header('Location: Stops.php');
 }
 
-function makeList(&$stopNames, $con)
+function makeList(&$results)
 {
-    $sql = sprintf("SELECT * FROM stops ORDER BY stops ASC");
-
-    if ($result = mysqli_query($con, $sql)) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            array_push($stopNames, $row);
-        }
-    } else {
-        http_response_code(404);
-    }
+    $AccessLayer = new AccessLayer();
+    $results = $AccessLayer->get_stops(); 
 }
 
-function postLoop($con, $input)
+function postLoop($stopName)
 {
-    $sql = sprintf("INSERT INTO `stops`(`stops`) VALUES ( '$input' )");
-
-    if ($result = mysqli_query($con, $sql)) { } else {
-        http_response_code(404);
-    }
+    $AccessLayer = new AccessLayer();
+    $AccessLayer->add_stop($stopName);
 }
 
 ?>
@@ -96,10 +87,10 @@ require '../themepart/pageContentHolder.php';
             </tr>
         </thead>
         <tbody class="row_position">
-            <?php foreach ($stopNames as $log) : ?>
-                <tr id="<?php echo $log['id'] ?>">
-                    <td><?php echo $log['stops']; ?></td>
-                    <td style="display:none;"><?php echo $log['id']; ?></td>
+            <?php foreach ($results as $stop) : ?>
+                <tr id="<?php echo $stop->id ?>">
+                    <td><?php echo $stop->stops; ?></td>
+                    <td style="display:none;"><?php echo $stop->id; ?></td>
                 </tr>
             <?php endforeach ?>
         </tbody>
@@ -113,9 +104,9 @@ require '../themepart/pageContentHolder.php';
             url: '../Actions/actionStops.php',
             hideIdentifier: true,
             columns: {
-                identifier: [2, 'id'],
+                identifier: [1, 'id'],
                 editable: [
-                    [1, 'stop']
+                    [0, 'stop']
                 ]
             }
         });
