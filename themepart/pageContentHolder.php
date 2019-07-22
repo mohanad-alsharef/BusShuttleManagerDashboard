@@ -4,7 +4,8 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
 
-            <button type="button" id="sidebarCollapse" class="navbar-btn">
+            <button type="button" id="sidebarCollapse" class="navbar-btn" title="Toggle Sidebar">
+            
                 <span></span>
                 <span></span>
                 <span></span>
