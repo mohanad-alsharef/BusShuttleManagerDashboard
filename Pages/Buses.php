@@ -1,42 +1,27 @@
 <?php
-require '../Database/connect.php';
+//include the configuration
+require_once(dirname(__FILE__) . '/../Configuration/config.php');
 $_SESSION["Title"]="Buses";
 
-$busNames = array();
 $input = "";
+$results;
 
 if(isset($_POST['SubmitButton'])){
   $input = $_POST['inputText'];
   if($input != '') {
-    postLoop($con, $input);
+    addBus($input);
   }
   header('Location: Buses.php');
 }
 
-function makeList(&$busNames, $con) {
-  $sql = sprintf("SELECT * FROM buses ORDER BY busIdentifier ASC");
-
-  if($result = mysqli_query($con,$sql)) {
-    while($row = mysqli_fetch_assoc($result)) {
-      array_push($busNames, $row);
-    }
-  } else {
-    http_response_code(404);
-  }
+function makeList(&$results) {
+  $AccessLayer = new AccessLayer();
+  $results = $AccessLayer->get_buses();
 }
 
-function postLoop($con, $input){
-  $sql = sprintf("INSERT INTO `buses`(`busIdentifier`) VALUES ( '$input' )");
-  if($result = mysqli_query($con,$sql))
-  {
-    // $text = 'Purple Loop';
-    // $text = strip_tags($text);
-    // $text = trim($text);
-    // $text = htmlspecialchars($text);
-  } else {
-    echo "anything";
-    http_response_code(404);
-  }
+function addBus($busName){
+  $AccessLayer = new AccessLayer();
+  $AccessLayer->add_bus($busName);
 }
 ?>
 <?php 
@@ -52,7 +37,7 @@ require '../themepart/pageContentHolder.php';
   <div align="center">
 
     <?php
-    makeList($busNames, $con);
+    makeList($results);
     ?>
 
 
@@ -80,22 +65,10 @@ require '../themepart/pageContentHolder.php';
       </tr>
      </thead>
      <tbody>
-     <?php foreach ($busNames as $log): ?>
+     <?php foreach ($results as $bus): ?>
           <tr>
-            <td><?php echo $log['busIdentifier']; ?></td>
-            <td style="display:none;"><?php echo $log['id']; ?></td>
-            <!-- <td><form action='edit.php?name="<?php echo $log['buses']; ?>"' method="post">
-                  <input type="hidden" name="name" value="<?php echo $log['buses']; ?>">
-                  <input type="submit" name="editButton" value="edit">
-                </form>
-            </td>
-            <td>
-            <form action='delete.php?name="<?php echo $log['buses']; ?>"' method="post">
-                  <input type="hidden" name="name" value="<?php echo $log['buses']; ?>">
-                  <input type="submit" name="editButton" value="delete">
-                </form>
-            </td> -->
-
+            <td><?php echo $bus->busIdentifier; ?></td>
+            <td style="display:none;"><?php echo $bus->id; ?></td>
           </tr>
         <?php endforeach; ?>
      </tbody>

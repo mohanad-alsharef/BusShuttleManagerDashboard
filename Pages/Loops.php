@@ -3,7 +3,6 @@
 require_once(dirname(__FILE__) . '/../Configuration/config.php');
 $_SESSION["Title"]="Loops";
 
-$loopNames = array();
 $input = "";
 $results;
 

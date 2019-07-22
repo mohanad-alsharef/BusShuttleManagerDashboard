@@ -124,6 +124,31 @@ class AccessLayer
     $results = $this->query($sql);
   }
 
+  // Buses
+  public function get_buses()
+  {
+    $sql = sprintf("SELECT * FROM buses WHERE is_deleted='0' ORDER BY busIdentifier ASC");
+    return $this->query($sql);
+  }
+
+  public function add_bus($busName)
+  {
+    $sql = sprintf("INSERT INTO `buses`(`busIdentifier`) VALUES ( '$busName' )");
+    $results = $this->query($sql);
+  }
+
+  public function remove_bus($busID)
+  {
+    $sql = sprintf("UPDATE buses SET is_deleted=1 WHERE id='$busID'");
+    $results = $this->query($sql);
+  }
+
+  public function update_bus($busID, $busName)
+  {
+    $sql = sprintf("UPDATE buses SET busIdentifier='$busName'WHERE id='$busID'");
+    $results = $this->query($sql);
+  }
+
   // END CUSTOM METHODS
 
 
