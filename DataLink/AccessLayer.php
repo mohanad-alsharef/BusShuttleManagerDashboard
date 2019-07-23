@@ -197,7 +197,7 @@ class AccessLayer
   }
 
   public function get_stop_id_and_displayOrder_by_displayOrder($loopID){
-    $sql = sprintf("SELECT stops.stops, stops.id, stop_loop.displayOrder 
+    $sql = sprintf("SELECT stops.stops, stops.id, stop_loop.displayOrder, stop_loop.loop, stop_loop.id as route_id
       FROM stops 
         inner JOIN stop_loop ON stop_loop.loop='$loopID' AND stop_loop.is_deleted='0'
       AND stop_loop.stop=stops.id ORDER BY displayOrder");
@@ -206,7 +206,7 @@ class AccessLayer
   }
 
   public function remove_route($routeID){
-    $sql = sprintf("UPDATE stop_loop SET is_deleted='1' WHERE stop='$routeID'");
+    $sql = sprintf("UPDATE stop_loop SET is_deleted=1 WHERE `stop`='$routeID'");
     $this->query($sql);
   }
 

@@ -155,6 +155,9 @@ require '../themepart/pageContentHolder.php';
                     <td><?php if($log->displayOrder == "0"){echo "Click and Drag To Set Position" ;} else {echo $log->displayOrder ;} ?></td>
                     <td><?php echo $log->stops; ?></td>
                     <td style="display:none;"><?php echo $log->id; ?></td>
+                    <td style="display:none;"><?php echo $log->route_id; ?></td>
+                    <td style="display:none;"><?php echo $log->loop; ?></td>
+                    <td style="display:none;"><?php echo $log->route_id; ?></td>
                 </tr>
             <?php endforeach ;}?>
         </tbody>
@@ -170,7 +173,7 @@ require '../themepart/pageContentHolder.php';
             hideIdentifier: true,
             editButton: false,
             columns: {
-                identifier: [2, 'id'],
+                identifier: [3, 'id'],
                 editable: []
             }
         });
@@ -178,8 +181,10 @@ require '../themepart/pageContentHolder.php';
         $("#refreshButton").click(function(){
             var selectedData = new Array();
             $('.row_position>tr').each(function() {
-                var test = $(this).attr("id");
-                selectedData.push($.trim(test));
+                var test = $(this).find("td").eq(2).html(); 
+                var test2 = $(this).find("td").eq(4).html();
+                var test3 = $(this).find("td").eq(5).html();  
+                selectedData.push([$.trim(test), $.trim(test2), $.trim(test3)]);
             });
             console.log(selectedData);
             updateOrder(selectedData);
@@ -193,8 +198,9 @@ require '../themepart/pageContentHolder.php';
         stop: function() {
             var selectedData = new Array();
             $('.row_position>tr').each(function() {
-                var test = $(this).attr("id");
-                selectedData.push($.trim(test));
+                var test = $(this).find("td").eq(2).html(); 
+                var test2 = $(this).find("td").eq(4).html(); 
+                selectedData.push([$.trim(test), $.trim(test2)]);
             });
             console.log(selectedData);
             //updateOrder(selectedData);
@@ -205,7 +211,7 @@ require '../themepart/pageContentHolder.php';
 
     function updateOrder(data) {
         $.ajax({
-            url: "../Actions/ajaxPro.php",
+            url: "../Actions/reOrderStops.php",
             type: 'post',
             data: {
                 position: data
