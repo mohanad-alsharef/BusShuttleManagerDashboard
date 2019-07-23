@@ -95,7 +95,9 @@ class AccessLayer
   public function remove_loop($loopID)
   {
     $sql = sprintf("UPDATE loops SET is_deleted=1 WHERE id='$loopID'");
-    $results = $this->query($sql);
+    $this->query($sql);
+    $sql = sprintf("UPDATE stop_loop SET is_deleted=1 WHERE `loop`='$loopID'");
+    $this->query($sql);
   }
 
   public function update_loop($loopID, $loopName)
@@ -116,22 +118,30 @@ class AccessLayer
     return $this->query($sql);
   }
 
+  public function get_stops_by_loop($loopID){
+    $sql = sprintf("SELECT DISTINCT `stops`.`stops`, `stop_loop`.`displayOrder`, `stop_loop`.`loop` FROM `stops` 
+    INNER JOIN `stop_loop` ON `stop_loop`.`stop` = `stops`.`id` AND `stop_loop`.`loop` = '$loopID'");
+    return $this->query($sql);
+  }
+
   public function add_stop($stopName)
   {
     $sql = sprintf("INSERT INTO `stops`(`stops`) VALUES ( '$stopName' )");
-    $results = $this->query($sql);
+    $this->query($sql);
   }
 
   public function remove_stop($stopID)
   {
     $sql = sprintf("UPDATE stops SET is_deleted=1 WHERE id='$stopID'");
-    $results = $this->query($sql);
+    $this->query($sql);
+    $sql = sprintf("UPDATE stop_loop SET is_deleted=1 WHERE `stop`='$stopID'");
+    $this->query($sql);
   }
 
   public function update_stop($stopID, $stopName)
   {
     $sql = sprintf("UPDATE stops SET stops='$stopName'WHERE id='$stopID'");
-    $results = $this->query($sql);
+    $this->query($sql);
   }
 
   public function get_stop_name($stopID) {
@@ -197,22 +207,28 @@ class AccessLayer
   }
 
   public function get_stop_id_and_displayOrder_by_displayOrder($loopID){
-    $sql = sprintf("SELECT stops.stops, stops.id, stop_loop.displayOrder, stop_loop.loop, stop_loop.id as route_id
+    $sql = sprintf("SELECT stops.stops, stops.id, stops.is_deleted as stopDeletion, stop_loop.displayOrder, stop_loop.loop, stop_loop.id as route_id
       FROM stops 
         inner JOIN stop_loop ON stop_loop.loop='$loopID' AND stop_loop.is_deleted='0'
-      AND stop_loop.stop=stops.id ORDER BY displayOrder");
+      AND stop_loop.stop=stops.id AND stops.is_deleted=0 ORDER BY displayOrder");
 
     return $this->query($sql);
   }
 
   public function remove_route($routeID){
-    $sql = sprintf("UPDATE stop_loop SET is_deleted=1 WHERE `stop`='$routeID'");
+    $sql = sprintf("UPDATE stop_loop SET is_deleted=1 WHERE `id`='$routeID'");
     $this->query($sql);
   }
 
-  public function add_route($stopID, $loopID){
-    $sql = sprintf("INSERT INTO `stop_loop`(`stop`, `loop`, `displayOrder`) VALUES ( '$stopID','$loopID', 0 )");
-    $this->query($sql);
+  public function add_route($stopID, $loopID, $afterStop){
+    if($afterStop === "none") {
+      $sql = sprintf("INSERT INTO `stop_loop`(`stop`, `loop`, `displayOrder`) VALUES ( '$stopID','$loopID', 0 )");
+      $this->query($sql);
+    } else {
+      $sql = sprintf("INSERT INTO `stop_loop`(`stop`, `loop`, `displayOrder`) VALUES ( '$stopID','$loopID', $afterStop+1 )");
+      $this->query($sql);
+    }
+    
   }
 
 

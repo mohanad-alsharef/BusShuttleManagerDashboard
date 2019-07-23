@@ -8,33 +8,39 @@ $stopNames;
 $input = "";
 $loopDropdown;
 $stopDropdown;
+$loopStopDropdown;
 $loopName;
 $results;
+$afterStop;
 
 $AccessLayer = new AccessLayer();
 $loopDropdown = $AccessLayer->get_loops();
 $stopDropdown = $AccessLayer->get_stops();
 
-if (isset($_SESSION['savedLoopValue'])) {
+
+if (isset($_SESSION['loopInput'])) {
     $stopNames = array();
-    makeList($stopNames, $_SESSION['savedLoopValue']);
+    makeList($stopNames, $_SESSION['loopInput']);
+    $loopStopDropdown = $AccessLayer->get_stops_by_loop($_SESSION['loopInput']);
 }
 if (isset($_POST['loop'])) {
-    $input = $_POST['loop'];
-    if ($input != '') {
+    $_SESSION['loopInput'] = $_POST['loop'];
+    if ($_SESSION['loopInput'] != '') {
         $_SESSION['savedLoopValue'] = '';
-        $loopName = $AccessLayer->get_distinct_loops_in_stoploop_and_loops($input);
-        makeList($stopNames, $input);
+        $loopName = $AccessLayer->get_distinct_loops_in_stoploop_and_loops($_SESSION['loopInput']);
+        $loopStopDropdown = $AccessLayer->get_stops_by_loop($_SESSION['loopInput']);
+        makeList($stopNames, $_SESSION['loopInput']);
     }
 }
 
 // If post occurs
 if (isset($_POST['SubmitButton'])) {
     $input = $_POST['stopToAdd'];
-    $loopInput = $_POST['loopToAdd'];
-    if ($input != '' && $loopInput != '') {
-        postLoop($input, $loopInput);
-        $_SESSION['savedLoopValue'] = $loopInput;
+    $afterStop = $_POST['afterStop'];
+    //echo $afterStop;
+    if ($input != '' && $_SESSION['loopInput'] != '') {
+        addRoute($input, $_SESSION['loopInput'], $afterStop);
+        $_SESSION['savedLoopValue'] = $_SESSION['loopInput'];
     }
     header('Location: Routes.php');
 }
@@ -46,10 +52,10 @@ function makeList(&$stopNames, $input)
     $stopNames = $AccessLayer->get_stop_id_and_displayOrder_by_displayOrder($input);
 }
 
-function postLoop($stopID, $loopID)
+function addRoute($stopID, $loopID, $afterStop)
 {
     $AccessLayer = new AccessLayer();
-    $AccessLayer->add_route($stopID, $loopID);
+    $AccessLayer->add_route($stopID, $loopID, $afterStop);
 }
 
 ?>
@@ -68,33 +74,7 @@ require '../themepart/pageContentHolder.php';
 
 <body>
     <div align="center">
-        <div class="d-flex justify-content-center">
-        <form action="" method="post">
-            <p>
-                <h3>Assign <select class="" name="stopToAdd" id="stopToAdd" required>
-                        <option selected="selected">Select a Stop</option>
-                        <?php
-                        foreach ($stopDropdown as $name) { ?>
-                            <option name="stopToAdd" value="<?= $name->id ?>"><?= $name->stops ?>
-                            </option>
-                        <?php
-                        } ?>
-                    </select>
-                     to <select class="" name="loopToAdd" id="loopToAdd" required>
-                            <option selected="selected">Select a Loop</option>
-                            <?php
-                            foreach ($loopDropdown as $name) { ?>
-                                <option name="loopToAdd" value="<?= $name->id ?>"><?= $name->loops ?>
-                                </option>
-                            <?php
-                            } ?>
-                        </select>
-                        <button type="submit" name="SubmitButton" class="btn btn-dark">Assign</button>
-                        </h3>
-            </p>
-        </div>
-                        </form>
-        <br>
+
         <div class="d-flex justify-content-center">
             <div class="form-group">
                 <form class="needs-validation" novalidate action="" method="post">
@@ -105,9 +85,6 @@ require '../themepart/pageContentHolder.php';
                         </div>
                     </div>
                 </form>
-
-
-
                 <div class="d-flex justify-content-center">
 
                 </div>
@@ -120,19 +97,18 @@ require '../themepart/pageContentHolder.php';
 
                                 </div>
                                 <div class="col-auto">
-                                <p>
-                        <h3>Filter by <select class="mb-2" name="loop" id="loop">
-                                <option selected="selected">Select a Loop</option>
-                                <?php
-                                foreach ($loopDropdown as $name) { ?>
-                                    <option name="loop" value="<?= $name->id ?>"><?= $name->loops ?>
-                                    </option>
-                                <?php
-                                } ?>
-                            </select>
-                            <button type="submit" name="searchButton" class="btn btn-dark mb-2">Filter</button>
-                            <h3>
-                    </p>
+                                    
+                                        <h3>Display by <select onchange="this.form.submit()" class="mb-2" name="loop" id="loop">
+                                                <option selected="selected">Select a Loop</option>
+                                                <?php
+                                                foreach ($loopDropdown as $name) { ?>
+                                                    <option name="loop" value="<?= $name->id ?>"><?= $name->loops ?>
+                                                    </option>
+                                                <?php
+                                                } ?>
+                                            </select>
+                                            <h3>
+                                    
                                 </div>
                             </div>
                         </form>
@@ -140,29 +116,81 @@ require '../themepart/pageContentHolder.php';
                 </div>
             </div>
         </div>
+
+        <div class="d-flex justify-content-center">
+
+
+            <form action="" method="post">
+                
+                    <h3 style="display:none;" id="assignmentOptions">Assign <select class="" name="stopToAdd" id="stopToAdd" required>
+                            <option selected="selected">Select a Stop</option>
+                            <?php
+                            foreach ($stopDropdown as $name) { ?>
+                                <option name="stopToAdd" value="<?= $name->id ?>"><?= $name->stops ?>
+                                </option>
+                            <?php
+                            } ?>
+                        </select>
+                        after <select class="" name="afterStop" id="afterStop" required>
+                            <option selected value="none">Select a Stop</option>
+                            <?php
+                            foreach ($loopStopDropdown as $name) { ?>
+                                <option name="afterStop" value="<?= $name->displayOrder ?>"><?= $name->stops ?>
+                                </option>
+                            <?php
+                            } ?>
+                        </select>
+                        <button type="submit" name="SubmitButton" class="btn btn-dark">Assign</button>
+                    </h3>
+                
+        </div>
+        </form>
+        
+
     </div>
 
     <table id="editable_table" class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th><?php if(isset($loopName[0])){echo $loopName[0]->loops ;} ?> - Route Order</th>
-                <th>Stop                                                                                </th>
+                <th><?php if (isset($loopName[0])) {
+                        echo $loopName[0]->loops;
+                        $_SESSION['loopString'] = $loopName[0]->loops;
+                    } else {
+                        if (isset($_SESSION['loopString'])){echo $_SESSION['loopString'];}
+                    } ?></th>
+                <th style="display:none;"></th>
+                <th>Stop</th>
             </tr>
         </thead>
         <tbody class="row_position">
-            <?php if(isset($stopNames)) {foreach ($stopNames as $log) : ?>
-                <tr id="<?php $log->id; ?>">
-                    <td><?php if($log->displayOrder == "0"){echo "Click and Drag To Set Position" ;} else {echo $log->displayOrder ;} ?></td>
-                    <td><?php echo $log->stops; ?></td>
-                    <td style="display:none;"><?php echo $log->id; ?></td>
-                    <td style="display:none;"><?php echo $log->route_id; ?></td>
-                    <td style="display:none;"><?php echo $log->loop; ?></td>
-                    <td style="display:none;"><?php echo $log->route_id; ?></td>
-                </tr>
-            <?php endforeach ;}?>
+            <?php if (isset($stopNames)) {
+                foreach ($stopNames as $log) : ?>
+                    <tr class="<?php if ($log->displayOrder == "0") {
+                                    echo "table-danger";
+                                } else {
+                                    echo "";
+                                } ?>" id="<?php $log->id; ?>">
+                        <td>
+                            <a href="#!" class="up btn btn-dark">Move Up</a>
+                            <a href="#!" class="down btn btn-dark">Move Down</a>
+                        </td>
+                        <td style="display:none;"><?php if ($log->displayOrder == "0") {
+                                                        echo "Click and Drag To Set Position";
+                                                    } else {
+                                                        echo $log->displayOrder;
+                                                    } ?></td>
+                        <td><?php echo $log->stops; ?></td>
+                        <td style="display:none;"><?php echo $log->id; ?></td>
+                        <td style="display:none;"><?php echo $log->route_id; ?></td>
+                        <td style="display:none;"><?php echo $log->loop; ?></td>
+                        <td style="display:none;"><?php echo $log->route_id; ?></td>
+                        <td style="display:none;"><?php echo $log->stopDeletion; ?></td>
+
+                    </tr>
+                <?php endforeach;
+            } ?>
         </tbody>
     </table>
-    <button type="submit" id="refreshButton" class="btn btn-success">Set Order</button>
     </div>
 </body>
 
@@ -173,43 +201,82 @@ require '../themepart/pageContentHolder.php';
             hideIdentifier: true,
             editButton: false,
             columns: {
-                identifier: [3, 'id'],
+                identifier: [4, 'id'],
                 editable: []
             }
         });
 
-        $("#refreshButton").click(function(){
-            var selectedData = new Array();
-            $('.row_position>tr').each(function() {
-                var test = $(this).find("td").eq(2).html(); 
-                var test2 = $(this).find("td").eq(4).html();
-                var test3 = $(this).find("td").eq(5).html();  
-                selectedData.push([$.trim(test), $.trim(test2), $.trim(test3)]);
-            });
-            console.log(selectedData);
-            updateOrder(selectedData);
-    }); 
+        var selectedData = new Array();
+        $('.row_position>tr').each(function() {
+            var test = $(this).find("td").eq(3).html();
+            var test2 = $(this).find("td").eq(5).html();
+            var test3 = $(this).find("td").eq(6).html();
+            var test4 = $(this).find("td").eq(7).html();
+            selectedData.push([$.trim(test), $.trim(test2), $.trim(test3), $.trim(test4)]);
+        });
+        console.log(selectedData);
 
-    });
-
-    // Right now, it will not automatically reload when the user drags and releases
-    $(".row_position").sortable({
-        delay: 150,
-        stop: function() {
-            var selectedData = new Array();
-            $('.row_position>tr').each(function() {
-                var test = $(this).find("td").eq(2).html(); 
-                var test2 = $(this).find("td").eq(4).html(); 
-                selectedData.push([$.trim(test), $.trim(test2)]);
-            });
-            console.log(selectedData);
-            //updateOrder(selectedData);
-            // location.reload()
+        if (selectedData.length > 1) {
+            $('#assignmentOptions').show();
         }
+        
+
+        updateOrder(selectedData);
+
+        $(".up,.down").click(function() {
+            var row = $(this).parents("tr:first");
+            if ($(this).is(".up")) {
+                row.insertBefore(row.prev()).hide().show('slow');
+                row.attr('class', 'table-success');
+                var selectedData = new Array();
+                $('.row_position>tr').each(function() {
+                    var test = $(this).find("td").eq(3).html();
+                    var test2 = $(this).find("td").eq(5).html();
+                    var test3 = $(this).find("td").eq(6).html();
+                    var test4 = $(this).find("td").eq(7).html();
+                    selectedData.push([$.trim(test), $.trim(test2), $.trim(test3), $.trim(test4)]);
+                });
+                console.log(selectedData);
+                updateOrder(selectedData);
+            } else {
+                row.insertAfter(row.next()).hide().show('slow');
+                row.attr('class', 'table-success');
+                var selectedData = new Array();
+                $('.row_position>tr').each(function() {
+                    var test = $(this).find("td").eq(3).html();
+                    var test2 = $(this).find("td").eq(5).html();
+                    var test3 = $(this).find("td").eq(6).html();
+                    var test4 = $(this).find("td").eq(7).html();
+                    selectedData.push([$.trim(test), $.trim(test2), $.trim(test3), $.trim(test4)]);
+                });
+                console.log(selectedData);
+                updateOrder(selectedData);
+            }
+        });
+
+
+
     });
+
+    // // Right now, it will not automatically reload when the user drags and releases
+    // $(".row_position").sortable({
+    //     delay: 150,
+    //     stop: function() {
+    //         var selectedData = new Array();
+    //         $('.row_position>tr').each(function() {
+    //             var test = $(this).find("td").eq(2).html(); 
+    //             var test2 = $(this).find("td").eq(4).html(); 
+    //             selectedData.push([$.trim(test), $.trim(test2)]);
+    //         });
+    //         console.log(selectedData);
+    //         //updateOrder(selectedData);
+    //         // location.reload()
+    //     }
+    // });
 
 
     function updateOrder(data) {
+
         $.ajax({
             url: "../Actions/reOrderStops.php",
             type: 'post',
@@ -217,7 +284,7 @@ require '../themepart/pageContentHolder.php';
                 position: data
             },
             success: function() {
-                location.reload()
+                //location.reload()
             }
         })
     }
