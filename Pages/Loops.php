@@ -88,6 +88,12 @@ require '../themepart/pageContentHolder.php';
   $(document).ready(function() {
     $('#editable_table').Tabledit({
       url: '../Actions/actionLoops.php',
+      buttons: {
+        confirm: {
+            class: 'btn btn-lg btn-danger',
+            html: 'This action will remove  </br>  the associated </br> stops from route. </br> Click here to proceed'
+        }
+    },
       columns: {
         identifier: [1, 'id'],
         editable: [

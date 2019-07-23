@@ -103,6 +103,12 @@ require '../themepart/pageContentHolder.php';
         $('#editable_table').Tabledit({
             url: '../Actions/actionStops.php',
             hideIdentifier: true,
+            buttons: {
+        confirm: {
+            class: 'btn btn-lg btn-danger',
+            html: 'This stop will be removed from </br>  all routes after deletion. </br> Click here to proceed'
+        }
+    },
             columns: {
                 identifier: [1, 'id'],
                 editable: [
