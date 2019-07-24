@@ -225,7 +225,7 @@ class AccessLayer
       $sql = sprintf("INSERT INTO `stop_loop`(`stop`, `loop`, `displayOrder`) VALUES ( '$stopID','$loopID', 0 )");
       $this->query($sql);
     } else {
-      $sql = sprintf("INSERT INTO `stop_loop`(`stop`, `loop`, `displayOrder`) VALUES ( '$stopID','$loopID', $afterStop+1 )");
+      $sql = sprintf("INSERT INTO `stop_loop`(`stop`, `loop`, `displayOrder`) VALUES ( '$stopID','$loopID', $afterStop )");
       $this->query($sql);
     }
     
