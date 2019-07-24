@@ -1,3 +1,16 @@
+<?php
+function appLogout(){
+    // When a user explicitly logs out you'll definetely want to disable
+    // autologin for the same user. For demonstration purposes,
+    // we don't do that here so that the autologin function remains
+    // easy to test.
+    //$ulogin->SetAutologin($_SESSION['username'], false);
+  
+      unset($_SESSION['uid']);
+      unset($_SESSION['username']);
+      unset($_SESSION['loggedIn']);
+  }
+?>
 <html>
 <head>
     <meta charset="utf-8">
@@ -99,6 +112,9 @@
                 </li>
                 <li>
                     <a href="../Pages/Feedback.php" class="article">Find a Bug?</a>
+                </li>
+                <li>
+                   <form action="../index.php" method="POST"><input type="hidden" name="action" value="logout"><input id="test" class="btn btn-block btn-light" type="submit" value="Logout"></form>
                 </li>
             </ul>
         </nav>

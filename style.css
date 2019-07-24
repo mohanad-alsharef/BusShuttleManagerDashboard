@@ -105,46 +105,6 @@ a, a:hover, a:focus {
     background: #BA0C2F;
 }
 
-a[data-toggle="collapse"] {
-    position: relative;
-}
-
-.dropdown-toggle::after {
-    display: block;
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
-}
-
-ul ul a {
-    font-size: 0.9em !important;
-    padding-left: 30px !important;
-    background: #BA0C2F;
-}
-
-ul.CTAs {
-    padding: 20px;
-}
-
-ul.CTAs a {
-    text-align: center;
-    font-size: 0.9em !important;
-    display: block;
-    border-radius: 5px;
-    margin-bottom: 5px;
-}
-
-a.download {
-    background:rgb(145, 14, 40);
-    color: white;
-}
-
-
-a.article, a.article:hover {
-    background:rgb(145, 14, 40);
-    color: white;
-}
 
 
 

@@ -1,5 +1,18 @@
 <?php
-session_start();
+require_once('../ulogin/config/all.inc.php');
+require_once('../ulogin/main.inc.php');
+
+if (!sses_running())
+	sses_start();
+
+function isAppLoggedIn(){
+	return isset($_SESSION['uid']) && isset($_SESSION['username']) && isset($_SESSION['loggedIn']) && ($_SESSION['loggedIn']===true);
+}
+
+if (!isAppLoggedIn()) {
+    header("Location: ../index.php"); /* Redirect browser */
+   exit();
+} 
 require '../Database/connect.php';
 //include the configuration
 require_once(dirname(__FILE__) . '/../Configuration/config.php');
