@@ -14,3 +14,11 @@ if($input["action"] === 'edit') {
 if($input["action"] === 'delete') {
     $AccessLayer->remove_loop($loopID);
 }
+
+if($input["action"] === 'restore') {
+    $AccessLayer->restore_loop($loopID);
+}
+
+echo json_encode($input);
+
+?>
