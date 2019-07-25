@@ -16,5 +16,9 @@ if($input["action"] === 'delete')
    $AccessLayer->remove_route($routeID);
 }
 
+if($input["action"] === 'restore') {
+   $AccessLayer->restore_route($routeID);
+}
+
 echo json_encode($input);
 ?>
