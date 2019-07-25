@@ -34,14 +34,14 @@ $stopDropdown = $AccessLayer->get_stops();
 if (isset($_SESSION['loopInput'])) {
     $stopNames = array();
     makeList($stopNames, $_SESSION['loopInput']);
-    $loopStopDropdown = $AccessLayer->get_stops_by_loop($_SESSION['loopInput']);
+    $loopStopDropdown = $AccessLayer->get_stop_id_and_displayOrder_by_displayOrder($_SESSION['loopInput']);
 }
 if (isset($_POST['loop'])) {
     $_SESSION['loopInput'] = $_POST['loop'];
     if ($_SESSION['loopInput'] != '') {
         $_SESSION['savedLoopValue'] = '';
         $loopName = $AccessLayer->get_distinct_loops_in_stoploop_and_loops($_SESSION['loopInput']);
-        $loopStopDropdown = $AccessLayer->get_stops_by_loop($_SESSION['loopInput']);
+        $loopStopDropdown = $AccessLayer->get_stop_id_and_displayOrder_by_displayOrder($_SESSION['loopInput']);
         makeList($stopNames, $_SESSION['loopInput']);
     }
 }
@@ -229,10 +229,7 @@ require '../themepart/pageContentHolder.php';
         });
         console.log(selectedData);
 
-        if (selectedData.length > 1) {
             $('#assignmentOptions').show();
-        }
-        
 
         updateOrder(selectedData);
 
