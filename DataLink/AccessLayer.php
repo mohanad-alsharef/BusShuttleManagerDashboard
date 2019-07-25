@@ -100,6 +100,14 @@ class AccessLayer
     $this->query($sql);
   }
 
+  public function restore_loop($loopID)
+  {
+    $sql = sprintf("UPDATE loops SET is_deleted=0 WHERE id='$loopID'");
+    $this->query($sql);
+    $sql = sprintf("UPDATE stop_loop SET is_deleted=0 WHERE `loop`='$loopID'");
+    $this->query($sql);
+  }
+
   public function update_loop($loopID, $loopName)
   {
     $sql = sprintf("UPDATE loops SET loops='$loopName'WHERE id='$loopID'");
@@ -217,6 +225,11 @@ class AccessLayer
 
   public function remove_route($routeID){
     $sql = sprintf("UPDATE stop_loop SET is_deleted=1 WHERE `id`='$routeID'");
+    $this->query($sql);
+  }
+
+  public function restore_route($routeID){
+    $sql = sprintf("UPDATE stop_loop SET is_deleted=0 WHERE `id`='$routeID'");
     $this->query($sql);
   }
 
