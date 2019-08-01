@@ -135,26 +135,27 @@ require '../themepart/pageContentHolder.php';
 
             <form action="" method="post">
                 
-                    <h3 style="display:none;" id="assignmentOptions">Assign <select class="" name="stopToAdd" id="stopToAdd" required>
-                            <option selected="selected">Select a Stop</option>
-                            <?php
-                            foreach ($stopDropdown as $name) { ?>
-                                <option name="stopToAdd" value="<?= $name->id ?>"><?= $name->stops ?>
-                                </option>
-                            <?php
-                            } ?>
-                        </select>
-                        after <select class="" name="afterStop" id="afterStop" required>
-                            <option selected value="none">Select a Stop</option>
-                            <?php
-                            foreach ($loopStopDropdown as $name) { ?>
-                                <option name="afterStop" value="<?= $name->displayOrder ?>"><?= $name->stops ?>
-                                </option>
-                            <?php
-                            } ?>
-                        </select>
-                        <button type="submit" name="SubmitButton" class="btn btn-dark">Assign</button>
-                    </h3>
+            <h3 style="display:none;" id="assignmentOptions">Assign <select class="" name="stopToAdd" id="stopToAdd" required>
+                    <option selected="selected">Select a Stop</option>
+                    <?php
+                    foreach ($stopDropdown as $name) { ?>
+                        <option name="stopToAdd" value="<?= $name->id ?>"><?= $name->stops ?>
+                        </option>
+                    <?php
+                    } ?>
+                </select>
+                 <select class="" name="afterStop" id="afterStop" required>
+                    <option selected value="none">Before All</option>
+                    <?php
+                    foreach ($loopStopDropdown as $name) { ?>
+                        <option name="afterStop" value="<?= $name->displayOrder ?>">after <?= $name->stops ?>
+                        </option>
+                    <?php
+                    } ?>
+                </select>
+                <button type="submit" name="SubmitButton" class="btn btn-dark">Assign</button>
+            </h3>
+
                 
         </div>
         </form>
@@ -179,15 +180,15 @@ require '../themepart/pageContentHolder.php';
             <?php if (isset($stopNames)) {
                 foreach ($stopNames as $log) : ?>
                     <tr class="<?php if ($log->displayOrder == "0") {
-                                    echo "table-danger";
+                                   header('Location: Routes.php');
                                 } else {
                                     echo "";
                                 } ?>" id="<?php $log->id; ?>">
-                        <td>
-                        <a href="#!" class="down btn btn-dark">Move Down</a>
+                        <td width="20%">
                         <a href="#!" class="up btn btn-dark">Move Up</a>
+                        <a href="#!" class="down btn btn-dark">Move Down</a>
                         </td>
-                        <td style="display:none;"><?php if ($log->displayOrder == "0") {
+                        <td width="80%" style="display:none;"><?php if ($log->displayOrder == "0") {
                                                         echo "Click and Drag To Set Position";
                                                     } else {
                                                         echo $log->displayOrder;
