@@ -184,8 +184,8 @@ require '../themepart/pageContentHolder.php';
                                     echo "";
                                 } ?>" id="<?php $log->id; ?>">
                         <td>
-                            <a href="#!" class="up btn btn-dark">Move Up</a>
-                            <a href="#!" class="down btn btn-dark">Move Down</a>
+                        <a href="#!" class="down btn btn-dark">Move Down</a>
+                        <a href="#!" class="up btn btn-dark">Move Up</a>
                         </td>
                         <td style="display:none;"><?php if ($log->displayOrder == "0") {
                                                         echo "Click and Drag To Set Position";
@@ -221,11 +221,11 @@ require '../themepart/pageContentHolder.php';
 
         var selectedData = new Array();
         $('.row_position>tr').each(function() {
-            var test = $(this).find("td").eq(3).html();
-            var test2 = $(this).find("td").eq(5).html();
-            var test3 = $(this).find("td").eq(6).html();
-            var test4 = $(this).find("td").eq(7).html();
-            selectedData.push([$.trim(test), $.trim(test2), $.trim(test3), $.trim(test4)]);
+            var id = $(this).find("td").eq(3).html();
+            var loopID = $(this).find("td").eq(5).html();
+            var routeID = $(this).find("td").eq(6).html();
+            var isDeleted = $(this).find("td").eq(7).html();
+            selectedData.push([$.trim(id), $.trim(loopID), $.trim(routeID), $.trim(isDeleted)]);
         });
         console.log(selectedData);
 
@@ -240,11 +240,11 @@ require '../themepart/pageContentHolder.php';
                 row.attr('class', 'table-success');
                 var selectedData = new Array();
                 $('.row_position>tr').each(function() {
-                    var test = $(this).find("td").eq(3).html();
-                    var test2 = $(this).find("td").eq(5).html();
-                    var test3 = $(this).find("td").eq(6).html();
-                    var test4 = $(this).find("td").eq(7).html();
-                    selectedData.push([$.trim(test), $.trim(test2), $.trim(test3), $.trim(test4)]);
+                    var id = $(this).find("td").eq(3).html();
+                    var loopID = $(this).find("td").eq(5).html();
+                    var routeID = $(this).find("td").eq(6).html();
+                    var isDeleted = $(this).find("td").eq(7).html();
+                    selectedData.push([$.trim(id), $.trim(loopID), $.trim(routeID), $.trim(isDeleted)]);
                 });
                 console.log(selectedData);
                 updateOrder(selectedData);
@@ -253,37 +253,17 @@ require '../themepart/pageContentHolder.php';
                 row.attr('class', 'table-success');
                 var selectedData = new Array();
                 $('.row_position>tr').each(function() {
-                    var test = $(this).find("td").eq(3).html();
-                    var test2 = $(this).find("td").eq(5).html();
-                    var test3 = $(this).find("td").eq(6).html();
-                    var test4 = $(this).find("td").eq(7).html();
-                    selectedData.push([$.trim(test), $.trim(test2), $.trim(test3), $.trim(test4)]);
+                    var id = $(this).find("td").eq(3).html();
+                    var loopID = $(this).find("td").eq(5).html();
+                    var routeID = $(this).find("td").eq(6).html();
+                    var isDeleted = $(this).find("td").eq(7).html();
+                    selectedData.push([$.trim(id), $.trim(loopID), $.trim(routeID), $.trim(isDeleted)]);
                 });
                 console.log(selectedData);
                 updateOrder(selectedData);
             }
         });
-
-
-
     });
-
-    // // Right now, it will not automatically reload when the user drags and releases
-    // $(".row_position").sortable({
-    //     delay: 150,
-    //     stop: function() {
-    //         var selectedData = new Array();
-    //         $('.row_position>tr').each(function() {
-    //             var test = $(this).find("td").eq(2).html(); 
-    //             var test2 = $(this).find("td").eq(4).html(); 
-    //             selectedData.push([$.trim(test), $.trim(test2)]);
-    //         });
-    //         console.log(selectedData);
-    //         //updateOrder(selectedData);
-    //         // location.reload()
-    //     }
-    // });
-
 
     function updateOrder(data) {
 

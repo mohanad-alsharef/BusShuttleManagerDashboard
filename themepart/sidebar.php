@@ -1,17 +1,19 @@
 <?php
-function appLogout(){
+function appLogout()
+{
     // When a user explicitly logs out you'll definetely want to disable
     // autologin for the same user. For demonstration purposes,
     // we don't do that here so that the autologin function remains
     // easy to test.
     //$ulogin->SetAutologin($_SESSION['username'], false);
-  
-      unset($_SESSION['uid']);
-      unset($_SESSION['username']);
-      unset($_SESSION['loggedIn']);
-  }
+
+    unset($_SESSION['uid']);
+    unset($_SESSION['username']);
+    unset($_SESSION['loggedIn']);
+}
 ?>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,9 +31,12 @@ function appLogout(){
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 </head>
+
 <body>
     <div class="wrapper">
         <!-- Sidebar Holder -->
+
+
         <nav id="sidebar">
             <div class="sidebar-header">
                 <h3 style="text-align: center">Management Dashboard</h3>
@@ -61,27 +66,27 @@ function appLogout(){
                         </li>
                     </ul>
                     <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">View Reports</a>
-                        <ul class="collapse list-unstyled" id="reportSubmenu">
-                            <li>
-                                <a href="../Pages/EntryReports.php">Loop Reports</a>
-                            </li>
-			    <li>
-                                <a href="../Pages/StopReports.php">Stop Reports</a>
-                            </li>
-                            <li>
-                                <a href="../Pages/BusReports.php">Bus Reports</a>
-                            </li>
+                    <ul class="collapse list-unstyled" id="reportSubmenu">
+                        <li>
+                            <a href="../Pages/EntryReports.php">Loop Reports</a>
+                        </li>
+                        <li>
+                            <a href="../Pages/StopReports.php">Stop Reports</a>
+                        </li>
+                        <li>
+                            <a href="../Pages/BusReports.php">Bus Reports</a>
+                        </li>
 
-			    <li>
-				<a href="../Pages/LeftBehindStopReport.php">Left Behind Stop Reports</a>
-			    </li>
-			    <li>
-				<a href="../Pages/LeftBehindEntryReports.php">Left Behind Loop Reports</a>
-			    </li>
-                <li>
-				<a href="../Pages/LeftBehindBusReports.php">Left Behind Bus Reports</a>
-			    </li>
-                        </ul>
+                        <li>
+                            <a href="../Pages/LeftBehindStopReport.php">Left Behind Stop Reports</a>
+                        </li>
+                        <li>
+                            <a href="../Pages/LeftBehindEntryReports.php">Left Behind Loop Reports</a>
+                        </li>
+                        <li>
+                            <a href="../Pages/LeftBehindBusReports.php">Left Behind Bus Reports</a>
+                        </li>
+                    </ul>
                 </li>
                 <!-- <li>
                     <a href="#">About</a>
@@ -114,9 +119,17 @@ function appLogout(){
                     <a href="../Pages/Feedback.php" class="article">Find a Bug?</a>
                 </li>
                 <li>
-                   <form action="../index.php" method="POST"><input type="hidden" name="action" value="logout"><input id="test" class="btn btn-block btn-light" type="submit" value="Logout"></form>
+                    <form action="../index.php" method="POST"><input type="hidden" name="action" value="logout"><input id="test" class="btn btn-block btn-light" type="submit" value="Logout"></form>
                 </li>
             </ul>
         </nav>
 
-        
+        <div style="min-height: 100%;">
+            <button style="background:#BA0C2F;display: inline;" type="button" id="sidebarCollapse" class="navbar-btn" title="Toggle Sidebar">
+
+                <span style="background:white;"></span>
+                <span style="background:white;"></span>
+                <span style="background:white;"></span>
+            </button>
+
+        </div>

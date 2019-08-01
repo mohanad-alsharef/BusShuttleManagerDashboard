@@ -229,6 +229,7 @@ if (isAppLoggedIn()){
 
 <select style="display:none"name="action">
 			<option selected>login</option>
+			<!-- <option selected>create</option> -->
 			</select>
 
 </fieldset>
