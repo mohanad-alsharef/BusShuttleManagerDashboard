@@ -1,6 +1,20 @@
 <?php
-    session_start();
+require_once('../ulogin/config/all.inc.php');
+require_once('../ulogin/main.inc.php');
+
+if (!sses_running())
+	sses_start();
+
+function isAppLoggedIn(){
+	return isset($_SESSION['uid']) && isset($_SESSION['username']) && isset($_SESSION['loggedIn']) && ($_SESSION['loggedIn']===true);
+}
+
+if (!isAppLoggedIn()) {
+    header("Location: ../index.php"); /* Redirect browser */
+   exit();
+} 
     require '../Database/connect.php';
+    $_SESSION["Title"]="Bus Reports";
 
 
     $hourly = array();
@@ -33,7 +47,7 @@
         $hour =  0;
 
         for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `Entries` where `busIdentifier` = '$bus' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `bus_identifier` = '$bus' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
@@ -51,7 +65,7 @@
         $hourly = array();
 
         for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `Entries` where `busIdentifier` = '$bus' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `bus_identifier` = '$bus' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
@@ -65,7 +79,10 @@
     }
 
     function populateBuses(&$busArray, $con, $date){
-        $sql = "SELECT distinct `busIdentifier` FROM `Entries` where DATE(`timestamp`) = '$date'";
+        $sql = "SELECT DISTINCT `buses`.*, `entries`.`date_added`, `entries`.`bus_identifier`
+        FROM `buses` 
+            LEFT JOIN `entries` ON `entries`.`bus_identifier` = `buses`.`id`
+        WHERE `entries`.`date_added` = '$date'";
         
         if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
@@ -85,7 +102,7 @@
         foreach($busArray as $instance){
            
             $allBoarded[$counter] = array();
-            $hourly = populateHourly( $con, $date, $instance['busIdentifier']);
+            $hourly = populateHourly( $con, $date, $instance['bus_identifier']);
             
             $allBoarded[$counter] = $hourly;
             $counter = $counter + 1;
@@ -137,7 +154,7 @@
         <form action="" method="post">
          <div class="form-row align-items-center">
           <div class="col-auto">
-                 <input class="form-control mb-2" input="text" name="dateInputHourly" id="datepickerHourly" width="276" />
+                 <input class="form-control mb-2" input="text" name="dateInputHourly" id="datepickerHourly" width="276" placeholder="Click to Select Date" required />
                </div>
 
         <div class="col-auto">
@@ -294,7 +311,7 @@ function exportTableToCSV($table, filename) {
 // This must be a hyperlink
 $("#xx").on('click', function (event) {
     
-    exportTableToCSV.apply(this, [$('#editable_table'), 'export.csv']);
+    exportTableToCSV.apply(this, [$('#editable_table'), "<?php echo strval($entryDate) ?>" + ".csv"]);
     // We actually need this to be a typical hyperlink
 });
 

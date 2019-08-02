@@ -1,20 +1,38 @@
 <?php
-require '../Database/connect.php';
+require_once('../ulogin/config/all.inc.php');
+require_once('../ulogin/main.inc.php');
+
+if (!sses_running())
+	sses_start();
+
+
+function isAppLoggedIn(){
+	return isset($_SESSION['uid']) && isset($_SESSION['username']) && isset($_SESSION['loggedIn']) && ($_SESSION['loggedIn']===true);
+}
+
+if (!isAppLoggedIn()) {
+    header("Location: ../index.php"); /* Redirect browser */
+   exit();
+} 
+require ('../Model/User.php');
+//include the configuration
+require_once(dirname(__FILE__) . '/../Configuration/config.php');
+$_SESSION["Title"]="Drivers";
 
 $userNames = array();
 $firstName = "";
 $lastName = "";
 
-function makeList(&$userNames, $con) {
-  $sql = sprintf("SELECT * FROM users ORDER BY lastname ASC");
+function makeList(&$userNames) {
+    $AccessLayer = new AccessLayer();
 
-  if($result = mysqli_query($con,$sql)) {
-    while($row = mysqli_fetch_assoc($result)) {
-      array_push($userNames, $row);
-    }
-  } else {
-    http_response_code(404);
-  }
+    $results = $AccessLayer->get_all_users_as_User_Objects();
+
+    if ($results){
+        foreach ($results as $user) {
+            array_push($userNames, $user);
+       }
+    } 
 }
 ?>
 
@@ -30,7 +48,7 @@ function makeList(&$userNames, $con) {
 
 <body>
     <?php
-    makeList($userNames, $con);
+    makeList($userNames);
     ?>
     <div id="response"></div>
     <h2><button class="btn btn-danger" style="color: white; background-color: #BA0C2F; border-color: #BA0C2F;"
@@ -70,9 +88,9 @@ function makeList(&$userNames, $con) {
         <tbody>
             <?php foreach ($userNames as $log): ?>
             <tr>
-                <td style="display:none;"><?php echo $log['id']; ?></td>
-                <td><?php echo $log['firstname']; ?></td>
-                <td><?php echo $log['lastname']; ?></td>
+                <td style="display:none;"><?php echo "$log->id"; ?></td>
+                <td><?php echo "$log->firstname"; ?></td>
+                <td><?php echo "$log->lastname"; ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
@@ -107,7 +125,7 @@ $(document).on('submit', '#form', function() {
     var form_data = JSON.stringify(form.serializeObject());
 
     $.ajax({
-        url: "https://pbuslog01.aws.bsu.edu/api/create_user.php",
+        url: "http://localhost/api/create_user.php",
         type: "POST",
         contentType: 'application/json',
         data: form_data,

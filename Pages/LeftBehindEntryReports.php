@@ -1,6 +1,21 @@
 <?php
-    session_start();
+require_once('../ulogin/config/all.inc.php');
+require_once('../ulogin/main.inc.php');
+
+if (!sses_running())
+	sses_start();
+
+function isAppLoggedIn(){
+	return isset($_SESSION['uid']) && isset($_SESSION['username']) && isset($_SESSION['loggedIn']) && ($_SESSION['loggedIn']===true);
+}
+
+if (!isAppLoggedIn()) {
+    header("Location: ../index.php"); /* Redirect browser */
+   exit();
+} 
     require '../Database/connect.php';
+    $_SESSION["Title"]="Students Left Behind by Loop";
+    
 
 
     $hourly = array();
@@ -53,7 +68,7 @@
 
 
         for($hour=7; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`leftBehind`) as `leftBehind` from `Entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            $sql = sprintf("SELECT SUM(`left_behind`) as `left_behind` from `entries` where `loop` = '$loop' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
@@ -72,7 +87,7 @@
 
 
         for($hour=7; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`leftBehind`) as `leftBehind` from `Entries` where `loop` = '$loop' and `timestamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            $sql = sprintf("SELECT SUM(`left_behind`) as `left_behind` from `entries` where `loop` = '$loop' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
@@ -86,7 +101,11 @@
     }
 
     function populateLoops(&$loopArray, $con, $date){
-        $sql = "SELECT distinct `loop` FROM `Entries` where DATE(`timestamp`) = '$date'";
+        $sql = sprintf("SELECT DISTINCT `loops`.*, `stop_loop`.`loop`, `entries`.`date_added`
+        FROM `loops` 
+            LEFT JOIN `stop_loop` ON `stop_loop`.`loop` = `loops`.`id` 
+            LEFT JOIN `entries` ON `entries`.`loop` = `loops`.`id`
+        WHERE `entries`.`date_added` = '$date' ");
         
         if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
@@ -158,7 +177,7 @@
         <form action="" method="post">
          <div class="form-row align-items-center">
           <div class="col-auto">
-                 <input class="form-control mb-2" input="text" name="dateInputHourly" id="datepickerHourly" width="276" />
+                 <input class="form-control mb-2" input="text" name="dateInputHourly" id="datepickerHourly" width="276" placeholder="Click to Select Date" required  />
                </div>
 
         <div class="col-auto">
@@ -219,15 +238,11 @@
             <?php                
                $counter = 0;
                foreach($loopArray as $loop){ ?>
-                    <td> <?php echo $loop['loop']; ?>
+                    <td> <?php echo $loop['loops']; ?>
                     <?php    
                     for($i=0;$i<17;$i=$i+1){ ?>
-                    
 
-                        <td> <?php echo 0 + $allLeft[$counter][$i]['leftBehind'] ?> </td>
-                        
-                
-
+                        <td> <?php echo 0 + $allLeft[$counter][$i]['left_behind'] ?> </td>
                         
                             <?php 
                         }
@@ -315,9 +330,8 @@ function exportTableToCSV($table, filename) {
 // This must be a hyperlink
 $("#xx").on('click', function (event) {
     
-    exportTableToCSV.apply(this, [$('#editable_table'), 'export.csv']);
+    exportTableToCSV.apply(this, [$('#editable_table'), "<?php echo strval($entryDate) ?>" + ".csv"]);
     
-    // IF CSV, don't do event.preventDefault() or return false
     // We actually need this to be a typical hyperlink
 });
 

@@ -1,53 +1,16 @@
 <?php  
-//action.php$connect = mysqli_connect('localhost', 'root', '', 'testing');
-require '../Database/connect.php';
+require_once(dirname(__FILE__) . '/../Configuration/config.php');
 
 $input = filter_input_array(INPUT_POST);
 
-$stopID = mysqli_real_escape_string($con, $input["id"]);
-$stop = mysqli_real_escape_string($con, $input["stop"]);
+$stopID = filter_var(trim($input["id"]), FILTER_SANITIZE_STRING);
+$stop = filter_var(trim($input["stop"]), FILTER_SANITIZE_STRING);
+$AccessLayer = new AccessLayer();
 
-$query = "SELECT * FROM stops WHERE stops='".$stop."'";
-
-$result = mysqli_query($con, $query);
-
-if($result) {
-    
-if($input["action"] === 'edit')
-{
- $query = "
- UPDATE stops 
- SET stops = '".$stop."'
- WHERE id = '".$stopID."'
- ";
-
- mysqli_query($con, $query);
-
+if($input["action"] === 'edit') {
+    $AccessLayer->update_stop($stopID, $stop);
 }
 
-
-if($input["action"] === 'edit')
-{
- $query = "
- UPDATE stops 
- SET stops = '".$stop."'
- WHERE id = '".$stopID."'
- ";
-
- mysqli_query($con, $query);
-
+if($input["action"] === 'delete') {
+    $AccessLayer->remove_stop($stopID);
 }
-if($input["action"] === 'delete')
-{
- $query = "
- DELETE FROM stops 
- WHERE id = '".$stopID."'
- ";
- mysqli_query($con, $query);
-}
-if($input["action"] === 'restore')
-{
-
-}
-}
-?>

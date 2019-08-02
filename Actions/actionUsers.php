@@ -1,33 +1,20 @@
 <?php
-//action.php$connect = mysqli_connect('localhost', 'root', '', 'testing');
-require '../Database/connect.php';
+require_once(dirname(__FILE__) . '/../Configuration/config.php');
 
 $input = filter_input_array(INPUT_POST);
 
-$firstName = mysqli_real_escape_string($con, $input["firstname"]);
-$lastName = mysqli_real_escape_string($con, $input["lastname"]);
-$id = mysqli_real_escape_string($con, $input["id"]);
+$firstName = filter_var(trim($input["firstname"]), FILTER_SANITIZE_STRING);
+$lastName = filter_var(trim($input["lastname"]), FILTER_SANITIZE_STRING);
+$id = filter_var(trim($input["id"]), FILTER_SANITIZE_STRING);
+$AccessLayer = new AccessLayer();
 
-if($input["action"] === 'edit')
-{
- $query = "
- UPDATE `users`
- SET `firstname` = '".$firstName."',
- `lastname` = '".$lastName."'
- WHERE `id` = '".$id."'
- ";
-
- mysqli_query($con, $query);
-
+if($input["action"] === 'edit') {
+    $AccessLayer->update_user($id, $firstName, $lastName);
 }
-if($input["action"] === 'delete')
-{
- $query = "
- DELETE FROM users
- WHERE id = '".$id."'
- ";
- mysqli_query($con, $query);
+if($input["action"] === 'delete') {
+    $AccessLayer->remove_user($id);
 }
-echo json_encode($input);
+
+//echo json_encode($input);
 
 ?>

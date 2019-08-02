@@ -1,53 +1,15 @@
 <?php  
-
-require '../Database/connect.php';
+require_once(dirname(__FILE__) . '/../Configuration/config.php');
 
 $input = filter_input_array(INPUT_POST);
 
-$busID = mysqli_real_escape_string($con, $input["id"]);
-$buses = mysqli_real_escape_string($con, $input["busIdentifier"]);
+$busID = filter_var(trim($input["id"]), FILTER_SANITIZE_STRING);
+$bus = filter_var(trim($input["busIdentifier"]), FILTER_SANITIZE_STRING);
+$AccessLayer = new AccessLayer();
 
-$query = "SELECT * FROM buses WHERE busIdentifier='".$buses."'";
-
-$result = mysqli_query($con, $query);
-
-if($result) {
-    
-if($input["action"] === 'edit')
-{
- $query = "
- UPDATE buses 
- SET busIdentifier = '".$buses."'
- WHERE id = '".$busID."'
- ";
-
- mysqli_query($con, $query);
-
+if($input["action"] === 'edit') {
+    $AccessLayer->update_bus($busID, $bus);
 }
-
-
-if($input["action"] === 'edit')
-{
- $query = "
- UPDATE buses 
- SET busIdentifier = '".$buses."'
- WHERE id = '".$busID."'
- ";
-
- mysqli_query($con, $query);
-
+if($input["action"] === 'delete') {
+    $AccessLayer->remove_bus($busID);
 }
-if($input["action"] === 'delete')
-{
- $query = "
- DELETE FROM buses 
- WHERE id = '".$busID."'
- ";
- mysqli_query($con, $query);
-}
-if($input["action"] === 'restore')
-{
-
-}
-}
-?>
