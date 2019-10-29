@@ -97,11 +97,20 @@ if (!isAppLoggedIn()) {
 // should be done --------------------
 
     function populateStops(&$stopArray, $con, $date, $selectedLoop){
+        $sql = "";
+	if($selectedLoop == ""){
+	    $sql = sprintf("SELECT distinct `stops`.*, `stop_loop`.`stop`, `entries`.`date_added`
+        FROM `stops`
+            LEFT JOIN `stop_loop` ON `stop_loop`.`stop` = `stops`.`id`
+            LEFT JOIN `entries` ON `entries`.`stop` = `stops`.`id`
+        WHERE `entries`.`date_added` ='$date'");
+	} else {
         $sql = sprintf("SELECT distinct `stops`.*, `stop_loop`.`stop`, `entries`.`date_added`
         FROM `stops`
             LEFT JOIN `stop_loop` ON `stop_loop`.`stop` = `stops`.`id`
             LEFT JOIN `entries` ON `entries`.`stop` = `stops`.`id`
         WHERE `entries`.`date_added` ='$date' AND `entries`.`loop` = '$selectedLoop'");
+    }
 
         if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
@@ -181,8 +190,8 @@ if (!isAppLoggedIn()) {
                  <input class="form-control mb-2" input="text" name="dateInputHourly" id="datepickerHourly" width="276" placeholder="Click to Select Date" required  />
                </div>
 	<div class="col-auto">
-	        <select required class="form-control mb-2" name="loop" id="loop">
-        <option selected="selected">Select a Loop</option>
+	        <select class="form-control mb-2" name="loop" id="loop">
+        <option selected="selected" value="">Select a Loop</option>
                     <?php
                     foreach ($loopDropdown as $loop) { ?>
                         <option name="loop" value="<?= $loop->id ?>"><?= $loop->loops ?>
