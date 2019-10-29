@@ -12,14 +12,16 @@ function isAppLoggedIn(){
 if (!isAppLoggedIn()) {
     header("Location: ../index.php"); /* Redirect browser */
    exit();
-} 
+}
     require '../Database/connect.php';
+    require_once(dirname(__File__) . '/../Configuration/config.php');
     $_SESSION["Title"]="Stop Reports";
 
      $hourly = array();
     $entries = array();
     $input = "";
-
+    $loopDropdown = array();
+    $selectedLoop = "";
     $stop ="";
     $stopArray = array();
     $allBoarded = array();
@@ -29,23 +31,26 @@ if (!isAppLoggedIn()) {
     //if Filter By Hour is clicked
     if(isset($_POST['HourlyButton'])){
         $dateInputHourly = $_POST['dateInputHourly'];
+        $selectedLoop = $_POST['loop'];
+
         if($dateInputHourly != '') {
 
         $newDate = date("Y-m-d", strtotime($dateInputHourly));
         $entryDate = date("m-d-Y", strtotime($dateInputHourly));
 
-        populateStops($stopArray, $con, $newDate);
+        populateStops($stopArray, $con, $newDate, $selectedLoop);
 
         populateTableArray($allBoarded, $con, $newDate, $stopArray);
 
         }
         // header('Location: Entries.php');
-  
+
     }
+    $AccessLayer = new AccessLayer();
+    $loopDropdown = $AccessLayer->get_loops();
 
 
 
-    
 //--done----------------------------
 
     function showHourly(&$hourly, $con, $date, $stop){
@@ -61,7 +66,7 @@ if (!isAppLoggedIn()) {
             http_response_code(404);
             }
         }
-        
+
     }
 
 //-------------------
@@ -84,20 +89,20 @@ if (!isAppLoggedIn()) {
             }
         }
         return $hourly;
-    
+
     }
 
     //----------------------------
 
 // should be done --------------------
 
-    function populateStops(&$stopArray, $con, $date){
+    function populateStops(&$stopArray, $con, $date, $selectedLoop){
         $sql = sprintf("SELECT distinct `stops`.*, `stop_loop`.`stop`, `entries`.`date_added`
-        FROM `stops` 
-            LEFT JOIN `stop_loop` ON `stop_loop`.`stop` = `stops`.`id` 
+        FROM `stops`
+            LEFT JOIN `stop_loop` ON `stop_loop`.`stop` = `stops`.`id`
             LEFT JOIN `entries` ON `entries`.`stop` = `stops`.`id`
-        WHERE `entries`.`date_added` ='$date'");
-        
+        WHERE `entries`.`date_added` ='$date' AND `entries`.`loop` = '$selectedLoop'");
+
         if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($stopArray, $row);
@@ -105,7 +110,7 @@ if (!isAppLoggedIn()) {
             } else {
             http_response_code(404);
             }
-        
+
     }
 
     // -------------------------------
@@ -118,10 +123,10 @@ if (!isAppLoggedIn()) {
 
         $counter = 0;
         foreach($stopArray as $instance){
-           
+
             $allBoarded[$counter] = array();
             $hourly = populateHourly( $con, $date, $instance['stop']);
-            
+
             $allBoarded[$counter] = $hourly;
             $counter = $counter + 1;
 
@@ -154,7 +159,7 @@ if (!isAppLoggedIn()) {
 
 </form>
 
-   
+
 
 
 
@@ -166,7 +171,7 @@ if (!isAppLoggedIn()) {
 
 
 
-    
+
 
 <!-- Controls the selections for the hourly filter -->
 <div class="d-flex justify-content-center">
@@ -175,9 +180,18 @@ if (!isAppLoggedIn()) {
           <div class="col-auto">
                  <input class="form-control mb-2" input="text" name="dateInputHourly" id="datepickerHourly" width="276" placeholder="Click to Select Date" required  />
                </div>
-
+	<div class="col-auto">
+	        <select required class="form-control mb-2" name="loop" id="loop">
+        <option selected="selected">Select a Loop</option>
+                    <?php
+                    foreach ($loopDropdown as $loop) { ?>
+                        <option name="loop" value="<?= $loop->id ?>"><?= $loop->loops ?>
+                        </option>
+                    <?php
+                    } ?>
+                </select>
+	</div>
         <div class="col-auto">
-          
           <button type="submit" name="HourlyButton" class="btn btn-dark mb-2">Filter By Hour</button>
           <a href="#" id="xx" class="btn btn-dark mb-2">Export</a>
 
@@ -187,7 +201,7 @@ if (!isAppLoggedIn()) {
     </div>
     <!-- ends hourly selections control -->
 
-    
+
 
     <!-- Creates table for hourly -->
     <table id="editable_table" class="table table-bordered table-striped">
@@ -195,13 +209,13 @@ if (!isAppLoggedIn()) {
         <tr><th colspan="18"><?php echo $entryDate?></th></tr>
             <tr>
                 <th>Stops</th>
-                <?php 
-                $time = 7; 
+                <?php
+                $time = 7;
                 $AMOrPM = 'AM';
-                
+
                 for($i = 7; $i<24; $i=$i+1){ ?>
                     <td><?php echo "$time:00 - $time:59 $AMOrPM" ; ?></td>
-                    <?php 
+                    <?php
                         if($time == 11){
                             if($AMOrPM == 'AM'){
                                 $AMOrPM ='PM';
@@ -212,15 +226,15 @@ if (!isAppLoggedIn()) {
                         if($time == 12){
                             $time = 1;
 
-                            
+
                         }else{
                             $time = $time + 1;
                         }
-                    
+
                     ?>
-                <?php }  ?>          
-                
-                
+                <?php }  ?>
+
+
             </tr>
         </thead>
         <!-- ends table for hourly -->
@@ -229,38 +243,38 @@ if (!isAppLoggedIn()) {
     <!-- This adds the sql info the hourly display -->
         <?php $time = 12; ?>
         <tbody id="tbodyid" class="row_position">
-            <?php                
+            <?php
                $counter = 0;
                foreach($stopArray as $stop){ ?>
                     <td> <?php echo $stop['stops']; ?>
-                    <?php    
+                    <?php
                     for($i=7;$i<24;$i=$i+1){ ?>
-                    
+
 
                         <td> <?php echo 0 + $allBoarded[$counter][$i]['boarded'] ?> </td>
-                        
-                
 
-                        
-                            <?php 
+
+
+
+                            <?php
                         }
                         if($time == 12){
                             $time = 1;
                         }else{
                             $time = $time + 1;
                         }
-                        
+
                         $counter = $counter+1;
-                        
+
                         ?>
 
 
                     <!-- <td style="display:none;"><?php //echo $log['id']; ?></td> -->
                 </tr>
-                        <?php 
-                 
-                
-             } 
+                        <?php
+
+
+             }
 
              ?>
         </tbody>
@@ -308,27 +322,27 @@ function exportTableToCSV($table, filename) {
             .split(tmpRowDelim).join(rowDelim)
             .split(tmpColDelim).join(colDelim) + '"',
 
-        
+
 
         // Data URI
         csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
-        
+
         console.log(csv);
-        
+
         if (window.navigator.msSaveBlob) { // IE 10+
             //alert('IE' + csv);
             window.navigator.msSaveOrOpenBlob(new Blob([csv], {type: "text/plain;charset=utf-8;"}), "csvname.csv")
-        } 
+        }
         else {
-            $(this).attr({ 'download': filename, 'href': csvData, 'target': '_blank' }); 
+            $(this).attr({ 'download': filename, 'href': csvData, 'target': '_blank' });
         }
 }
 
 // This must be a hyperlink
 $("#xx").on('click', function (event) {
-    
+
     exportTableToCSV.apply(this, [$('#editable_table'), "<?php echo strval($entryDate) ?>" + ".csv"]);
-    
+
     // IF CSV, don't do event.preventDefault() or return false
     // We actually need this to be a typical hyperlink
 });
