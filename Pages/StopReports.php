@@ -79,8 +79,13 @@ if (!isAppLoggedIn()) {
         $hourly = array();
 
         for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `stop` = '$stop' and `loop`='$selectedLoop' and  `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
-            if($result = mysqli_query($con,$sql)) {
+             if($selectedLoop == "") {
+                 $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `stop` = '$stop' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            } else {
+                 $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `stop` = '$stop' and `loop`='$selectedLoop' and  `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            }
+
+	    if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
             }
