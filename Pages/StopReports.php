@@ -40,7 +40,7 @@ if (!isAppLoggedIn()) {
 
         populateStops($stopArray, $con, $newDate, $selectedLoop);
 
-        populateTableArray($allBoarded, $con, $newDate, $stopArray);
+        populateTableArray($allBoarded, $con, $newDate, $stopArray, $selectedLoop);
 
         }
         // header('Location: Entries.php');
@@ -73,13 +73,13 @@ if (!isAppLoggedIn()) {
 
 //---done--------------------
 
-    function populateHourly( $con, $date, $stop){
+    function populateHourly( $con, $date, $stop, $selectedLoop){
         $hour =  0;
 
         $hourly = array();
 
         for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `stop` = '$stop' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `stop` = '$stop' and `loop`='$selectedLoop' and  `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
@@ -121,12 +121,11 @@ if (!isAppLoggedIn()) {
             }
 
     }
-
     // -------------------------------
 
 //----------------------
 
-    function populateTableArray(&$allBoarded, $con, $date, $stopArray){
+    function populateTableArray(&$allBoarded, $con, $date, $stopArray, $selectedLoop){
 
         $hourly = array();
 
@@ -134,8 +133,7 @@ if (!isAppLoggedIn()) {
         foreach($stopArray as $instance){
 
             $allBoarded[$counter] = array();
-            $hourly = populateHourly( $con, $date, $instance['stop']);
-
+            $hourly = populateHourly( $con, $date, $instance['stop'], $selectedLoop);
             $allBoarded[$counter] = $hourly;
             $counter = $counter + 1;
 
