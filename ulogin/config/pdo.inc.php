@@ -8,7 +8,7 @@
 // ------------------------------------------------
 
 // Connection string to use for connecting to a PDO database.
-define('UL_PDO_CON_STRING', 'mysql:host=localhost;dbname=test284829');
+define('UL_PDO_CON_STRING', 'mysql:host=localhost;dbname=busdb');
 // Example for SQLite: 
 //define('UL_PDO_CON_STRING', 'sqlite:/path/to/db.sqlite');
 

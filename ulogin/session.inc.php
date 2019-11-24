@@ -343,6 +343,7 @@ class ulSessionManager
 		session_write_close();
     self::$SessionStore = NULL;
 		self::$SessionRunning = false;
+		return false;
 	}
 
 	private static function EnsureStorage()

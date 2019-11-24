@@ -205,6 +205,7 @@ class ulPdoSessionStorage
 			ul_db_fail('Session management error.');
 			return false;
 		}
+		return true;
 	}
 
 	public function destroy($id)

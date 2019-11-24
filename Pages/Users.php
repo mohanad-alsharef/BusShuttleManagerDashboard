@@ -125,7 +125,7 @@ $(document).on('submit', '#form', function() {
     var form_data = JSON.stringify(form.serializeObject());
 
     $.ajax({
-        url: "http://localhost/api/create_user.php",
+        url: "http://localhost/BusShuttleAPI/api/create_user.php",
         type: "POST",
         contentType: 'application/json',
         data: form_data,
