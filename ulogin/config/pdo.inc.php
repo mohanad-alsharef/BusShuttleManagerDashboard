@@ -40,33 +40,33 @@ define('UL_PDO_CON_INIT_QUERY', "");
 // Database user with SELECT access to the
 // logins table.
 define('UL_PDO_AUTH_USER', 'root');
-define('UL_PDO_AUTH_PWD', '');
+define('UL_PDO_AUTH_PWD', DB_PASSWORD);
 
 // LOGIN UPDATE
 // Used to add new and modify login data.
 // Database user with SELECT, UPDATE and INSERT access to the
 // logins table.
 define('UL_PDO_UPDATE_USER', 'root');
-define('UL_PDO_UPDATE_PWD', '');
+define('UL_PDO_UPDATE_PWD', DB_PASSWORD);
 
 // LOGIN DELETE
 // Used to remove logins.
 // Database user with SELECT and DELETE access to the
 // logins table
 define('UL_PDO_DELETE_USER', 'root');
-define('UL_PDO_DELETE_PWD', '');
+define('UL_PDO_DELETE_PWD', DB_PASSWORD);
 
 // SESSION
 // Database user with SELECT, UPDATE and DELETE permissions to the
 // sessions and nonces tables.
 define('UL_PDO_SESSIONS_USER', 'root');
-define('UL_PDO_SESSIONS_PWD', '');
+define('UL_PDO_SESSIONS_PWD', DB_PASSWORD);
 
 // LOG
 // Used to log events and analyze previous activity.
 // Database user with SELECT, INSERT and DELETE access to the
 // logins-log table.
 define('UL_PDO_LOG_USER', 'root');
-define('UL_PDO_LOG_PWD', '');
+define('UL_PDO_LOG_PWD', DB_PASSWORD);
 
 ?>

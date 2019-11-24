@@ -149,6 +149,15 @@ class AccessLayer
     $this->query($sql);
   }
 
+
+  public function restore_stop($stopID)
+  {
+    $sql = sprintf("UPDATE stops SET is_deleted=0 WHERE id='$stopID'");
+    $this->query($sql);
+    $sql = sprintf("UPDATE stop_loop SET is_deleted=0 WHERE `stop`='$stopID'");
+    $this->query($sql);
+  }
+
   public function update_stop($stopID, $stopName)
   {
     $sql = sprintf("UPDATE stops SET stops='$stopName'WHERE id='$stopID'");

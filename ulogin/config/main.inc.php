@@ -11,7 +11,7 @@ require_once(dirname(__FILE__) . '/../../config.php');
 // fetch your website, without the protocol specifier (don't use 'http(s)://').
 // For development on the local machine, use 'localhost'.
 // Takes the same format as the 'domain' parameter of the PHP setcookie function.
-define('UL_DOMAIN', 'localhost');
+define('UL_DOMAIN', UL_DOMAIN_GLOBAL);
 
 // Set to the path of the "ulogin" directory containing the source files.
 // Do not use a trailing slash.
@@ -47,7 +47,7 @@ define('UL_AUTH_BACKEND', 'ulPdoLoginBackend');
 // It is highly recommended to enable this, but to prevent
 // warnings to the user, a correct web server certificate
 // must be installed on the server.
-define('UL_HTTPS', false);
+define('UL_HTTPS', UL_USES_HTTPS);
 
 // Enable HTTP Strict Transport Security.
 // If enabled and supported by the client's browser,
