@@ -15,8 +15,10 @@ if (!isAppLoggedIn()) {
    exit();
 } 
 require ('../Model/User.php');
-//include the configuration
-require_once(dirname(__FILE__) . '/../Configuration/config.php');
+
+require_once(dirname(__FILE__) . '/../config.php');
+require_once(dirname(__FILE__) . '/../DataLink/AccessLayer.php');
+
 $_SESSION["Title"]="Drivers";
 
 $userNames = array();
@@ -125,7 +127,7 @@ $(document).on('submit', '#form', function() {
     var form_data = JSON.stringify(form.serializeObject());
 
     $.ajax({
-        url: "http://localhost/BusShuttleAPI/api/create_user.php",
+        url: '<?php echo BASE_API_URL;?>create_user.php',
         type: "POST",
         contentType: 'application/json',
         data: form_data,

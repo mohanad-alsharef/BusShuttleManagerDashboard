@@ -1,5 +1,7 @@
 <?php
 
+require_once(dirname(__FILE__) . '/../../config.php');
+
 // TODO: change user names and passwords back to "CHANGE ME!!!"
 // TODO: rename dbname back to ulogin
 
@@ -8,7 +10,7 @@
 // ------------------------------------------------
 
 // Connection string to use for connecting to a PDO database.
-define('UL_PDO_CON_STRING', 'mysql:host=localhost;dbname=busdb');
+define('UL_PDO_CON_STRING', 'mysql:host=localhost;dbname='.DB_DBNAME);
 // Example for SQLite: 
 //define('UL_PDO_CON_STRING', 'sqlite:/path/to/db.sqlite');
 

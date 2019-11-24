@@ -1,8 +1,7 @@
 <?php
 require ('../Model/User.php');
-//include the configuration
-require_once(dirname(__FILE__) . '/../Configuration/config.php');
 
+require_once(dirname(__FILE__) . '/../DataLink/AccessLayer.php');
 
 //instance of AccessLayer
 $AccessLayer = new AccessLayer();

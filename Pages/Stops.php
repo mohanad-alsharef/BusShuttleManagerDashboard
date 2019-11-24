@@ -13,8 +13,9 @@ if (!isAppLoggedIn()) {
     header("Location: ../index.php"); /* Redirect browser */
    exit();
 } 
-//include the configuration
-require_once(dirname(__FILE__) . '/../Configuration/config.php');
+
+require_once(dirname(__FILE__) . '/../DataLink/AccessLayer.php');
+
 $_SESSION["Title"]="Stops";
 
 $input = "";

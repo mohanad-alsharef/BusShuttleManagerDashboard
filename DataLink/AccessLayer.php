@@ -1,4 +1,7 @@
 <?php
+
+require_once(dirname(__FILE__) . '/../config.php');
+
 include_once('../Model/User.php');
 
 class AccessLayer
@@ -8,10 +11,10 @@ class AccessLayer
 
   public function dbconnect()
   {
-    $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_DB)
+    $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_DBNAME)
       or die("<br/>Coule not connect to MYSQL Server");
 
-    // mysqli_select_db($conn, DB_DB)
+    // mysqli_select_db($conn, DB_DBNAME)
     //     or die("<br/>Could not select the indicated database");
 
     return $conn;

@@ -14,8 +14,9 @@ if (!isAppLoggedIn()) {
    exit();
 } 
 require '../Database/connect.php';
-//include the configuration
-require_once(dirname(__FILE__) . '/../Configuration/config.php');
+
+require_once(dirname(__FILE__) . '/../DataLink/AccessLayer.php');
+
 $_SESSION["Title"] = "Entries in the Database";
 
 

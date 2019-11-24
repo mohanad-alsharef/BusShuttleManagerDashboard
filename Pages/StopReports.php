@@ -14,7 +14,9 @@ if (!isAppLoggedIn()) {
    exit();
 }
     require '../Database/connect.php';
-    require_once(dirname(__File__) . '/../Configuration/config.php');
+
+    require_once(dirname(__FILE__) . '/../DataLink/AccessLayer.php');
+
     $_SESSION["Title"]="Stop Reports";
 
      $hourly = array();

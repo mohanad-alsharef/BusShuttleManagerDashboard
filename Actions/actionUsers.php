@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . '/../Configuration/config.php');
+require_once(dirname(__FILE__) . '/../DataLink/AccessLayer.php');
 
 $input = filter_input_array(INPUT_POST);
 
