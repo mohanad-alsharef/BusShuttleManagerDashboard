@@ -17,14 +17,14 @@ class ulUtils
 			$bytes = fread($hRand, $count);
 			fclose($hRand);
 		}
-    if((strlen($bytes) < $count) && function_exists('mcrypt_create_iv'))
+    if((strlen($bytes) < $count) /*&& function_exists('mcrypt_create_iv')*/)
     {
         // Use MCRYPT_RAND on Windows hosts with PHP < 5.3.7, otherwise use MCRYPT_DEV_URANDOM
         // (http://bugs.php.net/55169).
-        if ((version_compare(PHP_VERSION, '5.3.7', '<') && strncasecmp(PHP_OS, 'WIN', 3) == 0))
-          $bytes = mcrypt_create_iv($count, MCRYPT_RAND);
-        else
-          $bytes = mcrypt_create_iv($count, MCRYPT_DEV_URANDOM);
+        //if ((version_compare(PHP_VERSION, '5.3.7', '<') && strncasecmp(PHP_OS, 'WIN', 3) == 0))
+          $bytes = random_bytes($count);
+        //else
+        //  $bytes = mcrypt_create_iv($count, MCRYPT_DEV_URANDOM);
     }
     if((strlen($bytes) < $count) && function_exists('openssl_random_pseudo_bytes'))  // OpenSSL slow on Win
     {
