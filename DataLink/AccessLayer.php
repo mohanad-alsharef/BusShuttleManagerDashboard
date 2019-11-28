@@ -201,9 +201,38 @@ class AccessLayer
 
   // Entries
   public function get_entries_by_date_and_loopID($dateAdded, $loopID) {
-    $sql = sprintf("SELECT * FROM `entries` WHERE `date_added`='$dateAdded' AND `loop`= '$loopID'  ORDER BY `t_stamp` DESC");
-    return $this->query($sql);
-  } 
+    $sql = sprintf("SELECT * FROM (SELECT DISTINCT CONCAT(`boarded`,'_',`stop`,'_',`t_stamp`,'_',`date_added`,'_',`loop`,'_',`driver`,'_',`left_behind`,'_',`bus_identifier`) duplicate_entry, `boarded`,`stop`,`t_stamp`,`date_added`,`loop`,`driver`,`left_behind`,`bus_identifier` FROM entries) AS new_entries WHERE `date_added`='$dateAdded' AND `loop`= '$loopID'  ORDER BY `t_stamp` DESC");
+    $aux_result = $this->query($sql);
+//    $result = $this->remove_duplicate_entries($aux_result); // ALTERNATIVE in PHP code
+    return $aux_result;
+  }
+
+  // ALTERNATIVE eliminate duplicate entries here - TEMPORARY SOLUTION FOR ISSUE #18 in driver app
+  // duplicate entry looks like everything is same except the IDs
+  public function remove_duplicate_entries($entries) {
+    $result = array();
+
+    foreach($entries as $entry) {
+      $found = false;
+      foreach($result as $new_entry) {
+        if($entry->boarded==$new_entry->boarded
+          && $entry->left_behind==$new_entry->left_behind
+          && $entry->stop==$new_entry->stop
+          && $entry->t_stamp==$new_entry->t_stamp
+          && $entry->date_added==$new_entry->date_added
+          && $entry->loop==$new_entry->loop
+          && $entry->driver==$new_entry->driver
+          && $entry->bus_identifier==$new_entry->bus_identifier) {
+            $found = true;
+          }
+      }
+      if($found==false) {
+        $result[] = $entry;
+      }
+    }
+
+    return $result;
+  }
 
   public function update_entries_boarded_and_leftbehind($boarded, $leftBehind, $entryID) {
     $sql = sprintf("UPDATE entries SET boarded='$boarded', left_behind='$leftBehind' WHERE id='$entryID'");
