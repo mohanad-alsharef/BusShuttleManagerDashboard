@@ -6,6 +6,11 @@ include_once('../Model/User.php');
 
 class AccessLayer
 {
+  public $drivers = [];
+  public $stops = [];
+  public $loops = [];
+  public $buses = [];
+
   public function __construct()
   { }
 
@@ -78,8 +83,12 @@ class AccessLayer
   }
 
   public function get_user_name($userID){
+    if(array_key_exists($userID,$this->drivers)) {
+      return $this->drivers[$userID];
+    }
     $sql = sprintf("SELECT firstname,lastname FROM users WHERE id=$userID");
-    return $this->query($sql);
+    $this->drivers[$userID] = $this->query($sql);
+    return $this->drivers[$userID];
   }
 
   // Loops
@@ -118,8 +127,12 @@ class AccessLayer
   }
 
   public function get_loop_name($loopID){
+    if(array_key_exists($loopID,$this->loops)) {
+      return $this->loops[$loopID];
+    }
     $sql = sprintf("SELECT loops FROM loops WHERE is_deleted='0' AND id=$loopID");
-    return $this->query($sql);
+    $this->loops[$loopID] = $this->query($sql);
+    return $this->loops[$loopID];
   }
 
   // Stops
@@ -165,8 +178,12 @@ class AccessLayer
   }
 
   public function get_stop_name($stopID) {
+    if(array_key_exists($stopID,$this->stops)) {
+      return $this->stops[$stopID];
+    }
     $sql = sprintf("SELECT stops FROM stops WHERE is_deleted='0' AND id=$stopID");
-    return $this->query($sql);
+    $this->stops[$stopID] = $this->query($sql);
+    return $this->stops[$stopID];
   }
 
   // Buses
@@ -195,16 +212,27 @@ class AccessLayer
   }
 
   public function get_bus_name($busID) {
+    if(array_key_exists($busID,$this->buses)) {
+      return $this->buses[$busID];
+    }
     $sql = sprintf("SELECT busIdentifier FROM buses WHERE is_deleted='0' AND id=$busID");
-    return $this->query($sql);
+    $this->buses[$busID] = $this->query($sql);
+    return $this->buses[$busID];
   }
 
   // Entries
   public function get_entries_by_date_and_loopID($dateAdded, $loopID) {
-    $sql = sprintf("SELECT * FROM (SELECT DISTINCT CONCAT(`boarded`,'_',`stop`,'_',`t_stamp`,'_',`date_added`,'_',`loop`,'_',`driver`,'_',`left_behind`,'_',`bus_identifier`) duplicate_entry, `boarded`,`stop`,`t_stamp`,`date_added`,`loop`,`driver`,`left_behind`,`bus_identifier` FROM entries) AS new_entries WHERE `date_added`='$dateAdded' AND `loop`= '$loopID'  ORDER BY `t_stamp` DESC");
+    $sql = sprintf("SELECT * FROM `entries` WHERE `date_added`='$dateAdded' AND `loop`= '$loopID'  ORDER BY `t_stamp` DESC");
     $aux_result = $this->query($sql);
-//    $result = $this->remove_duplicate_entries($aux_result); // ALTERNATIVE in PHP code
-    return $aux_result;
+    $result = $this->remove_duplicate_entries($aux_result); // ALTERNATIVE in PHP code
+    return $result;
+  }
+
+  public function get_entries_by_date($dateAdded) {
+    $sql = sprintf("SELECT * FROM `entries` WHERE `date_added`='$dateAdded' ORDER BY `t_stamp` DESC");
+    $aux_result = $this->query($sql);
+    $result = $this->remove_duplicate_entries($aux_result); // ALTERNATIVE in PHP code
+    return $result;
   }
 
   // ALTERNATIVE eliminate duplicate entries here - TEMPORARY SOLUTION FOR ISSUE #18 in driver app
