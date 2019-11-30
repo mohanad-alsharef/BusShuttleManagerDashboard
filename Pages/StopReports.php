@@ -59,7 +59,8 @@ if (!isAppLoggedIn()) {
         $hour =  0;
 
         for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from (SELECT DISTINCT CONCAT(`boarded`,'_',`stop`,'_',`t_stamp`,'_',`date_added`,'_',`loop`,'_',`driver`,'_',`left_behind`,'_',`bus_identifier`) duplicate_entry, `boarded`,`stop`,`t_stamp`,`date_added`,`loop`,`driver`,`left_behind`,`bus_identifier` FROM entries) AS new_entries where `stop` = '$stop' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `stop` = '$stop' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+            //$sql = sprintf("SELECT SUM(`boarded`) as `boarded` from (SELECT DISTINCT CONCAT(`boarded`,'_',`stop`,'_',`t_stamp`,'_',`date_added`,'_',`loop`,'_',`driver`,'_',`left_behind`,'_',`bus_identifier`) duplicate_entry, `boarded`,`stop`,`t_stamp`,`date_added`,`loop`,`driver`,`left_behind`,`bus_identifier` FROM entries) AS new_entries where `stop` = '$stop' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             if($result = mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($result)) {
                 array_push($hourly, $row);
@@ -82,9 +83,11 @@ if (!isAppLoggedIn()) {
 
         for($hour=0; $hour<24; $hour++){
              if($selectedLoop == "") {
-                 $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from (SELECT DISTINCT CONCAT(`boarded`,'_',`stop`,'_',`t_stamp`,'_',`date_added`,'_',`loop`,'_',`driver`,'_',`left_behind`,'_',`bus_identifier`) duplicate_entry, `boarded`,`stop`,`t_stamp`,`date_added`,`loop`,`driver`,`left_behind`,`bus_identifier` FROM entries) AS new_entries where `stop` = '$stop' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+                $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `stop` = '$stop' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+                 //$sql = sprintf("SELECT SUM(`boarded`) as `boarded` from (SELECT DISTINCT CONCAT(`boarded`,'_',`stop`,'_',`t_stamp`,'_',`date_added`,'_',`loop`,'_',`driver`,'_',`left_behind`,'_',`bus_identifier`) duplicate_entry, `boarded`,`stop`,`t_stamp`,`date_added`,`loop`,`driver`,`left_behind`,`bus_identifier` FROM entries) AS new_entries where `stop` = '$stop' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             } else {
-                 $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from (SELECT DISTINCT CONCAT(`boarded`,'_',`stop`,'_',`t_stamp`,'_',`date_added`,'_',`loop`,'_',`driver`,'_',`left_behind`,'_',`bus_identifier`) duplicate_entry, `boarded`,`stop`,`t_stamp`,`date_added`,`loop`,`driver`,`left_behind`,`bus_identifier` FROM entries) AS new_entries where `stop` = '$stop' and `loop`='$selectedLoop' and  `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+                $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `stop` = '$stop' and `loop`='$selectedLoop' and  `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
+                //$sql = sprintf("SELECT SUM(`boarded`) as `boarded` from (SELECT DISTINCT CONCAT(`boarded`,'_',`stop`,'_',`t_stamp`,'_',`date_added`,'_',`loop`,'_',`driver`,'_',`left_behind`,'_',`bus_identifier`) duplicate_entry, `boarded`,`stop`,`t_stamp`,`date_added`,`loop`,`driver`,`left_behind`,`bus_identifier` FROM entries) AS new_entries where `stop` = '$stop' and `loop`='$selectedLoop' and  `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
             }
 
 	    if($result = mysqli_query($con,$sql)) {
