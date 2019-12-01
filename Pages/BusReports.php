@@ -43,41 +43,27 @@ if (!isAppLoggedIn()) {
   
     }
 
-    function showHourly(&$hourly, $con, $date, $bus){
-        $hour =  0;
-
-        for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `bus_identifier` = '$bus' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
-            //$sql = sprintf("SELECT SUM(`boarded`) as `boarded` from (SELECT DISTINCT CONCAT(`boarded`,'_',`stop`,'_',`t_stamp`,'_',`date_added`,'_',`loop`,'_',`driver`,'_',`left_behind`,'_',`bus_identifier`) duplicate_entry, `boarded`,`stop`,`t_stamp`,`date_added`,`loop`,`driver`,`left_behind`,`bus_identifier` FROM entries) AS new_entries where `bus_identifier` = '$bus' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
-            if($result = mysqli_query($con,$sql)) {
-            while($row = mysqli_fetch_assoc($result)) {
-                array_push($hourly, $row);
-            }
-            } else {
-            http_response_code(404);
-            }
-        }
-        
-    }
-
     function populateHourly( $con, $date, $bus){
         $hour =  0;
 
-        $hourly = array();
-
+        $new_hourly = array();
         for($hour=0; $hour<24; $hour++){
-            $sql = sprintf("SELECT SUM(`boarded`) as `boarded` from `entries` where `bus_identifier` = '$bus' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
-            //$sql = sprintf("SELECT SUM(`boarded`) as `boarded` from (SELECT DISTINCT CONCAT(`boarded`,'_',`stop`,'_',`t_stamp`,'_',`date_added`,'_',`loop`,'_',`driver`,'_',`left_behind`,'_',`bus_identifier`) duplicate_entry, `boarded`,`stop`,`t_stamp`,`date_added`,`loop`,`driver`,`left_behind`,`bus_identifier` FROM entries) AS new_entries where `bus_identifier` = '$bus' and `t_stamp` BETWEEN '$date $hour:00:00' and '$date $hour:59:59'");
-            if($result = mysqli_query($con,$sql)) {
-            while($row = mysqli_fetch_assoc($result)) {
-                array_push($hourly, $row);
-            }
-            } else {
-            http_response_code(404);
-            }
+            $new_hourly[$hour] = 0;
         }
-        return $hourly;
-    
+
+        $sql = sprintf("SELECT * from (SELECT DISTINCT CONCAT(`boarded`,'_',`stop`,'_',`t_stamp`,'_',`date_added`,'_',`loop`,'_',`driver`,'_',`left_behind`,'_',`bus_identifier`) duplicate_entry, `boarded`,`stop`,`t_stamp`,`date_added`,`loop`,`driver`,`left_behind`,`bus_identifier` FROM entries) AS new_entries where `bus_identifier` = '$bus' and `date_added` = '$date'");
+
+        if($big_result =  mysqli_query($con,$sql)) {
+            while($row = mysqli_fetch_assoc($big_result)) {
+                $hourOfTheEntry = explode(":",explode(" ",$row['t_stamp'])[1])[0];
+                $boarded = $row['boarded'];
+                $new_hourly[intval($hourOfTheEntry)]+=intval($boarded);
+            }
+        } else {
+            http_response_code(404);
+        }
+
+        return $new_hourly;
     }
 
     function populateBuses(&$busArray, $con, $date){
@@ -222,7 +208,7 @@ if (!isAppLoggedIn()) {
                     for($i=7;$i<24;$i=$i+1){ ?>
                     
 
-                        <td> <?php echo 0 + $allBoarded[$counter][$i]['boarded'] ?> </td>
+                        <td> <?php echo 0 + $allBoarded[$counter][$i] ?> </td>
                         
                 
 
