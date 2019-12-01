@@ -51,7 +51,7 @@ if (!isAppLoggedIn()) {
             $new_hourly[$hour] = 0;
         }
 
-        $sql = sprintf("SELECT * from (SELECT DISTINCT CONCAT(`boarded`,'_',`stop`,'_',`t_stamp`,'_',`date_added`,'_',`loop`,'_',`driver`,'_',`left_behind`,'_',`bus_identifier`) duplicate_entry, `boarded`,`stop`,`t_stamp`,`date_added`,`loop`,`driver`,`left_behind`,`bus_identifier` FROM entries) AS new_entries where `bus_identifier` = '$bus' and `t_stamp` LIKE '$date%%'");
+        $sql = sprintf("SELECT DISTINCT `boarded`,`stop`,`t_stamp`,`loop`,`driver`,`left_behind`,`bus_identifier` FROM `entries` where `bus_identifier` = '$bus' and `t_stamp` LIKE '$date%%'");
 
         if($big_result =  mysqli_query($con,$sql)) {
             while($row = mysqli_fetch_assoc($big_result)) {
