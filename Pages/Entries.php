@@ -144,6 +144,7 @@ require '../themepart/pageContentHolder.php';
             url: '../Actions/actionEntries.php',
             hideIdentifier: true,
             deleteButton: false,
+            editButton: false,
             columns: {
                 identifier: [8, 'id'],
                 editable: [
