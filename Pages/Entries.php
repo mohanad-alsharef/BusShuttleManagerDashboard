@@ -140,6 +140,7 @@ require '../themepart/pageContentHolder.php';
 <script>
     $(document).ready(function() {
         
+        /*
         $('#editable_table').Tabledit({
             url: '../Actions/actionEntries.php',
             hideIdentifier: true,
@@ -153,6 +154,7 @@ require '../themepart/pageContentHolder.php';
                 ]
             }
         });
+        */
         $('#loadingTable').removeAttr("style");
         $('#loadingMessage').hide();
         $('#submitButton').prop('disabled', false)
