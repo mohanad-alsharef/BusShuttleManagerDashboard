@@ -92,12 +92,6 @@ function appLogout()
 
             <ul class="list-unstyled CTAs">
                 <li>
-                    <a href="https://pbuslog01.aws.bsu.edu" class="download">Driver App</a>
-                </li>
-                <li>
-                    <a href="../Pages/Feedback.php" class="article">Find a Bug?</a>
-                </li>
-                <li>
                     <form action="../index.php" method="POST"><input type="hidden" name="action" value="logout"><input id="test" class="btn btn-block btn-light" type="submit" value="Logout"></form>
                 </li>
             </ul>
