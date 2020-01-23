@@ -64,6 +64,9 @@ function appLogout()
                         <li>
                             <a href="../Pages/Buses.php">Buses</a>
                         </li>
+                        <li>
+                            <a href="../Pages/Inspection_items.php">Inspection Items</a>
+                        </li>
                     </ul>
                     <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">View Reports</a>
                     <ul class="collapse list-unstyled" id="reportSubmenu">

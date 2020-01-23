@@ -10,6 +10,7 @@ class AccessLayer
   public $stops = [];
   public $loops = [];
   public $buses = [];
+  public $Inspection_items = [];
 
   public function __construct()
   { }
@@ -218,6 +219,40 @@ class AccessLayer
     $sql = sprintf("SELECT busIdentifier FROM buses WHERE is_deleted='0' AND id=$busID");
     $this->buses[$busID] = $this->query($sql);
     return $this->buses[$busID];
+  }
+
+  //inspection_items_list
+  public function get_inspection_items()
+  {
+    $sql = sprintf("SELECT * FROM inspection_items_list WHERE is_deleted='0' ORDER BY inspection_item_name ASC");
+    return $this->query($sql);
+  }
+
+  public function add_inspection_items($InspectionItemsName)
+  {
+    $sql = sprintf("INSERT INTO `inspection_items_list`(`inspection_item_name`) VALUES ( '$InspectionItemsName' )");
+    $results = $this->query($sql);
+  }
+
+  public function remove_inspection_items($InspectionItemID)
+  {
+    $sql = sprintf("UPDATE inspection_items_list SET is_deleted=1 WHERE id='$InspectionItemID'");
+    $results = $this->query($sql);
+  }
+
+  public function update_inspection_items($InspectionItemID, $InspectionItemsName)
+  {
+    $sql = sprintf("UPDATE inspection_items_list SET inspection_item_name='$InspectionItemsName'WHERE id='$InspectionItemID'");
+    $results = $this->query($sql);
+  }
+
+  public function get_inspection_items_name($InspectionItemID) {
+    if(array_key_exists($InspectionItemID,$this->inspection_items_list)) {
+      return $this->inspection_items_list[$InspectionItemID];
+    }
+    $sql = sprintf("SELECT inspection_items_name FROM inspection_items_list WHERE is_deleted='0' AND id=$InspectionItemID");
+    $this->inspection_items_list[$InspectionItemID] = $this->query($sql);
+    return $this->inspection_items_list[$InspectionItemID];
   }
 
   // Entries
