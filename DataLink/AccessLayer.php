@@ -255,6 +255,42 @@ class AccessLayer
     return $this->inspection_items_list[$InspectionItemID];
   }
 
+  // inspection reports
+  public function get_inspection_reports_by_date_and_loopID($dateAdded, $loopID) {
+    $sql = sprintf("SELECT * FROM `inspection_report` WHERE `date_added`='$dateAdded' AND `loop`= '$loopID'  ORDER BY `t_stamp` DESC");
+    $aux_result = $this->query($sql);
+    $result = $this->remove_duplicate_inspection_reports($aux_result); // ALTERNATIVE in PHP code
+    return $result;
+  }
+
+  public function remove_duplicate_inspection_reports($inspection_report) {
+    $result = array();
+
+    foreach($inspection_report as $report) {
+      $found = false;
+      foreach($result as $new_report) {
+        if($report->driver==$new_report->driver
+          && $report->pre_trip_inspection==$new_report->pre_trip_inspection
+          && $report->post_trip_inspection==$new_report->post_trip_inspection
+          && $report->beginning_hours==$new_report->beginning_hours
+          && $report->ending_hours==$new_report->ending_hours
+          && $report->starting_mileage==$new_report->starting_mileage
+          && $report->ending_mileage==$new_report->ending_mileage
+          && $report->t_stamp==$new_report->t_stamp
+          && $report->date_added==$new_report->date_added
+          && $report->loop==$new_report->loop
+          && $report->bus_identifier==$new_report->bus_identifier) {
+            $found = true;
+          }
+      }
+      if($found==false) {
+        $result[] = $report;
+      }
+    }
+
+    return $result;
+  }
+
   // Entries
   public function get_entries_by_date_and_loopID($dateAdded, $loopID) {
     $sql = sprintf("SELECT * FROM `entries` WHERE `date_added`='$dateAdded' AND `loop`= '$loopID'  ORDER BY `t_stamp` DESC");

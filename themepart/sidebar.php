@@ -89,6 +89,9 @@ function appLogout()
                         <li>
                             <a href="../Pages/LeftBehindBusReports.php">Left Behind Bus Reports</a>
                         </li>
+                        <li>
+                            <a href="../Pages/InspectionReports.php">Inspection Reports</a>
+                        </li>
                     </ul>
                 </li>
             </ul>
