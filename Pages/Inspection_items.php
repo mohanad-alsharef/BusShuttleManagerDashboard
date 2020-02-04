@@ -21,6 +21,7 @@ $_SESSION["Title"]="Inspection Items";
 $input = "";
 $results;
 
+
 if(isset($_POST['SubmitButton'])){
   $input = $_POST['inputText'];
   if($input != '') {
@@ -77,16 +78,16 @@ require '../themepart/pageContentHolder.php';
      <thead>
       <tr>
        <th>Inspection Item</th>
-       <th>Pre-Trip Inspection</th>
-       <th>Post-Trip Inspection</th>
+       <th>Pre-Inspection</th>
+       <th>Post-Inspection</th>
       </tr>
      </thead>
      <tbody>
      <?php foreach ($results as $Inspection_items): ?>
           <tr>
             <td><?php echo $Inspection_items->inspection_item_name; ?></td>
-            <td><?php echo $Inspection_items->pre_trip_inspection; ?></td>
-            <td><?php echo $Inspection_items->post_trip_inspection; ?></td>
+            <td><input type="checkbox" name="type[]" id=pre[] checked="true"></td>
+            <td><input type="checkbox" name="type[]" id=pro[] checked="false"></td>
             <td style="display:none;"><?php echo $Inspection_items->id; ?></td>
           </tr>
         <?php endforeach; ?>
@@ -96,12 +97,16 @@ require '../themepart/pageContentHolder.php';
 </body>
 <script>
 $(document).ready(function(){
+  //testing table creation
+  
+  
   $('#editable_table').Tabledit({
     url: '../Actions/actionInspection_items.php',
     columns: {
-        identifier: [1, 'id'],
+        identifier: [3, 'id'],
         editable: [[0,'inspection_item_name']]
-    }
+    },
+ 
   });
 });
 
