@@ -259,11 +259,21 @@ class AccessLayer
   }
 
   public function get_inspection_items_name($InspectionItemID) {
+<<<<<<< HEAD
     if(array_key_exists($InspectionItemID,$this->Inspection_items)) {
       return $this->Inspection_items[$InspectionItemID];
     }
     $sql = sprintf("SELECT inspection_items_name FROM inspection_items_list WHERE id=$InspectionItemID");
     $this->Inspection_items[$InspectionItemID] = $this->query($sql);
+=======
+    if(array_key_exists($InspectionItemID,$this->Inspection_items)) {    
+      return $this->Inspection_items[$InspectionItemID];
+    }
+
+    $sql = sprintf("SELECT inspection_items_name FROM inspection_items_list WHERE is_deleted='0' AND id=$InspectionItemID");
+    $result = $this->query($sql);
+    $this->Inspection_items[$InspectionItemID] = $result[0]->inspection_items_name;
+>>>>>>> e189b9aaa5f850ea17997e6ed59f536411b3f3ce
     return $this->Inspection_items[$InspectionItemID];
   }
 
