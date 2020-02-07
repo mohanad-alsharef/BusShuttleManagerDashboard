@@ -228,9 +228,9 @@ class AccessLayer
     return $this->query($sql);
   }
 
-  public function add_inspection_items($InspectionItemsName)
+  public function add_inspection_items($InspectionItemsName, $Pre, $Post)
   {
-    $sql = sprintf("INSERT INTO `inspection_items_list`(`inspection_item_name`) VALUES ( '$InspectionItemsName' )");
+    $sql = sprintf("INSERT INTO `inspection_items_list`(`inspection_item_name`, `pre_trip_inspection`, `post_trip_inspection`) VALUES ( '$InspectionItemsName', '$Pre', '$Post')");
     $results = $this->query($sql);
   }
 
@@ -246,13 +246,25 @@ class AccessLayer
     $results = $this->query($sql);
   }
 
+  public function update_pre_checkbox ($InspectionItemID, $pre_item)
+  {
+    $sql = sprintf("UPDATE inspection_items_list SET pre_trip_inspection = '$pre_item'WHERE id='$InspectionItemID'");
+    $results = $this->query($sql); 
+  }
+
+  public function update_post_checkbox ($InspectionItemID, $type)
+  {
+    $sql = sprintf("UPDATE inspection_items_list SET post_trip_inspection = '$post_item'WHERE id='$InspectionItemID'");
+    $results = $this->query($sql); 
+  }
+
   public function get_inspection_items_name($InspectionItemID) {
-    if(array_key_exists($InspectionItemID,$this->inspection_items_list)) {
-      return $this->inspection_items_list[$InspectionItemID];
+    if(array_key_exists($InspectionItemID,$this->Inspection_items)) {
+      return $this->Inspection_items[$InspectionItemID];
     }
-    $sql = sprintf("SELECT inspection_items_name FROM inspection_items_list WHERE is_deleted='0' AND id=$InspectionItemID");
-    $this->inspection_items_list[$InspectionItemID] = $this->query($sql);
-    return $this->inspection_items_list[$InspectionItemID];
+    $sql = sprintf("SELECT inspection_items_name FROM inspection_items_list WHERE id=$InspectionItemID");
+    $this->Inspection_items[$InspectionItemID] = $this->query($sql);
+    return $this->Inspection_items[$InspectionItemID];
   }
 
   // inspection reports
