@@ -9,6 +9,8 @@ function isAppLoggedIn(){
 	return isset($_SESSION['uid']) && isset($_SESSION['username']) && isset($_SESSION['loggedIn']) && ($_SESSION['loggedIn']===true);
 }
 
+
+
 if (!isAppLoggedIn()) {
     header("Location: ../index.php"); /* Redirect browser */
    exit();
@@ -49,6 +51,21 @@ function makeList(&$inspection_report, $date, $loopID)
     $AccessLayer = new AccessLayer();
     $inspection_report = $AccessLayer->get_inspection_reports_by_date_and_loopID($date, $loopID);
 }
+
+function parse_Inspection_Items($s){
+    $AccessLayer = new AccessLayer();
+    $str_arr =  explode(",", $s);  
+    $new_arr=[];
+    
+    foreach($str_arr as $value){
+        $name = $AccessLayer->get_inspection_items_name($value);
+        array_push($new_arr, $name);
+    }
+    $List = implode(', ', $new_arr);
+    
+    return $List;
+}
+
 ?>
 <?php
 require '../themepart/resources.php';
@@ -99,17 +116,17 @@ require '../themepart/pageContentHolder.php';
     <table id="editable_table"  class="table table-bordered table-striped">
         <thead>
             <tr>
-            <th>Driver</th>
+            <th>Driver Name</th>
             <th>Loop</th>
             <th>Bus</th>
             <th>Time</th>
             <th>Date</th>
-            <th>beginning_hours</th>
-            <th>ending_hours</th>
-            <th>starting_mileage</th>
-            <th>ending_mileage</th>
-            <th>pre_trip_inspection</th>
-            <th>post_trip_inspection</th> 
+            <th>Beginning Hours</th>
+            <th>Ending Hours</th>
+            <th>Starting Mileage</th>
+            <th>Ending Mileage</th>
+            <th>Pre Inspection</th>
+            <th>Post Inspection</th> 
             </tr>
         </thead>
         <tbody id="loadingTable" style="display:none" class="row_position">
@@ -124,8 +141,8 @@ require '../themepart/pageContentHolder.php';
                     <td><?php echo $report->ending_hours; ?></td>
                     <td><?php echo $report->starting_mileage; ?></td>
                     <td><?php echo $report->ending_mileage; ?></td>
-                    <td><?php echo $report->pre_trip_inspection; ?></td>
-                    <td><?php echo $report->post_trip_inspection; ?></td>
+                    <td><?php echo parse_Inspection_Items($report->pre_trip_inspection); ?></td>
+                    <td><?php echo parse_Inspection_Items($report->post_trip_inspection); ?></td>
                     <td style="display:none;"><?php echo $report->id; ?></td>
                     
                 </tr>
