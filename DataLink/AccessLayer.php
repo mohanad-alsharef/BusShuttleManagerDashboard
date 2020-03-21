@@ -263,9 +263,9 @@ class AccessLayer
       return $this->Inspection_items[$InspectionItemID];
     }
 
-    $sql = sprintf("SELECT inspection_items_name FROM inspection_items_list WHERE is_deleted='0' AND id=$InspectionItemID");
+    $sql = sprintf("SELECT inspection_item_name FROM inspection_items_list WHERE is_deleted='0' AND id=$InspectionItemID");
     $result = $this->query($sql);
-    $this->Inspection_items[$InspectionItemID] = $result[0]->inspection_items_name;
+    $this->Inspection_items[$InspectionItemID] = $result[0]->inspection_item_name;
     return $this->Inspection_items[$InspectionItemID];
   }
 
