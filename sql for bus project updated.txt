@@ -192,7 +192,7 @@ CREATE TABLE `inspection_report` (
   `bus_identifier` int(11) DEFAULT NULL,
   `t_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_added` date DEFAULT NULL,
-  `begining_hours` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `beginning_hours` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ending_hours` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `starting_mileage` int(11) DEFAULT NULL,
   `ending_mileage` int(11) DEFAULT NULL,
