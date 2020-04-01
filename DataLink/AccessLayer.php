@@ -246,17 +246,34 @@ class AccessLayer
     $results = $this->query($sql);
   }
 
+// there is bug in MySQL Bug #80933, bit value of 0 does not update unless used the method below.
   public function update_pre_checkbox ($InspectionItemID, $pre_item)
   {
-    $sql = sprintf("UPDATE inspection_items_list SET pre_trip_inspection = '$pre_item'WHERE id='$InspectionItemID'");
+    if($pre_item === 0){
+      $sql = sprintf("UPDATE inspection_items_list SET pre_trip_inspection = b'$pre_item'WHERE id='$InspectionItemID'");
+    }
+    if($pre_item === 1){
+      $sql = sprintf("UPDATE inspection_items_list SET pre_trip_inspection = '$pre_item'WHERE id='$InspectionItemID'");
+    }
+    
     $results = $this->query($sql); 
   }
 
-  public function update_post_checkbox ($InspectionItemID, $type)
+  public function update_post_checkbox ($InspectionItemID, $post_item)
   {
-    $sql = sprintf("UPDATE inspection_items_list SET post_trip_inspection = '$post_item'WHERE id='$InspectionItemID'");
+    if($post_item === 0){
+      $sql = sprintf("UPDATE inspection_items_list SET post_trip_inspection = b'$post_item'WHERE id='$InspectionItemID'");
+    }
+    if($post_item === 1){
+      $sql = sprintf("UPDATE inspection_items_list SET post_trip_inspection = '$post_item'WHERE id='$InspectionItemID'");
+    }
+    
     $results = $this->query($sql); 
   }
+
+  
+  
+
 
   public function get_inspection_items_name($InspectionItemID) {
     if(array_key_exists($InspectionItemID,$this->Inspection_items)) {    

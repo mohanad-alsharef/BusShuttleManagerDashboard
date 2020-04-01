@@ -106,8 +106,8 @@ require '../themepart/pageContentHolder.php';
       ?>
       <tr>
         <td><?php echo $name ?></td>
-        <td><input type="checkbox" name="pre_item" id="pre_item" value=0 <?php echo $checked_pre; ?> disabled /></td>
-        <td><input type="checkbox" name="post_item" id="post_item" value=0 <?php echo $checked_post; ?> disabled /></td>
+        <td><input entryId="<?php echo $item_id; ?>" entryType="pre" class="ItemCheckbox"  type="checkbox" name="pre_item" id="pre_item" value=1 <?php echo $checked_pre; ?>  /></td>
+        <td><input entryId="<?php echo $item_id; ?>" entryType="post" class="ItemCheckbox" type="checkbox" name="post_item" id="post_item" value=1 <?php echo $checked_post; ?>  /></td>
         <td style="display:none;"><?php echo $item_id; ?></td>
       </tr>
      <?php endforeach; ?>
@@ -121,7 +121,57 @@ require '../themepart/pageContentHolder.php';
 
 $(document).ready(function(){
   //testing table creation
+  $('.ItemCheckbox').change(function() {
+
+var item_id = $(this).attr('entryid');
+var item_type = $(this).attr('entryType');
+var item_checked = $(this).prop('checked');
+var box = {"id":item_id,"type":item_type,"checked":item_checked};
+var inputString = JSON.stringify(box);
+
+
+$.ajax({
+  url: '../Actions/actionCheckBox.php',
+  type: "POST",
+  contentType: 'application/json',
+  data: inputString,
   
+
+
+  success: function(result) {
+    if (item_checked){
+      alert("Success! Inspection Item has been added to the selected List.");
+      $('#response').html(
+        
+          "<div class='alert alert-success'>Success! Inspection Item has been added to the selected List.</div>");
+      
+      
+    }
+    else{
+      alert("Success! Inspection Item has been removed from the selected List.");
+      $('#response').html(
+        
+          "<div class='alert alert-success'>Success! Inspection Item has been removed from the selected List.</div>");
+      
+    }
+  },
+  error: function(xhr, resp, text) {
+      if (item_checked){
+        alert("Unable to update, please check your internet connection.");
+        $(this).checked = false;
+      }
+      else {
+        alert("Unable to update, please check your internet connection.");
+        $(this).checked = true;
+      }
+      $('#response').html(
+          "<div class='alert alert-danger'>Unable to Update Inspection Item List. Please try again or contact an administrator.</div>"
+          );
+  }
+});
+
+});
+
   
   $('#editable_table').Tabledit({
     url: '../Actions/actionInspection_items.php',
