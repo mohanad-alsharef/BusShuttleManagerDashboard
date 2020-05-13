@@ -10,6 +10,7 @@ class AccessLayer
   public $stops = [];
   public $loops = [];
   public $buses = [];
+  public $Inspection_items = [];
 
   public function __construct()
   { }
@@ -218,6 +219,107 @@ class AccessLayer
     $sql = sprintf("SELECT busIdentifier FROM buses WHERE is_deleted='0' AND id=$busID");
     $this->buses[$busID] = $this->query($sql);
     return $this->buses[$busID];
+  }
+
+  //inspection_items_list
+  public function get_inspection_items()
+  {
+    $sql = sprintf("SELECT * FROM inspection_items_list WHERE is_deleted='0' ORDER BY inspection_item_name ASC");
+    return $this->query($sql);
+  }
+
+  public function add_inspection_items($InspectionItemsName, $Pre, $Post)
+  {
+    $sql = sprintf("INSERT INTO `inspection_items_list`(`inspection_item_name`, `pre_trip_inspection`, `post_trip_inspection`) VALUES ( '$InspectionItemsName', '$Pre', '$Post')");
+    $results = $this->query($sql);
+  }
+
+  public function remove_inspection_items($InspectionItemID)
+  {
+    $sql = sprintf("UPDATE inspection_items_list SET is_deleted=1 WHERE id='$InspectionItemID'");
+    $results = $this->query($sql);
+  }
+
+  public function update_inspection_items($InspectionItemID, $InspectionItemsName)
+  {
+    $sql = sprintf("UPDATE inspection_items_list SET inspection_item_name='$InspectionItemsName'WHERE id='$InspectionItemID'");
+    $results = $this->query($sql);
+  }
+
+// there is bug in MySQL Bug #80933, bit value of 0 does not update unless used the method below.
+  public function update_pre_checkbox ($InspectionItemID, $pre_item)
+  {
+    if($pre_item === 0){
+      $sql = sprintf("UPDATE inspection_items_list SET pre_trip_inspection = b'$pre_item'WHERE id='$InspectionItemID'");
+    }
+    if($pre_item === 1){
+      $sql = sprintf("UPDATE inspection_items_list SET pre_trip_inspection = '$pre_item'WHERE id='$InspectionItemID'");
+    }
+    
+    $results = $this->query($sql); 
+  }
+
+  public function update_post_checkbox ($InspectionItemID, $post_item)
+  {
+    if($post_item === 0){
+      $sql = sprintf("UPDATE inspection_items_list SET post_trip_inspection = b'$post_item'WHERE id='$InspectionItemID'");
+    }
+    if($post_item === 1){
+      $sql = sprintf("UPDATE inspection_items_list SET post_trip_inspection = '$post_item'WHERE id='$InspectionItemID'");
+    }
+    
+    $results = $this->query($sql); 
+  }
+
+  
+  
+
+
+  public function get_inspection_items_name($InspectionItemID) {
+    if(array_key_exists($InspectionItemID,$this->Inspection_items)) {    
+      return $this->Inspection_items[$InspectionItemID];
+    }
+
+    $sql = sprintf("SELECT inspection_item_name FROM inspection_items_list WHERE is_deleted='0' AND id=$InspectionItemID");
+    $result = $this->query($sql);
+    $this->Inspection_items[$InspectionItemID] = $result[0]->inspection_item_name;
+    return $this->Inspection_items[$InspectionItemID];
+  }
+
+  // inspection reports
+  public function get_inspection_reports_by_date_and_loopID($dateAdded, $loopID) {
+    $sql = sprintf("SELECT * FROM `inspection_report` WHERE `date_added`='$dateAdded' AND `loop`= '$loopID'  ORDER BY `t_stamp` DESC");
+    $aux_result = $this->query($sql);
+    $result = $this->remove_duplicate_inspection_reports($aux_result); // ALTERNATIVE in PHP code
+    return $result;
+  }
+
+  public function remove_duplicate_inspection_reports($inspection_report) {
+    $result = array();
+
+    foreach($inspection_report as $report) {
+      $found = false;
+      foreach($result as $new_report) {
+        if($report->driver==$new_report->driver
+          && $report->pre_trip_inspection==$new_report->pre_trip_inspection
+          && $report->post_trip_inspection==$new_report->post_trip_inspection
+          && $report->beginning_hours==$new_report->beginning_hours
+          && $report->ending_hours==$new_report->ending_hours
+          && $report->starting_mileage==$new_report->starting_mileage
+          && $report->ending_mileage==$new_report->ending_mileage
+          && $report->t_stamp==$new_report->t_stamp
+          && $report->date_added==$new_report->date_added
+          && $report->loop==$new_report->loop
+          && $report->bus_identifier==$new_report->bus_identifier) {
+            $found = true;
+          }
+      }
+      if($found==false) {
+        $result[] = $report;
+      }
+    }
+
+    return $result;
   }
 
   // Entries
