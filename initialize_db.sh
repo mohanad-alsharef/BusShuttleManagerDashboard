@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# wait until mysqld is running
 while ! mysqladmin ping -h"localhost" --silent; do
     sleep 1
 done
